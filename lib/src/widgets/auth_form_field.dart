@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_app/src/utils/validators.dart';
+
 typedef onChangeTextCallback = void Function(String value);
 
 class AuthFormField extends StatefulWidget {
   final String label;
   final bool isObscureText;
   final onChangeTextCallback onChangeText;
+  final ValidatorFn<String> validator;
 
   AuthFormField({
-    this.label,
-    this.onChangeText,
+    @required this.label,
+    @required this.onChangeText,
+    this.validator,
     this.isObscureText = false,
   });
 
@@ -46,6 +50,7 @@ class _AuthFormFieldState extends State<AuthFormField> {
               labelText: widget.label,
             ),
             obscureText: widget.isObscureText,
+            validator: widget.validator,
           ),
           margin: EdgeInsets.only(bottom: 20),
         ),
