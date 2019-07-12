@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/utils/validators.dart';
 
 import 'package:flutter_app/src/widgets/auth_form_field.dart';
 
@@ -8,10 +9,11 @@ class RegisterRoute extends StatefulWidget {
 }
 
 class RegisterRouteState extends State<RegisterRoute> {
-  String _userName = '';
-  String _email = '';
-  String _password = '';
-  String _confirmPassword = '';
+  var _userName = '';
+  var _email = '';
+  var _password = '';
+  var _confirmPassword = '';
+  final _formKey = GlobalKey<FormState>();
 
   void onChangeUserName(String value) {
     _userName = value;
@@ -31,44 +33,52 @@ class RegisterRouteState extends State<RegisterRoute> {
 
   @override
   Widget build(BuildContext context) {
-    _onPress() => print(
+    _onPress() {
+      if (_formKey.currentState.validate()) {
+        print(
           'user name - $_userName, email - $_email,'
           'password - $_password, confirmpassword - $_confirmPassword',
         );
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text('Registration')),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AuthFormField(
-                label: "User Name",
-                onChangeText: onChangeUserName,
-              ),
-              AuthFormField(
-                label: "Email",
-                onChangeText: onChangeEmail,
-              ),
-              AuthFormField(
-                label: "Password",
-                onChangeText: onChangePassword,
-                isObscureText: true,
-              ),
-              AuthFormField(
-                label: "Confirm Password",
-                onChangeText: onChangeConfirmPassword,
-                isObscureText: true,
-              ),
-              RaisedButton(
-                onPressed: _onPress,
-                elevation: 3,
-                color: Theme.of(context).accentColor,
-                child: Text('Submit'),
-              )
-            ],
+        child: Form(
+          key: _formKey,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AuthFormField(
+                  label: "User Name",
+                  onChangeText: onChangeUserName,
+                ),
+                AuthFormField(
+                  label: "Email",
+                  onChangeText: onChangeEmail,
+                  validator: Validator.email,
+                ),
+                AuthFormField(
+                  label: "Password",
+                  onChangeText: onChangePassword,
+                  isObscureText: true,
+                ),
+                AuthFormField(
+                  label: "Confirm Password",
+                  onChangeText: onChangeConfirmPassword,
+                  isObscureText: true,
+                ),
+                RaisedButton(
+                  onPressed: _onPress,
+                  elevation: 3,
+                  color: Theme.of(context).accentColor,
+                  child: Text('Submit'),
+                )
+              ],
+            ),
           ),
         ),
       ),
