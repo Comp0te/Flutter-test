@@ -59,7 +59,7 @@ class RegisterRouteState extends State<RegisterRoute> {
                 AuthFormField(
                   label: "Email",
                   onChangeText: onChangeEmail,
-                  validator: Validator.email,
+                  validator: Validators.email,
                 ),
                 AuthFormField(
                   label: "Password",
