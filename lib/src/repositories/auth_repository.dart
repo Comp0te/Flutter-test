@@ -12,7 +12,8 @@ class AuthRepository {
   }) : assert(storage != null);
 
   Future<bool> hasToken() async {
-    return storage.read(AuthRepository.tokenKey) != null;
+    var token = await storage.read(AuthRepository.tokenKey);
+    return token != null;
   }
 
   Future<String> getToken() async {
