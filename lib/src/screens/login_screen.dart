@@ -18,14 +18,12 @@ class LoginScreen extends StatelessWidget {
 
     void onChangeEmail(value) {
       if (value is String) {
-        print('onChangeEmail ==========');
         _loginBloc.dispatch(EmailChanged(email: value));
       }
     }
 
     onChangePassword(value) {
       if (value is String) {
-        print('onChangePassword ==========');
         _loginBloc.dispatch(PasswordChanged(password: value));
       }
     }
@@ -34,33 +32,22 @@ class LoginScreen extends StatelessWidget {
 //      return Navigator.of(context).pushNamed(RouteNames.register);
 //    }
 
-    _onPress() {
-      _fbKey.currentState.save();
-
-      if (_fbKey.currentState.validate()) {
-        print(_fbKey.currentState.value);
-        _fbKey.currentState.value.forEach((key, val) => print('$key - $val'));
-        _loginBloc.dispatch(
-          Submitted(
-            email: null,
-            password: null,
-          ),
-        );
-      }
-    }
-
-//    void _onFormSubmitted() {
-////      _loginBloc.dispatch(
-////        LoginButtonPressed(
-////          email: _loginBloc.currentState,
-////          password: _passwordController.text,
-////        ),
-////      );
-//    }
-
     return BlocBuilder(
       bloc: BlocProvider.of<LoginBloc>(context),
       builder: (BuildContext context, LoginState state) {
+        _onPress() {
+          _fbKey.currentState.save();
+
+          if (_fbKey.currentState.validate()) {
+            _loginBloc.dispatch(
+              Submitted(
+                email: state.email,
+                password: state.password,
+              ),
+            );
+          }
+        }
+
         return Scaffold(
           appBar: AppBar(title: Text('Login')),
           body: SingleChildScrollView(
