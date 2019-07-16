@@ -50,6 +50,8 @@ class _AuthFormFieldState extends State<AuthFormField> {
               labelText: widget.label,
             ),
             obscureText: widget.isObscureText,
+            autovalidate: true,
+            autocorrect: false,
             validator: widget.validator,
           ),
           margin: EdgeInsets.only(bottom: 20),
