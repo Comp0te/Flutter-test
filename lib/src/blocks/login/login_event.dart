@@ -27,11 +27,3 @@ class Submitted extends LoginEvent implements LoginInput {
   Submitted({@required this.email, @required this.password})
       : super([email, password]);
 }
-
-class LoginButtonPressed extends LoginEvent implements LoginInput {
-  final String email;
-  final String password;
-
-  LoginButtonPressed({@required this.email, @required this.password})
-      : super([email, password]);
-}

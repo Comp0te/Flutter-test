@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter_app/src/blocks/blocks.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
-import 'package:flutter_app/src/utils/validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
@@ -19,23 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : assert(authRepository != null),
         assert(loginRepository != null);
 
-  LoginState get initialState => LoginState.empty();
-
-  @override
-  Stream<LoginState> transform(
-    Stream<LoginEvent> events,
-    Stream<LoginState> next(LoginEvent event),
-  ) {
-    final Observable<LoginEvent> observableStream = events;
-    final nonDebounceStream = observableStream.where(
-        (event) => (event is! EmailChanged && event is! PasswordChanged));
-
-    final debounceStream = observableStream
-        .where((event) => (event is EmailChanged || event is PasswordChanged))
-        .debounceTime(Duration(milliseconds: 300));
-
-    return super.transform(nonDebounceStream.mergeWith([debounceStream]), next);
-  }
+  LoginState get initialState => LoginState.init();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -43,21 +25,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapEmailChangedToState(event.email);
     } else if (event is PasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
-    } else if (event is LoginButtonPressed) {
+    } else if (event is Submitted) {
       yield* _mapLoginButtonPressedToState(event);
     }
   }
 
   Stream<LoginState> _mapEmailChangedToState(String email) async* {
     yield currentState.update(
-      isEmailValid: Validators.isEmpty(email) && Validators.isEmailValid(email),
+      email: email,
     );
   }
 
   Stream<LoginState> _mapPasswordChangedToState(String password) async* {
     yield currentState.update(
-      isPasswordValid:
-          Validators.isEmpty(password) && Validators.isPasswordValid(password),
+      password: password,
     );
   }
 
