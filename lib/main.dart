@@ -1,24 +1,29 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/routes/login_route.dart';
-import 'package:flutter_app/src/routes/register_route.dart';
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() => runApp(MyApp());
+import 'package:flutter_app/src/repositories/repositories.dart';
+import 'package:flutter_app/src/data_providers/data_providers.dart';
+import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/app.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      routes: <String, WidgetBuilder>{
-        RouteNames.login: (BuildContext context) => LoginRoute(),
-        RouteNames.register: (BuildContext context) => RegisterRoute()
-      },
-      initialRoute: RouteNames.login,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final AuthRepository authRepository = AuthRepository(
+    storage: SecureStorageProvider(
+      secureStorage: FlutterSecureStorage(),
+    ),
+  );
+  runApp(
+    BlocProvider(
+      builder: (context) => AuthBloc(
+            authRepository: authRepository,
+          )..dispatch(AppStarted()),
+      child: App(
+        authRepository: authRepository,
       ),
-    );
-  }
+    ),
+  );
 }
