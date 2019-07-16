@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
@@ -26,7 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else if (event is PasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
     } else if (event is Submitted) {
-      yield* _mapLoginButtonPressedToState(event);
+      yield* _mapLoginButtonPressedToState();
     }
   }
 
@@ -42,14 +41,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Stream<LoginState> _mapLoginButtonPressedToState(LoginInput data) async* {
-    yield LoginState.loading();
+  Stream<LoginState> _mapLoginButtonPressedToState() async* {
+    yield currentState.update(isSubmitting: true);
     try {
-      var loginResponse = await loginRepository.login(data);
+      var loginResponse = await loginRepository.login(
+        Submitted(
+          email: currentState.email,
+          password: currentState.password,
+        ),
+      );
+
+      print('loginResponse ============= $loginResponse');
       await authRepository.saveToken(loginResponse.token);
-      yield LoginState.success();
-    } catch (_) {
-      yield LoginState.failure();
+
+      yield currentState.update(
+        isSubmitting: false,
+        isSuccess: true,
+      );
+    } catch (e) {
+      print('loginError =============== $e');
+      yield currentState.update(
+        isSubmitting: false,
+        isFailure: true,
+      );
     }
   }
 }

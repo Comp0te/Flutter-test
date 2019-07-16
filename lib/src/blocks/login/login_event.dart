@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/models/model.dart';
-
 @immutable
 abstract class LoginEvent extends Equatable {
   LoginEvent([List props = const []]) : super(props);
@@ -20,7 +18,7 @@ class PasswordChanged extends LoginEvent {
   PasswordChanged({@required this.password}) : super([password]);
 }
 
-class Submitted extends LoginEvent implements LoginInput {
+class Submitted extends LoginEvent {
   final String email;
   final String password;
 
