@@ -12,11 +12,13 @@ import 'blocks/blocks.dart';
 import 'data_providers/data_providers.dart';
 
 class App extends StatelessWidget {
-  final AuthRepository _authRepository;
+  final SecureStorageRepository _secureStorageRepository;
 
-  App({Key key, @required AuthRepository authRepository})
-      : assert(authRepository != null),
-        _authRepository = authRepository,
+  App({
+    Key key,
+    @required SecureStorageRepository secureStorageRepository,
+  })  : assert(secureStorageRepository != null),
+        _secureStorageRepository = secureStorageRepository,
         super(key: key);
 
   @override
@@ -35,8 +37,8 @@ class App extends StatelessWidget {
 
           return BlocProvider(
             builder: (context) => LoginBloc(
-                  authRepository: _authRepository,
-                  loginRepository: LoginRepository(
+                  secureStorageRepository: _secureStorageRepository,
+                  authRepository: AuthRepository(
                     authApiProvider: AuthApiProvider(dio: Dio()),
                   ),
                 ),

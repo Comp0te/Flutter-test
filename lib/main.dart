@@ -11,18 +11,18 @@ import 'package:flutter_app/src/app.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final AuthRepository authRepository = AuthRepository(
-    storage: SecureStorageProvider(
-      secureStorage: FlutterSecureStorage(),
-    ),
+  final SecureStorageRepository secureStorageRepository =
+      SecureStorageRepository(
+    storage: SecureStorageProvider(secureStorage: FlutterSecureStorage()),
   );
+
   runApp(
     BlocProvider(
       builder: (context) => AuthBloc(
-            authRepository: authRepository,
+            secureStorageRepository: secureStorageRepository,
           )..dispatch(AppStarted()),
       child: App(
-        authRepository: authRepository,
+        secureStorageRepository: secureStorageRepository,
       ),
     ),
   );

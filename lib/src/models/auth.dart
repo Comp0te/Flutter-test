@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import './model.dart';
 
-part 'login.g.dart';
+part 'auth.g.dart';
 
 @JsonSerializable()
 class LoginInput {
