@@ -14,11 +14,3 @@ class AuthState extends EquatableClass {
     return AuthState(isAuthenticated: isAuthenticated);
   }
 }
-
-class AuthUninitialized extends AuthState {}
-
-class AuthAuthenticated extends AuthState {}
-
-class AuthUnauthenticated extends AuthState {}
-
-class AuthLoading extends AuthState {}
