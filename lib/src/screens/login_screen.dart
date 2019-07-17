@@ -45,21 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
             BlocProvider.of<AuthBloc>(context).dispatch(LoggedIn());
           }
 
-          if (state.isFailure) {
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  duration: Duration(seconds: 3),
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Login Failure: ${(state.error as DioError).message}', ),
-                      Icon(Icons.error),
-                    ],
-                  ),
-                  backgroundColor: Colors.red,
-                ),
+            if (state.isFailure) {
+              SnackBarService.showError(
+                context: context,
+                error: state.error,
               );
           }
         },
