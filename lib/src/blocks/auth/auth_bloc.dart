@@ -29,8 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     if (event is LoggedIn) {
-      yield AuthLoading();
-      await authRepository.saveToken(event.token);
       yield AuthAuthenticated();
     }
 

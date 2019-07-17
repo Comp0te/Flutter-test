@@ -8,10 +8,6 @@ abstract class AuthEvent extends Equatable {
 
 class AppStarted extends AuthEvent {}
 
-class LoggedIn extends AuthEvent {
-  final String token;
-
-  LoggedIn({@required this.token}) : super([token]);
-}
+class LoggedIn extends AuthEvent {}
 
 class LoggedOut extends AuthEvent {}
