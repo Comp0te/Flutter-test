@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,26 +6,28 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:flutter_app/src/blocks/blocks.dart';
 
-class LoginScreen extends StatelessWidget {
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-  bool isLoginButtonEnabled(LoginState state) {
-    return !state.isSubmitting;
-  }
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    void onChangeEmail(value) {
-      if (value is String) {
-        _loginBloc.dispatch(EmailChanged(email: value));
-      }
-    }
+    _onPressSubmit() {
+      _fbKey.currentState.save();
 
-    onChangePassword(value) {
-      if (value is String) {
-        _loginBloc.dispatch(PasswordChanged(password: value));
+      if (_fbKey.currentState.validate()) {
+        _loginBloc.dispatch(LoginRequest(
+          email: _emailController.text,
+          password: _passwordController.text,
+        ));
       }
     }
 
@@ -32,78 +35,98 @@ class LoginScreen extends StatelessWidget {
 //      return Navigator.of(context).pushNamed(RouteNames.register);
 //    }
 
-    return BlocBuilder(
-      bloc: BlocProvider.of<LoginBloc>(context),
-      builder: (BuildContext context, LoginState state) {
-        _onPress() {
-          _fbKey.currentState.save();
-
-          if (_fbKey.currentState.validate()) {
-            _loginBloc.dispatch(
-              Submitted(
-                email: state.email,
-                password: state.password,
-              ),
-            );
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: BlocListener(
+        bloc: _loginBloc,
+        condition: (LoginState prev, LoginState cur) =>
+            (prev.isFailure != cur.isFailure) ||
+            (prev.isSuccess != cur.isSuccess),
+        listener: (BuildContext context, LoginState state) {
+          if (state.isSuccess) {
+            BlocProvider.of<AuthBloc>(context).dispatch(LoggedIn());
           }
-        }
 
-        return Scaffold(
-          appBar: AppBar(title: Text('Login')),
-          body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FormBuilder(
-                  key: _fbKey,
-                  autovalidate: true,
-                  child: Column(
-                    children: <Widget>[
-                      FormBuilderTextField(
-                        attribute: 'email',
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(labelText: "Email"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                        onChanged: onChangeEmail,
-                      ),
-                      FormBuilderTextField(
-                        attribute: 'password',
-                        obscureText: true,
-                        decoration: InputDecoration(labelText: "Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
-                          ),
-                        ],
-                        onChanged: onChangePassword,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 80),
-                        child: RaisedButton(
-                          onPressed: _onPress,
-                          elevation: 3,
-                          color: Theme.of(context).accentColor,
-                          child: Text('Submit'),
+          if (state.isFailure) {
+            Scaffold.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  duration: Duration(seconds: 3),
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Login Failure: ${(state.error as DioError).message}', ),
+                      Icon(Icons.error),
+                    ],
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
+          }
+        },
+        child: BlocBuilder(
+          bloc: _loginBloc,
+          builder: (BuildContext context, LoginState state) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FormBuilder(
+                    key: _fbKey,
+                    autovalidate: true,
+                    child: Column(
+                      children: <Widget>[
+                        FormBuilderTextField(
+                          controller: _emailController,
+                          attribute: 'email',
+                          autocorrect: false,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(labelText: "Email"),
+                          validators: [
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.email(),
+                          ],
                         ),
-                      ),
+                        FormBuilderTextField(
+                          controller: _passwordController,
+                          attribute: 'password',
+                          autocorrect: false,
+                          obscureText: true,
+                          decoration: InputDecoration(labelText: "Password"),
+                          validators: [
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.minLength(
+                              8,
+                              errorText: "Min 8 characters",
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 80),
+                          child: RaisedButton(
+                            onPressed:
+                                state.isLoading ? null : _onPressSubmit,
+                            elevation: 3,
+                            disabledColor: Colors.blueGrey,
+                            color: Theme.of(context).accentColor,
+                            child: Text('Submit'),
+                          ),
+                        ),
 //                    GestureDetector(
 //                      onTap: toRegistrationScreen,
 //                      child: Text("To registration screen"),
 //                    )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+                ],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
