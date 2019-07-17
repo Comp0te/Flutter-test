@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/utils/dio_helper.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,7 +17,7 @@ void main() {
     storage: SecureStorageProvider(secureStorage: FlutterSecureStorage()),
   );
   final AuthRepository _authRepository = AuthRepository(
-    authApiProvider: AuthApiProvider(dio: Dio()),
+    authApiProvider: AuthApiProvider(dio: DioInstance().dio),
   );
 
   runApp(
