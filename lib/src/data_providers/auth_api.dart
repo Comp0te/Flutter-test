@@ -23,13 +23,12 @@ class AuthApiProvider {
     _dio.options.headers.addEntries(headers);
   }
 
-  Future<LoginResponseModel> login(Submitted data) async {
-    Response<LoginResponseModel> response = await dio.post<LoginResponseModel>(
+  Future<LoginResponse> login(LoginInput data) async {
+    Response response = await _dio.post(
       Url.login,
-      data: data,
+      data: data.toJson(),
     );
 
-    print('response ------------------- $response');
-    return response.data;
+    return LoginResponse.fromJson(response.data);
   }
 }

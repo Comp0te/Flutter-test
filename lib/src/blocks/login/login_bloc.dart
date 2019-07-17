@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
@@ -45,7 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     yield currentState.update(isSubmitting: true);
     try {
       var loginResponse = await loginRepository.login(
-        Submitted(
+        LoginInput(
           email: currentState.email,
           password: currentState.password,
         ),
