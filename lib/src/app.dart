@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_app/src/screens/login_screen.dart';
@@ -36,7 +37,7 @@ class App extends StatelessWidget {
             builder: (context) => LoginBloc(
                   authRepository: _authRepository,
                   loginRepository: LoginRepository(
-                    authApiProvider: AuthApiProvider(),
+                    authApiProvider: AuthApiProvider(dio: Dio()),
                   ),
                 ),
             child: LoginScreen(),
