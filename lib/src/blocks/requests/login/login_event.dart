@@ -8,6 +8,8 @@ abstract class LoginEvent extends Equatable {
   LoginEvent([List props = const []]) : super(props);
 }
 
+class LoginRequestInit extends LoginEvent {}
+
 class LoginRequest extends LoginEvent {
   final String email;
   final String password;
