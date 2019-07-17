@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,18 +12,23 @@ import 'package:flutter_app/src/app.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final SecureStorageRepository secureStorageRepository =
+  final SecureStorageRepository _secureStorageRepository =
       SecureStorageRepository(
     storage: SecureStorageProvider(secureStorage: FlutterSecureStorage()),
+  );
+  final AuthRepository _authRepository = AuthRepository(
+    authApiProvider: AuthApiProvider(dio: Dio()),
   );
 
   runApp(
     BlocProvider(
       builder: (context) => AuthBloc(
-            secureStorageRepository: secureStorageRepository,
+            secureStorageRepository: _secureStorageRepository,
+            authRepository: _authRepository,
           )..dispatch(AppStarted()),
       child: App(
-        secureStorageRepository: secureStorageRepository,
+        secureStorageRepository: _secureStorageRepository,
+        authRepository: _authRepository,
       ),
     ),
   );

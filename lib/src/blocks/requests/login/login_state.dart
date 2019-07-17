@@ -1,14 +1,10 @@
-import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
-import 'package:equatable/equatable.dart';
+
+import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/utils/equatable_class.dart';
 
 @immutable
-abstract class EquatableState extends Equatable {
-  EquatableState([List props = const []]) : super(props);
-}
-
-@immutable
-class LoginState extends EquatableState {
+class LoginState extends EquatableClass {
   final bool isLoading;
   final LoginResponse data;
   final Exception error;
@@ -22,11 +18,7 @@ class LoginState extends EquatableState {
     this.error,
   }) : super([isLoading, data, error]);
 
-  factory LoginState.init() {
-    return LoginState(
-      isLoading: false,
-    );
-  }
+  factory LoginState.init() => LoginState(isLoading: false);
 
   LoginState update({
     @required bool isLoading,

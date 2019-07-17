@@ -8,12 +8,16 @@ import 'package:flutter_app/src/repositories/repositories.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SecureStorageRepository secureStorageRepository;
+  final AuthRepository authRepository;
 
-  AuthBloc({@required this.secureStorageRepository})
-      : assert(secureStorageRepository != null);
+  AuthBloc({
+    @required this.secureStorageRepository,
+    @required this.authRepository,
+  })  : assert(secureStorageRepository != null),
+        assert(authRepository != null);
 
   @override
-  AuthState get initialState => AuthUninitialized();
+  AuthState get initialState => AuthState.init();
 
   @override
   Stream<AuthState> mapEventToState(
@@ -23,20 +27,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final bool hasToken = await secureStorageRepository.hasToken();
 
       if (hasToken) {
-        yield AuthAuthenticated();
-      } else {
-        yield AuthUnauthenticated();
+        yield currentState.update(isAuthenticated: true);
       }
     }
 
     if (event is LoggedIn) {
-      yield AuthAuthenticated();
+      yield currentState.update(isAuthenticated: true);
     }
 
     if (event is LoggedOut) {
-      yield AuthLoading();
+      yield currentState.update(isAuthenticated: false);
       await secureStorageRepository.deleteToken();
-      yield AuthUnauthenticated();
     }
   }
 }

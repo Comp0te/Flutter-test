@@ -39,9 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(title: Text('Login')),
       body: BlocListener(
         bloc: _loginBloc,
-        condition: (LoginState prev, LoginState cur) =>
-            (prev.isFailure != cur.isFailure) ||
-            (prev.isSuccess != cur.isSuccess),
+        condition: (LoginState prev, LoginState cur) => prev != cur,
         listener: (BuildContext context, LoginState state) {
           if (state.isSuccess) {
             BlocProvider.of<AuthBloc>(context).dispatch(LoggedIn());

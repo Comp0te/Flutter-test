@@ -1,9 +1,18 @@
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/utils/equatable_class.dart';
+
 @immutable
-abstract class AuthState extends Equatable {
-  AuthState([List props = const []]) : super(props);
+class AuthState extends EquatableClass {
+  final bool isAuthenticated;
+
+  AuthState({@required this.isAuthenticated}) : super([isAuthenticated]);
+
+  factory AuthState.init() => AuthState(isAuthenticated: false);
+
+  AuthState update({@required bool isAuthenticated}) {
+    return AuthState(isAuthenticated: isAuthenticated);
+  }
 }
 
 class AuthUninitialized extends AuthState {}

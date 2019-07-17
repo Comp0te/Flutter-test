@@ -56,6 +56,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       isLoading: false,
       data: event.loginResponse,
     );
+    authRepository.addAuthHeader(event.loginResponse.token);
   }
 
   Stream<LoginState> _mapLoginRequestFailureToState(
