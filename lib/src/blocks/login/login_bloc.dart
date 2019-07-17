@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
+import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
@@ -21,50 +21,49 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is EmailChanged) {
-      yield* _mapEmailChangedToState(event.email);
-    } else if (event is PasswordChanged) {
-      yield* _mapPasswordChangedToState(event.password);
-    } else if (event is Submitted) {
-      yield* _mapLoginButtonPressedToState();
+    if (event is LoginRequest) {
+      yield* _mapLoginRequestToState(event);
+    } else if (event is LoginRequestSuccess) {
+      yield* _mapLoginRequestSuccessToState(event);
+    } else if (event is LoginRequestFailure) {
+      yield* _mapLoginRequestFailureToState(event);
     }
   }
 
-  Stream<LoginState> _mapEmailChangedToState(String email) async* {
+  Stream<LoginState> _mapLoginRequestToState(LoginRequest event) async* {
     yield currentState.update(
-      email: email,
+      isLoading: true,
     );
-  }
 
-  Stream<LoginState> _mapPasswordChangedToState(String password) async* {
-    yield currentState.update(
-      password: password,
-    );
-  }
-
-  Stream<LoginState> _mapLoginButtonPressedToState() async* {
-    yield currentState.update(isSubmitting: true);
     try {
-      var loginResponse = await loginRepository.login(
-        LoginInput(
-          email: currentState.email,
-          password: currentState.password,
-        ),
-      );
+      var loginResponse = await loginRepository.login(LoginInput(
+        email: event.email,
+        password: event.password,
+      ));
 
-      print('loginResponse ============= $loginResponse');
-      await authRepository.saveToken(loginResponse.token);
-
-      yield currentState.update(
-        isSubmitting: false,
-        isSuccess: true,
-      );
-    } catch (e) {
-      print('loginError =============== $e');
-      yield currentState.update(
-        isSubmitting: false,
-        isFailure: true,
-      );
+      dispatch(LoginRequestSuccess(loginResponse: loginResponse));
+    } catch (err) {
+      dispatch(LoginRequestFailure(error: err));
     }
+  }
+
+  Stream<LoginState> _mapLoginRequestSuccessToState(
+    LoginRequestSuccess event,
+  ) async* {
+    await authRepository.saveToken(event.loginResponse.token);
+
+    yield currentState.update(
+      isLoading: false,
+      data: event.loginResponse,
+    );
+  }
+
+  Stream<LoginState> _mapLoginRequestFailureToState(
+    LoginRequestFailure event,
+  ) async* {
+    yield currentState.update(
+      isLoading: false,
+      error: event.error,
+    );
   }
 }

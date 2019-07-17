@@ -1,3 +1,4 @@
+import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,71 +9,34 @@ abstract class EquatableState extends Equatable {
 
 @immutable
 class LoginState extends EquatableState {
-  final String email;
-  final String password;
-  final bool isSubmitting;
-  final bool isSuccess;
-  final bool isFailure;
+  final bool isLoading;
+  final LoginResponse data;
+  final Exception error;
+
+  bool get isSuccess => data != null;
+  bool get isFailure => error != null;
 
   LoginState({
-    @required this.email,
-    @required this.password,
-    @required this.isSubmitting,
-    @required this.isSuccess,
-    @required this.isFailure,
-  }) : super([email, password, isFailure, isSuccess, isSubmitting]);
+    @required this.isLoading,
+    this.data,
+    this.error,
+  }) : super([isLoading, data, error]);
 
   factory LoginState.init() {
     return LoginState(
-      email: '',
-      password: '',
-      isSubmitting: false,
-      isSuccess: false,
-      isFailure: false,
+      isLoading: false,
     );
   }
 
-//  factory LoginState.loading(bool isSubmitting) {
-//    return copyWith(isSubmitting: isSubmitting);
-//  }
-//
-//  factory LoginState.failure() {
-//    return copyWith(isFailure: true);
-//  }
-//
-//  factory LoginState.success() {
-//    return copyWith(isSuccess: true);
-//  }
-
-//  LoginState update({
-//    String email,
-//    String password,
-//    bool isSubmitting,
-//    bool isSuccess,
-//    bool isFailure,
-//  }) {
-//    return copyWith(
-//      email: email,
-//      password: password,
-//      isFailure: isFailure,
-//      isSuccess: isSuccess,
-//      isSubmitting: isSubmitting,
-//    );
-//  }
-
   LoginState update({
-    String email,
-    String password,
-    bool isSubmitting,
-    bool isSuccess,
-    bool isFailure,
+    @required bool isLoading,
+    LoginResponse data,
+    Exception error,
   }) {
     return LoginState(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      isSubmitting: isSubmitting ?? this.isSubmitting,
-      isSuccess: isSuccess ?? this.isSuccess,
-      isFailure: isFailure ?? this.isFailure,
+      isLoading: isLoading,
+      data: data ?? this.data,
+      error: error ?? this.error,
     );
   }
 }
