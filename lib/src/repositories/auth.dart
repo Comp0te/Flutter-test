@@ -15,7 +15,11 @@ class AuthRepository {
     authApiProvider.addHeaders([MapEntry('Authorization', 'Bearer $token')]);
   }
 
-  Future<LoginResponse> login(LoginInput data) async {
+  Future<AuthResponse> login(LoginInput data) async {
     return await authApiProvider.login(data);
+  }
+
+  Future<AuthResponse> register(RegisterInput data) async {
+    return await authApiProvider.register(data);
   }
 }

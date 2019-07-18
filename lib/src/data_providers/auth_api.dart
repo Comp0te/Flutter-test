@@ -14,12 +14,21 @@ class AuthApiProvider {
     _dio.options.headers.addEntries(headers);
   }
 
-  Future<LoginResponse> login(LoginInput data) async {
+  Future<AuthResponse> login(LoginInput data) async {
     Response response = await _dio.post(
       Url.login,
       data: data.toJson(),
     );
 
-    return LoginResponse.fromJson(response.data);
+    return AuthResponse.fromJson(response.data);
+  }
+
+  Future<AuthResponse> register(RegisterInput data) async {
+    Response response = await _dio.post(
+      Url.register,
+      data: data.toJson(),
+    );
+
+    return AuthResponse.fromJson(response.data);
   }
 }
