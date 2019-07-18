@@ -24,3 +24,19 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{'token': instance.token, 'user': instance.user};
+
+RegisterInput _$RegisterInputFromJson(Map<String, dynamic> json) {
+  return RegisterInput(
+      username: json['username'] as String,
+      email: json['email'] as String,
+      password1: json['password1'] as String,
+      password2: json['password2'] as String);
+}
+
+Map<String, dynamic> _$RegisterInputToJson(RegisterInput instance) =>
+    <String, dynamic>{
+      'username': instance.username,
+      'email': instance.email,
+      'password1': instance.password1,
+      'password2': instance.password2
+    };

@@ -12,19 +12,41 @@ class LoginInput {
 
   LoginInput({@required this.email, @required this.password});
 
-  factory LoginInput.fromJson(Map<String, dynamic> json) => _$LoginInputFromJson(json);
+  factory LoginInput.fromJson(Map<String, dynamic> json) =>
+      _$LoginInputFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginInputToJson(this);
 }
 
 @JsonSerializable()
-class LoginResponse {
+class AuthResponse {
   String token;
   User user;
 
-  LoginResponse(this.token, this.user);
+  AuthResponse(this.token, this.user);
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => _$LoginResponseFromJson(json);
+  factory AuthResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AuthResponseToJson(this);
+}
+
+@JsonSerializable()
+class RegisterInput {
+  String username;
+  String email;
+  String password1;
+  String password2;
+
+  RegisterInput({
+    this.username,
+    @required this.email,
+    @required this.password1,
+    @required this.password2,
+  });
+
+  factory RegisterInput.fromJson(Map<String, dynamic> json) =>
+      _$RegisterInputFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RegisterInputToJson(this);
 }
