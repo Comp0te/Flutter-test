@@ -6,7 +6,7 @@ import 'package:flutter_app/src/utils/equatable_class.dart';
 @immutable
 class LoginState extends EquatableClass {
   final bool isLoading;
-  final LoginResponse data;
+  final AuthResponse data;
   final Exception error;
 
   bool get isSuccess => data != null;
@@ -22,7 +22,7 @@ class LoginState extends EquatableClass {
 
   LoginState update({
     @required bool isLoading,
-    LoginResponse data,
+    AuthResponse data,
     Exception error,
   }) {
     return LoginState(

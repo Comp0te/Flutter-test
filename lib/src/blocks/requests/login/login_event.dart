@@ -19,7 +19,7 @@ class LoginRequest extends LoginEvent {
 }
 
 class LoginRequestSuccess extends LoginEvent {
-  final LoginResponse loginResponse;
+  final AuthResponse loginResponse;
 
   LoginRequestSuccess({@required this.loginResponse})
       : super([loginResponse]);
