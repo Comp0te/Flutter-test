@@ -56,65 +56,66 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocProvider.of<LoginBloc>(context).dispatch(LoginRequestInit());
             }
           },
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FormBuilder(
-                  key: _fbKey,
-                  autovalidate: false,
-                  child: Column(
-                    children: <Widget>[
-                      FormBuilderTextField(
-                        controller: _emailController,
-                        attribute: 'email',
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(labelText: "Email"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                      ),
-                      FormBuilderTextField(
-                        controller: _passwordController,
-                        attribute: 'password',
-                        autocorrect: false,
-                        obscureText: true,
-                        decoration: InputDecoration(labelText: "Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 80),
-                        child: BlocBuilder(
-                          bloc: _loginBloc,
-                          builder: (BuildContext context, LoginState state) {
-                            return RaisedButton(
-                              onPressed:
-                                  state.isLoading ? null : _onPressSubmit,
-                              elevation: 3,
-                              disabledColor: Colors.blueGrey,
-                              color: Theme.of(context).accentColor,
-                              child: Text('Submit'),
-                            );
-                          },
+          child: Center(            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FormBuilder(
+                    key: _fbKey,
+                    autovalidate: false,
+                    child: Column(
+                      children: <Widget>[
+                        FormBuilderTextField(
+                          controller: _emailController,
+                          attribute: 'email',
+                          autocorrect: false,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(labelText: "Email"),
+                          validators: [
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.email(),
+                          ],
                         ),
-                      ),
+                        FormBuilderTextField(
+                          controller: _passwordController,
+                          attribute: 'password',
+                          autocorrect: false,
+                          obscureText: true,
+                          decoration: InputDecoration(labelText: "Password"),
+                          validators: [
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.minLength(
+                              8,
+                              errorText: "Min 8 characters",
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 80),
+                          child: BlocBuilder(
+                            bloc: _loginBloc,
+                            builder: (BuildContext context, LoginState state) {
+                              return RaisedButton(
+                                onPressed:
+                                    state.isLoading ? null : _onPressSubmit,
+                                elevation: 3,
+                                disabledColor: Colors.blueGrey,
+                                color: Theme.of(context).accentColor,
+                                child: Text('Submit'),
+                              );
+                            },
+                          ),
+                        ),
 //                    GestureDetector(
 //                      onTap: toRegistrationScreen,
 //                      child: Text("To registration screen"),
 //                    )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )),
     );
