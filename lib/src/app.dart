@@ -1,47 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/repositories/repositories.dart';
+import 'package:flutter_app/src/blocks/blocks.dart';
+
+import 'package:flutter_app/src/screens/register_screen.dart';
 import 'package:flutter_app/src/screens/login_screen.dart';
 import 'package:flutter_app/src/screens/home_screen.dart';
 
-import 'package:flutter_app/src/repositories/repositories.dart';
-
-import 'blocks/blocks.dart';
-
 class App extends StatelessWidget {
-  final SecureStorageRepository _secureStorageRepository;
-  final AuthRepository _authRepository;
-
-  App({
-    Key key,
-    @required SecureStorageRepository secureStorageRepository,
-    @required AuthRepository authRepository,
-  })  : assert(secureStorageRepository != null),
-        _secureStorageRepository = secureStorageRepository,
-        _authRepository = authRepository,
-        super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocBuilder(
-        bloc: BlocProvider.of<AuthBloc>(context),
-        builder: (BuildContext context, AuthState state) {
-          if (state.isAuthenticated) {
+    final SecureStorageRepository _secureStorageRepository =
+        RepositoryProvider.of<SecureStorageRepository>(context);
+    final AuthRepository _authRepository =
+        RepositoryProvider.of<AuthRepository>(context);
 
-            return HomeScreen();
-          } else {
-
-            return BlocProvider(
-              builder: (context) => LoginBloc(
-                    secureStorageRepository: _secureStorageRepository,
-                    authRepository: _authRepository,
-                  ),
-              child: LoginScreen(),
-            );
-          }
-        },
-      ),
+    return BlocBuilder(
+      bloc: BlocProvider.of<AuthBloc>(context),
+      builder: (BuildContext context, AuthState state) {
+        return state.isAuthenticated
+            ? MaterialApp(
+                key: GlobalKey(),
+                initialRoute: MainRouteNames.home,
+                routes: {
+                  MainRouteNames.home: (context) => HomeScreen(),
+                },
+              )
+            : MaterialApp(
+                key: GlobalKey(),
+                initialRoute: AuthRouteNames.login,
+                routes: {
+                  AuthRouteNames.login: (context) {
+                    return BlocProvider(
+                      builder: (context) {
+                        return LoginBloc(
+                          secureStorageRepository: _secureStorageRepository,
+                          authRepository: _authRepository,
+                        );
+                      },
+                      child: LoginScreen(),
+                    );
+                  },
+                  AuthRouteNames.register: (context) {
+                    return BlocProvider(
+                      builder: (context) {
+                        return RegisterBloc(
+                          secureStorageRepository: _secureStorageRepository,
+                          authRepository: _authRepository,
+                        );
+                      },
+                      child: RegisterScreen(),
+                    );
+                  },
+                },
+              );
+      },
     );
   }
 }
