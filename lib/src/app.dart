@@ -16,6 +16,8 @@ class App extends StatelessWidget {
         RepositoryProvider.of<SecureStorageRepository>(context);
     final AuthRepository _authRepository =
         RepositoryProvider.of<AuthRepository>(context);
+    final PostersRepository _postersRepository =
+        RepositoryProvider.of<PostersRepository>(context);
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -29,7 +31,16 @@ class App extends StatelessWidget {
                   key: GlobalKey(),
                   initialRoute: MainRouteNames.home,
                   routes: {
-                    MainRouteNames.home: (context) => HomeScreen(),
+                    MainRouteNames.home: (context) {
+                      return BlocProvider(
+                        builder: (context) {
+                          return PostersFetchBloc(
+                            postersRepository: _postersRepository,
+                          )..dispatch(PostersFetchRequest());
+                        },
+                        child: HomeScreen(),
+                      );
+                    },
                   },
                 ),
               )
