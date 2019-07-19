@@ -14,7 +14,7 @@ class PosterBase {
   List<PosterImage> images;
   @JsonKey(name: 'contract_price')
   bool contractPrice;
-  String location;
+  int location;
   String category;
   @JsonKey(name: 'activated_at')
   String activatedAt;
@@ -53,7 +53,7 @@ class PosterResponse extends PosterBase {
       num currency,
       List<PosterImage> images,
       bool contractPrice,
-      String location,
+      int location,
       String category,
       String activatedAt,
       bool isActive)
@@ -78,7 +78,7 @@ class PosterNormalized extends PosterBase {
       num currency,
       List<PosterImage> images,
       bool contractPrice,
-      String location,
+      int location,
       String category,
       String activatedAt,
       bool isActive)

@@ -19,7 +19,7 @@ PosterBase _$PosterBaseFromJson(Map<String, dynamic> json) {
               : PosterImage.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       json['contract_price'] as bool,
-      json['location'] as String,
+      json['location'] as int,
       json['category'] as String,
       json['activated_at'] as String,
       json['is_active'] as bool);
@@ -56,7 +56,7 @@ PosterResponse _$PosterResponseFromJson(Map<String, dynamic> json) {
               : PosterImage.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       json['contract_price'] as bool,
-      json['location'] as String,
+      json['location'] as int,
       json['category'] as String,
       json['activated_at'] as String,
       json['is_active'] as bool);

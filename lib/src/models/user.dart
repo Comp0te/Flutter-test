@@ -12,7 +12,7 @@ class User {
   @JsonKey(name: 'last_name')
   String lastName;
   String avatar;
-  String location;
+  int location;
   @JsonKey(name: 'color_scheme')
   String colorScheme;
   String language;
