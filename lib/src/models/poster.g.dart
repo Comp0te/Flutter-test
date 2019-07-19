@@ -27,7 +27,7 @@ PosterBase _$PosterBaseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PosterBaseToJson(PosterBase instance) =>
     <String, dynamic>{
-      'pk': instance.pk,
+      'pk': instance.id,
       'theme': instance.theme,
       'text': instance.text,
       'price': instance.price,
@@ -64,7 +64,7 @@ PosterResponse _$PosterResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PosterResponseToJson(PosterResponse instance) =>
     <String, dynamic>{
-      'pk': instance.pk,
+      'pk': instance.id,
       'theme': instance.theme,
       'text': instance.text,
       'price': instance.price,
@@ -85,7 +85,7 @@ PosterImage _$PosterImageFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PosterImageToJson(PosterImage instance) =>
     <String, dynamic>{
-      'pk': instance.pk,
+      'pk': instance.id,
       'advert': instance.advert,
       'file': instance.file
     };

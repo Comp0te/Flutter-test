@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 import 'model.dart';
 
@@ -6,7 +7,8 @@ part 'poster.g.dart';
 
 @JsonSerializable()
 class PosterBase {
-  int pk;
+  @JsonKey(name: 'pk')
+  int id;
   String theme;
   String text;
   num price;
@@ -22,7 +24,7 @@ class PosterBase {
   bool isActive;
 
   PosterBase(
-      this.pk,
+      this.id,
       this.theme,
       this.text,
       this.price,
@@ -45,7 +47,7 @@ class PosterResponse extends PosterBase {
   User owner;
 
   PosterResponse(
-      int pk,
+      int id,
       this.owner,
       String theme,
       String text,
@@ -57,7 +59,7 @@ class PosterResponse extends PosterBase {
       String category,
       String activatedAt,
       bool isActive)
-      : super(pk, theme, text, price, currency, images, contractPrice, location,
+      : super(id, theme, text, price, currency, images, contractPrice, location,
             category, activatedAt, isActive);
 
   factory PosterResponse.fromJson(Map<String, dynamic> json) =>
@@ -67,32 +69,33 @@ class PosterResponse extends PosterBase {
 }
 
 class PosterNormalized extends PosterBase {
-  String ownerId;
+  int ownerId;
 
-  PosterNormalized(
-      int pk,
-      this.ownerId,
-      String theme,
-      String text,
-      num price,
-      num currency,
-      List<PosterImage> images,
-      bool contractPrice,
-      int location,
-      String category,
-      String activatedAt,
-      bool isActive)
-      : super(pk, theme, text, price, currency, images, contractPrice, location,
+  PosterNormalized({
+    @required id,
+    @required this.ownerId,
+    @required theme,
+    @required text,
+    @required price,
+    @required currency,
+    @required images,
+    @required contractPrice,
+    @required location,
+    @required category,
+    @required activatedAt,
+    @required isActive,
+  }) : super(id, theme, text, price, currency, images, contractPrice, location,
             category, activatedAt, isActive);
 }
 
 @JsonSerializable()
 class PosterImage {
-  int pk;
+  @JsonKey(name: 'pk')
+  int id;
   int advert;
   String file;
 
-  PosterImage(this.pk, this.advert, this.file);
+  PosterImage(this.id, this.advert, this.file);
 
   factory PosterImage.fromJson(Map<String, dynamic> json) =>
       _$PosterImageFromJson(json);
