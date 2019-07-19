@@ -36,6 +36,8 @@ class App extends StatelessWidget {
                         builder: (context) {
                           return PostersFetchBloc(
                             postersRepository: _postersRepository,
+                            appStateBloc:
+                                BlocProvider.of<AppStateBloc>(context),
                           )..dispatch(PostersFetchRequest());
                         },
                         child: HomeScreen(),

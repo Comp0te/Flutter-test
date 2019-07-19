@@ -5,13 +5,19 @@ import 'package:bloc/bloc.dart';
 
 import 'package:flutter_app/src/blocks/blocks.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
+import 'package:flutter_app/src/models/model.dart';
 
 class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
-  final PostersRepository postersRepository;
+  final PostersRepository _postersRepository;
+  final AppStateBloc _appStateBloc;
 
   PostersFetchBloc({
-    @required this.postersRepository,
-  })  : assert(postersRepository != null);
+    @required AppStateBloc appStateBloc,
+    @required PostersRepository postersRepository,
+  })  : assert(appStateBloc != null),
+        assert(postersRepository != null),
+        _appStateBloc = appStateBloc,
+        _postersRepository = postersRepository;
 
   PostersFetchState get initialState => PostersFetchState.init();
 
@@ -28,17 +34,17 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
     }
   }
 
-  Stream<PostersFetchState> _mapPostersFetchRequestToState(PostersFetchRequest event) async* {
+  Stream<PostersFetchState> _mapPostersFetchRequestToState(
+      PostersFetchRequest event) async* {
     yield currentState.update(
       isLoading: true,
     );
 
     try {
-      var postersFetchResponse = await postersRepository.fetchPosters();
+      var postersFetchResponse = await _postersRepository.fetchPosters();
 
-      dispatch(PostersFetchRequestSuccess(postersFetchResponse: postersFetchResponse));
-    } on CastError catch (err) {
-      print('Cast error ---------------------------- ${err.stackTrace}');
+      dispatch(PostersFetchRequestSuccess(
+          postersFetchResponse: postersFetchResponse));
     } catch (err) {
       dispatch(PostersFetchRequestFailure(error: err));
     }
@@ -51,6 +57,33 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       isLoading: false,
       data: event.postersFetchResponse,
     );
+
+    _appStateBloc.dispatch(
+      AppStateUpdateUsers(
+        users: event.postersFetchResponse.data
+            .map((posterResponse) => posterResponse.owner)
+            .toList(),
+      ),
+    );
+
+    _appStateBloc.dispatch(AppStateUpdatePosters(
+      posters: event.postersFetchResponse.data
+          .map((posterResponse) => PosterNormalized(
+                id: posterResponse.id,
+                ownerId: posterResponse.owner.id,
+                theme: posterResponse.theme,
+                text: posterResponse.text,
+                price: posterResponse.price,
+                currency: posterResponse.currency,
+                images: posterResponse.images,
+                contractPrice: posterResponse.contractPrice,
+                location: posterResponse.location,
+                category: posterResponse.category,
+                activatedAt: posterResponse.activatedAt,
+                isActive: posterResponse.isActive,
+              ))
+          .toList(),
+    ));
   }
 
   Stream<PostersFetchState> _mapPostersFetchRequestFailureToState(
