@@ -24,3 +24,17 @@ class AppStateDeleteUsers extends AppStateEvent {
       : super([usersIds]);
 }
 
+class AppStateUpdatePosters extends AppStateEvent {
+  final List<PosterNormalized> posters;
+
+  AppStateUpdatePosters({this.posters})
+      : super([posters]);
+}
+
+class AppStateDeletePosters extends AppStateEvent {
+  final List<String> postersIds;
+
+  AppStateDeletePosters({this.postersIds})
+      : super([postersIds]);
+}
+

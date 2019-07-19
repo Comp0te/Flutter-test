@@ -16,6 +16,14 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
       yield currentState.delete(
         usersIds: event.usersIds,
       );
+    } else if (event is AppStateUpdatePosters) {
+      yield currentState.update(
+        posters: event.posters,
+      );
+    } else if (event is AppStateDeletePosters) {
+      yield currentState.delete(
+        postersIds: event.postersIds,
+      );
     }
   }
 }
