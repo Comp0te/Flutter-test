@@ -21,12 +21,17 @@ class App extends StatelessWidget {
       bloc: BlocProvider.of<AuthBloc>(context),
       builder: (BuildContext context, AuthState state) {
         return state.isAuthenticated
-            ? MaterialApp(
-                key: GlobalKey(),
-                initialRoute: MainRouteNames.home,
-                routes: {
-                  MainRouteNames.home: (context) => HomeScreen(),
+            ? BlocProvider(
+                builder: (context) {
+                  return AppStateBloc();
                 },
+                child: MaterialApp(
+                  key: GlobalKey(),
+                  initialRoute: MainRouteNames.home,
+                  routes: {
+                    MainRouteNames.home: (context) => HomeScreen(),
+                  },
+                ),
               )
             : MaterialApp(
                 key: GlobalKey(),
