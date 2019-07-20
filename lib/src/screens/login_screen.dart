@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/widgets/form_field_email.dart';
+import 'package:flutter_app/src/widgets/form_field_password.dart';
 import 'package:flutter_app/src/widgets/submit_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -16,24 +19,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FormValidationBloc _formValidationBloc = FormValidationBloc();
 
   @override
   Widget build(BuildContext context) {
     final LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    _onPressSubmit() {
-      _fbKey.currentState.save();
-
-      if (_fbKey.currentState.validate()) {
-        _loginBloc.dispatch(LoginRequest(
-          email: _emailController.text,
-          password: _passwordController.text,
-        ));
-      }
+    void _toRegistrationScreen() {
+      Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
-    _toRegistrationScreen() {
-      Navigator.of(context).pushNamed(AuthRouteNames.register);
+    VoidCallback _getOnPressSubmit(FormValidationState state) {
+      return () {
+        if (_fbKey.currentState.validate()) {
+          _loginBloc.dispatch(LoginRequest(
+            email: _emailController.text,
+            password: _passwordController.text,
+          ));
+        } else if (!state.isFormAutoValidate) {
+          _formValidationBloc.dispatch(ToggleFormAutoValidation());
+        }
+      };
     }
 
     return Scaffold(
@@ -66,56 +72,67 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FormBuilder(
-                  key: _fbKey,
-                  autovalidate: false,
-                  child: Column(
-                    children: <Widget>[
-                      FormBuilderTextField(
-                        controller: _emailController,
-                        attribute: 'email',
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(labelText: "Email"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                      ),
-                      FormBuilderTextField(
-                        controller: _passwordController,
-                        attribute: 'password',
-                        autocorrect: false,
-                        obscureText: true,
-                        decoration: InputDecoration(labelText: "Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
+                BlocBuilder(
+                  bloc: _formValidationBloc,
+                  builder: (
+                    BuildContext context,
+                    FormValidationState formValidationState,
+                  ) {
+                    return FormBuilder(
+                      key: _fbKey,
+                      autovalidate: formValidationState.isFormAutoValidate,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: FormFieldEmail(
+                              controller: _emailController,
+                            ),
+                            margin: EdgeInsets.only(bottom: 20),
+                          ),
+                          FormFieldPassword(
+                            controller: _passwordController,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 40, top: 20),
+                            child: BlocBuilder(
+                              bloc: _loginBloc,
+                              builder: (
+                                BuildContext context,
+                                LoginState loginState,
+                              ) {
+                                return SubmitButton(
+                                  isLoading: loginState.isLoading,
+                                  title: 'Submit',
+                                  onPress: _getOnPressSubmit(
+                                    formValidationState,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          FlatButton(
+                            onPressed: _toRegistrationScreen,
+                            highlightColor: Colors.lightBlueAccent,
+                            splashColor: Colors.blue,
+                            child: Text(
+                              'To registration screen',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 16,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.white,
+                                    blurRadius: 4,
+                                    offset: Offset(2, 2),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 40, top: 20),
-                        child: BlocBuilder(
-                          bloc: _loginBloc,
-                          builder: (BuildContext context, LoginState state) {
-                            return SubmitButton(
-                              isLoading: state.isLoading,
-                              title: 'Submit',
-                              onPress: _onPressSubmit,
-                            );
-                          },
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: _toRegistrationScreen,
-                        child: Text("To registration screen"),
-                        splashColor: Colors.lightBlueAccent,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
