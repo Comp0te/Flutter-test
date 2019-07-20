@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/widgets/submit_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -93,17 +94,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 80),
+                        margin: EdgeInsets.only(bottom: 40, top: 20),
                         child: BlocBuilder(
                           bloc: _loginBloc,
                           builder: (BuildContext context, LoginState state) {
-                            return RaisedButton(
-                              onPressed:
-                                  state.isLoading ? null : _onPressSubmit,
-                              elevation: 3,
-                              disabledColor: Colors.blueGrey,
-                              color: Theme.of(context).accentColor,
-                              child: Text('Submit'),
+                            return SubmitButton(
+                              isLoading: state.isLoading,
+                              title: 'Submit',
+                              onPress: _onPressSubmit,
                             );
                           },
                         ),
