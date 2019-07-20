@@ -32,12 +32,15 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
-    toRegistrationScreen() {
+    _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text('Login'),
+        centerTitle: true,
+      ),
       body: BlocListener(
         bloc: _loginBloc,
         condition: (LoginState prev, LoginState cur) {
@@ -106,10 +109,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                       ),
-                      GestureDetector(
-                        onTap: toRegistrationScreen,
+                      FlatButton(
+                        onPressed: _toRegistrationScreen,
                         child: Text("To registration screen"),
-                      )
+                        splashColor: Colors.lightBlueAccent,
+                      ),
                     ],
                   ),
                 ),
