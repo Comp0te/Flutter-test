@@ -70,62 +70,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                BlocBuilder(
-                  bloc: _formValidationBloc,
-                  builder: (
-                    BuildContext context,
-                    FormValidationState formValidationState,
-                  ) {
-                    return FormBuilder(
-                      key: _fbKey,
-                      autovalidate: formValidationState.isFormAutoValidate,
-                      child: Column(
-                        children: <Widget>[
-                          FormFieldUserName(
-                            controller: _usernameController,
-                          ),
-                          FormFieldEmail(
-                            controller: _emailController,
-                          ),
-                          FormFieldPassword(
-                            label: 'Password',
-                            controller: _password1Controller,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 20),
-                            child: FormFieldPassword(
-                              label: 'Confirm Password',
-                              controller: _password2Controller,
-                              validatorsList: [
-                                Validators.makeConfirmPasswordValidator(
-                                  passwordController: _password1Controller,
-                                )
-                              ],
+                Image.asset(
+                  'assets/register.jpg',
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.contain,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: BlocBuilder(
+                    bloc: _formValidationBloc,
+                    builder: (
+                      BuildContext context,
+                      FormValidationState formValidationState,
+                    ) {
+                      return FormBuilder(
+                        key: _fbKey,
+                        autovalidate: formValidationState.isFormAutoValidate,
+                        child: Column(
+                          children: <Widget>[
+                            FormFieldUserName(
+                              controller: _usernameController,
                             ),
-                          ),
-                          BlocBuilder(
-                            bloc: _registerBloc,
-                            builder: (
-                              BuildContext context,
-                              RegisterState registerState,
-                            ) {
-                              return SubmitButton(
-                                isLoading: registerState.isLoading,
-                                title: 'Submit',
-                                onPress: _makeOnPressSubmit(
-                                  formValidationState,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                            FormFieldEmail(
+                              controller: _emailController,
+                            ),
+                            FormFieldPassword(
+                              label: 'Password',
+                              controller: _password1Controller,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 20),
+                              child: FormFieldPassword(
+                                label: 'Confirm Password',
+                                controller: _password2Controller,
+                                validatorsList: [
+                                  Validators.makeConfirmPasswordValidator(
+                                    passwordController: _password1Controller,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: BlocBuilder(
+                                bloc: _registerBloc,
+                                builder: (
+                                  BuildContext context,
+                                  RegisterState registerState,
+                                ) {
+                                  return SubmitButton(
+                                    isLoading: registerState.isLoading,
+                                    title: 'Submit',
+                                    onPress: _makeOnPressSubmit(
+                                      formValidationState,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

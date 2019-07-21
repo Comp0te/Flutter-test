@@ -111,19 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: _toRegistrationScreen,
                             highlightColor: Colors.lightBlueAccent,
                             splashColor: Colors.blue,
-                            child: Text(
-                              'To registration screen',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.white,
-                                    blurRadius: 4,
-                                    offset: Offset(2, 2),
-                                  )
-                                ],
-                              ),
+                            child: Image.asset(
+                              'assets/register.jpg',
+                              width: 150,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ],
