@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/widgets/form_field_email.dart';
+import 'package:flutter_app/src/widgets/form_field_password.dart';
+import 'package:flutter_app/src/widgets/form_field_username.dart';
+import 'package:flutter_app/src/widgets/submit_button.dart';
+
+import 'package:flutter_app/src/utils/validators.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
 
@@ -16,26 +22,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
+  final FormValidationBloc _formValidationBloc = FormValidationBloc();
 
   @override
   Widget build(BuildContext context) {
     final RegisterBloc _registerBloc = BlocProvider.of<RegisterBloc>(context);
 
-    _onPressSubmit() {
-      _fbKey.currentState.save();
-
-      if (_fbKey.currentState.validate()) {
-        _registerBloc.dispatch(RegisterRequest(
-          username: _usernameController.text,
-          email: _emailController.text,
-          password1: _password1Controller.text,
-          password2: _password2Controller.text,
-        ));
-      }
+    VoidCallback _makeOnPressSubmit(FormValidationState state) {
+      return () {
+        if (_fbKey.currentState.validate()) {
+          _registerBloc.dispatch(RegisterRequest(
+            username: _usernameController.text,
+            email: _emailController.text,
+            password1: _password1Controller.text,
+            password2: _password2Controller.text,
+          ));
+        } else if (!state.isFormAutoValidate) {
+          _formValidationBloc.dispatch(ToggleFormAutoValidation());
+        }
+      };
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Registration')),
+      appBar: AppBar(
+        title: Text('Registration'),
+        centerTitle: true,
+      ),
       body: BlocListener(
         bloc: _registerBloc,
         condition: (RegisterState prev, RegisterState cur) {
@@ -52,8 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               context: context,
               error: state.error,
             );
-            BlocProvider.of<RegisterBloc>(context)
-                .dispatch(RegisterRequestInit());
+
+            _registerBloc.dispatch(RegisterRequestInit());
           }
         },
         child: Center(
@@ -62,82 +74,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FormBuilder(
-                  key: _fbKey,
-                  autovalidate: false,
-                  child: Column(
-                    children: <Widget>[
-                      FormBuilderTextField(
-                        controller: _usernameController,
-                        attribute: 'username',
-                        autocorrect: false,
-                        maxLength: 20,
-                        decoration: InputDecoration(labelText: "User Name"),
-                      ),
-                      FormBuilderTextField(
-                        controller: _emailController,
-                        attribute: 'email',
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(labelText: "Email"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                      ),
-                      FormBuilderTextField(
-                        controller: _password1Controller,
-                        attribute: 'password1',
-                        autocorrect: false,
-                        obscureText: true,
-                        decoration: InputDecoration(labelText: "Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
+                BlocBuilder(
+                  bloc: _formValidationBloc,
+                  builder: (
+                    BuildContext context,
+                    FormValidationState formValidationState,
+                  ) {
+                    return FormBuilder(
+                      key: _fbKey,
+                      autovalidate: formValidationState.isFormAutoValidate,
+                      child: Column(
+                        children: <Widget>[
+                          FormFieldUserName(
+                            controller: _usernameController,
+                          ),
+                          FormFieldEmail(
+                            controller: _emailController,
+                          ),
+                          FormFieldPassword(
+                            label: 'Password',
+                            controller: _password1Controller,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 20),
+                            child: FormFieldPassword(
+                              label: 'Confirm Password',
+                              controller: _password2Controller,
+                              validatorsList: [
+                                Validators.makeConfirmPasswordValidator(
+                                  passwordController: _password1Controller,
+                                )
+                              ],
+                            ),
+                          ),
+                          BlocBuilder(
+                            bloc: _registerBloc,
+                            builder: (
+                              BuildContext context,
+                              RegisterState registerState,
+                            ) {
+                              return SubmitButton(
+                                isLoading: registerState.isLoading,
+                                title: 'Submit',
+                                onPress: _makeOnPressSubmit(
+                                  formValidationState,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
-                      FormBuilderTextField(
-                        controller: _password2Controller,
-                        attribute: 'password2',
-                        autocorrect: false,
-                        obscureText: true,
-                        decoration:
-                            InputDecoration(labelText: "Confirm Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
-                          ),
-                          (val) {
-                            if (_password1Controller.text != val) {
-                              return "Password don't match";
-                            }
-
-                            return null;
-                          },
-                        ],
-                      ),
-                      Container(
-                        child: BlocBuilder(
-                          bloc: _registerBloc,
-                          builder: (BuildContext context, RegisterState state) {
-                            return RaisedButton(
-                              onPressed:
-                                  state.isLoading ? null : _onPressSubmit,
-                              elevation: 3,
-                              disabledColor: Colors.blueGrey,
-                              color: Theme.of(context).accentColor,
-                              child: Text('Submit'),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
