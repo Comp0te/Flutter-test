@@ -16,13 +16,15 @@ class FormFieldEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxHeight: 75),
+      height: 60,
+      constraints: BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
         controller: controller,
         attribute: label,
         autocorrect: false,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
           labelText: label,
           icon: Icon(Icons.alternate_email),
         ),

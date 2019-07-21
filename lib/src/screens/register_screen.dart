@@ -79,7 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: MediaQuery.of(context).size.width,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   child: BlocBuilder(
                     bloc: _formValidationBloc,
                     builder: (
@@ -102,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               controller: _password1Controller,
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: EdgeInsets.only(bottom: 10),
                               child: FormFieldPassword(
                                 label: 'Confirm Password',
                                 controller: _password2Controller,
@@ -113,23 +114,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: BlocBuilder(
-                                bloc: _registerBloc,
-                                builder: (
-                                  BuildContext context,
-                                  RegisterState registerState,
-                                ) {
-                                  return SubmitButton(
-                                    isLoading: registerState.isLoading,
-                                    title: 'Submit',
-                                    onPress: _makeOnPressSubmit(
-                                      formValidationState,
-                                    ),
-                                  );
-                                },
-                              ),
+                            BlocBuilder(
+                              bloc: _registerBloc,
+                              builder: (
+                                BuildContext context,
+                                RegisterState registerState,
+                              ) {
+                                return SubmitButton(
+                                  isLoading: registerState.isLoading,
+                                  title: 'Submit',
+                                  onPress: _makeOnPressSubmit(
+                                    formValidationState,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
