@@ -83,11 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       autovalidate: formValidationState.isFormAutoValidate,
                       child: Column(
                         children: <Widget>[
-                          Container(
-                            child: FormFieldEmail(
-                              controller: _emailController,
-                            ),
-                            margin: EdgeInsets.only(bottom: 20),
+                          FormFieldEmail(
+                            controller: _emailController,
                           ),
                           FormFieldPassword(
                             controller: _passwordController,
