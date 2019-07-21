@@ -4,12 +4,14 @@ class SubmitButton extends StatelessWidget {
   final VoidCallback onPress;
   final String title;
   final bool isLoading;
+  final Color color;
 
   const SubmitButton({
     Key key,
     this.onPress,
     @required this.title,
     @required this.isLoading,
+    this.color = Colors.blue,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class SubmitButton extends StatelessWidget {
                 textColor: Colors.white,
                 onPressed: onPress,
                 elevation: 5,
-                color: Theme.of(context).accentColor,
+                color: color,
                 child: Text(title),
               ),
             ),
