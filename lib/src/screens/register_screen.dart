@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_app/src/widgets/hero_register.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -73,10 +75,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  'assets/register.jpg',
+                HeroRegister(
                   width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.contain,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),

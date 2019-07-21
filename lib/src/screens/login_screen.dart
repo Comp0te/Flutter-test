@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/widgets/form_field_email.dart';
 import 'package:flutter_app/src/widgets/form_field_password.dart';
+import 'package:flutter_app/src/widgets/hero_register.dart';
 import 'package:flutter_app/src/widgets/submit_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -107,15 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                             ),
                           ),
-                          FlatButton(
-                            onPressed: _toRegistrationScreen,
-                            highlightColor: Colors.lightBlueAccent,
-                            splashColor: Colors.blue,
-                            child: Image.asset(
-                              'assets/register.jpg',
-                              width: 150,
-                              fit: BoxFit.contain,
-                            ),
+                          HeroRegister(
+                            width: 150,
+                            onTap: _toRegistrationScreen,
                           ),
                         ],
                       ),
