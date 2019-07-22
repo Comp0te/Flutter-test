@@ -5,9 +5,7 @@ import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
 
-import 'package:flutter_app/src/screens/register_screen.dart';
-import 'package:flutter_app/src/screens/login_screen.dart';
-import 'package:flutter_app/src/screens/home_screen.dart';
+import 'package:flutter_app/src/screens/screens.dart';
 
 class App extends StatelessWidget {
   @override
@@ -58,7 +56,7 @@ class App extends StatelessWidget {
                           authRepository: _authRepository,
                         );
                       },
-                      child: LoginScreen(),
+                      child: AnimatedLoginScreen(),
                     );
                   },
                   AuthRouteNames.register: (context) {

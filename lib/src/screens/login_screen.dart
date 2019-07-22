@@ -2,41 +2,67 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
 
 class LoginScreen extends StatefulWidget {
+  final double heroRegisterWidth;
+  final double submitOpacity;
+  final EdgeInsets marginBottomEmail;
+  final EdgeInsets marginBottomPassword;
+  final EdgeInsets paddingHorizontalScreen;
+  final Color color;
+
+  const LoginScreen({
+    Key key,
+    this.heroRegisterWidth = 150,
+    this.submitOpacity = 1,
+    this.marginBottomEmail = const EdgeInsets.only(bottom: 0),
+    this.marginBottomPassword = const EdgeInsets.only(bottom: 0),
+    this.paddingHorizontalScreen = const EdgeInsets.symmetric(horizontal: 30),
+    this.color = Colors.blue,
+  }) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FormValidationBloc _formValidationBloc = FormValidationBloc();
 
   @override
   Widget build(BuildContext context) {
     final LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    _onPressSubmit() {
-      _fbKey.currentState.save();
-
-      if (_fbKey.currentState.validate()) {
-        _loginBloc.dispatch(LoginRequest(
-          email: _emailController.text,
-          password: _passwordController.text,
-        ));
-      }
-    }
-
-    toRegistrationScreen() {
+    void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
+    VoidCallback _getOnPressSubmit(FormValidationState state) {
+      return () {
+        if (_fbKey.currentState.validate()) {
+          _loginBloc.dispatch(LoginRequest(
+            email: _emailController.text,
+            password: _passwordController.text,
+          ));
+        } else if (!state.isFormAutoValidate) {
+          _formValidationBloc.dispatch(ToggleFormAutoValidation());
+        }
+      };
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text('Login'),
+        centerTitle: true,
+        backgroundColor: widget.color,
+      ),
       body: BlocListener(
         bloc: _loginBloc,
         condition: (LoginState prev, LoginState cur) {
@@ -58,62 +84,64 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: widget.paddingHorizontalScreen,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                FormBuilder(
-                  key: _fbKey,
-                  autovalidate: false,
-                  child: Column(
-                    children: <Widget>[
-                      FormBuilderTextField(
-                        controller: _emailController,
-                        attribute: 'email',
-                        autocorrect: false,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(labelText: "Email"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.email(),
-                        ],
-                      ),
-                      FormBuilderTextField(
-                        controller: _passwordController,
-                        attribute: 'password',
-                        autocorrect: false,
-                        obscureText: true,
-                        decoration: InputDecoration(labelText: "Password"),
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.minLength(
-                            8,
-                            errorText: "Min 8 characters",
+                BlocBuilder(
+                  bloc: _formValidationBloc,
+                  builder: (
+                    BuildContext context,
+                    FormValidationState formValidationState,
+                  ) {
+                    return FormBuilder(
+                      key: _fbKey,
+                      autovalidate: formValidationState.isFormAutoValidate,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: widget.marginBottomEmail,
+                            child: FormFieldEmail(
+                              controller: _emailController,
+                            ),
+                          ),
+                          Container(
+                            margin: widget.marginBottomPassword,
+                            child: FormFieldPassword(
+                              controller: _passwordController,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 40, top: 20),
+                            child: BlocBuilder(
+                              bloc: _loginBloc,
+                              builder: (
+                                BuildContext context,
+                                LoginState loginState,
+                              ) {
+                                return Opacity(
+                                  opacity: widget.submitOpacity,
+                                  child: SubmitButton(
+                                    isLoading: loginState.isLoading,
+                                    title: 'Submit',
+                                    color: widget.color,
+                                    onPress: _getOnPressSubmit(
+                                      formValidationState,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          HeroRegister(
+                            width: widget.heroRegisterWidth,
+                            onTap: _toRegistrationScreen,
                           ),
                         ],
                       ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 80),
-                        child: BlocBuilder(
-                          bloc: _loginBloc,
-                          builder: (BuildContext context, LoginState state) {
-                            return RaisedButton(
-                              onPressed:
-                                  state.isLoading ? null : _onPressSubmit,
-                              elevation: 3,
-                              disabledColor: Colors.blueGrey,
-                              color: Theme.of(context).accentColor,
-                              child: Text('Submit'),
-                            );
-                          },
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: toRegistrationScreen,
-                        child: Text("To registration screen"),
-                      )
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
