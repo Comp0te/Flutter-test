@@ -16,6 +16,7 @@ class App extends StatelessWidget {
         RepositoryProvider.of<AuthRepository>(context);
     final PostersRepository _postersRepository =
         RepositoryProvider.of<PostersRepository>(context);
+    final AppStateBloc _appStateBloc = AppStateBloc();
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
         return state.isAuthenticated
             ? BlocProvider(
                 builder: (context) {
-                  return AppStateBloc();
+                  return _appStateBloc;
                 },
                 child: MaterialApp(
                   key: GlobalKey(),
@@ -34,8 +35,7 @@ class App extends StatelessWidget {
                         builder: (context) {
                           return PostersFetchBloc(
                             postersRepository: _postersRepository,
-                            appStateBloc:
-                                BlocProvider.of<AppStateBloc>(context),
+                            appStateBloc: _appStateBloc,
                           )..dispatch(PostersFetchRequest());
                         },
                         child: HomeScreen(),
