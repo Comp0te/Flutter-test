@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +16,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
-  StreamSubscription<PostersFetchState> subscription;
+  StreamSubscription<PostersFetchState> postersFetchStateSubscription;
+
+  double get offset => _scrollController.hasClients ? _scrollController.offset : 0;
 
   @override
   void initState() {
@@ -26,12 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    subscription?.cancel();
+    postersFetchStateSubscription?.cancel();
     super.dispose();
   }
 
   void loadMorePosters() {
-    subscription = _postersFetchBloc.state.take(1).listen((state) {
+    postersFetchStateSubscription =
+        _postersFetchBloc.state.take(1).listen((state) {
       if (state.hasNextPage && !state.isLoadingNextPage) {
         _postersFetchBloc.dispatch(
           PostersFetchNextPageRequest(page: state.data.meta.page + 1),
@@ -56,6 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: AnimatedBuilder(
+          animation: _scrollController,
+          builder: (BuildContext context, Widget widget) {
+            return Transform.rotate(
+              angle: (math.pi * offset / 1000),
+              child: Icon(
+                Icons.settings,
+                size: 40,
+              ),
+            );
+          },
+        ),
         title: Text('Home'),
         actions: <Widget>[
           IconButton(
