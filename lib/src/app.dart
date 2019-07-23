@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
@@ -36,7 +37,7 @@ class App extends StatelessWidget {
                           return PostersFetchBloc(
                             postersRepository: _postersRepository,
                             appStateBloc: _appStateBloc,
-                          )..dispatch(PostersFetchRequest());
+                          )..dispatch(PostersFetchFirstPageRequest());
                         },
                         child: HomeScreen(),
                       );
@@ -47,29 +48,43 @@ class App extends StatelessWidget {
             : MaterialApp(
                 key: GlobalKey(),
                 initialRoute: AuthRouteNames.login,
-                routes: {
-                  AuthRouteNames.login: (context) {
-                    return BlocProvider(
-                      builder: (context) {
-                        return LoginBloc(
-                          secureStorageRepository: _secureStorageRepository,
-                          authRepository: _authRepository,
-                        );
-                      },
-                      child: AnimatedLoginScreen(),
-                    );
-                  },
-                  AuthRouteNames.register: (context) {
-                    return BlocProvider(
-                      builder: (context) {
-                        return RegisterBloc(
-                          secureStorageRepository: _secureStorageRepository,
-                          authRepository: _authRepository,
-                        );
-                      },
-                      child: RegisterScreen(),
-                    );
-                  },
+                onGenerateRoute: (RouteSettings settings) {
+                  switch (settings.name) {
+                    case AuthRouteNames.login:
+                      return PageTransition(
+                        type: PageTransitionType.size,
+                        alignment: Alignment.center,
+                        child: BlocProvider(
+                          builder: (context) {
+                            return LoginBloc(
+                              secureStorageRepository: _secureStorageRepository,
+                              authRepository: _authRepository,
+                            );
+                          },
+                          child: AnimatedLoginScreen(),
+                        ),
+                      );
+                      break;
+
+                    case AuthRouteNames.register:
+                      return PageTransition(
+                        type: PageTransitionType.size,
+                        alignment: Alignment.center,
+                        child: BlocProvider(
+                          builder: (context) {
+                            return RegisterBloc(
+                              secureStorageRepository: _secureStorageRepository,
+                              authRepository: _authRepository,
+                            );
+                          },
+                          child: RegisterScreen(),
+                        ),
+                      );
+                      break;
+
+                    default:
+                      return null;
+                  }
                 },
               );
       },
