@@ -16,7 +16,7 @@ class PosterBase {
   List<PosterImage> images;
   @JsonKey(name: 'contract_price')
   bool contractPrice;
-  int location;
+  dynamic location;
   String category;
   @JsonKey(name: 'activated_at')
   String activatedAt;
