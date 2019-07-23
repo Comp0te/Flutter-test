@@ -36,7 +36,7 @@ class App extends StatelessWidget {
                           return PostersFetchBloc(
                             postersRepository: _postersRepository,
                             appStateBloc: _appStateBloc,
-                          )..dispatch(PostersFetchRequest());
+                          )..dispatch(PostersFetchFirstPageRequest());
                         },
                         child: HomeScreen(),
                       );

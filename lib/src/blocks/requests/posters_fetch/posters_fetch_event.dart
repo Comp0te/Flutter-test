@@ -10,17 +10,32 @@ abstract class PostersFetchEvent extends Equatable {
 
 class PostersFetchRequestInit extends PostersFetchEvent {}
 
-class PostersFetchRequest extends PostersFetchEvent {}
+class PostersFetchFirstPageRequest extends PostersFetchEvent {}
+
+class PostersFetchNextPageRequest extends PostersFetchEvent {
+  final int page;
+
+  PostersFetchNextPageRequest({
+    this.page = 1,
+  }) : super([page]);
+}
 
 class PostersFetchRequestSuccess extends PostersFetchEvent {
   final PostersFetchResponse postersFetchResponse;
+  final bool isSuccessFirstRequest;
 
-  PostersFetchRequestSuccess({@required this.postersFetchResponse})
-      : super([postersFetchResponse]);
+  PostersFetchRequestSuccess({
+    @required this.postersFetchResponse,
+    this.isSuccessFirstRequest = true,
+  }) : super([postersFetchResponse, isSuccessFirstRequest]);
 }
 
 class PostersFetchRequestFailure extends PostersFetchEvent {
   final Exception error;
+  final bool isErrorFirstRequest;
 
-  PostersFetchRequestFailure({@required this.error}) : super([error]);
+  PostersFetchRequestFailure({
+    @required this.error,
+    this.isErrorFirstRequest = true,
+  }) : super([error, isErrorFirstRequest]);
 }
