@@ -10,10 +10,17 @@ class PostersApiProvider {
 
   PostersApiProvider({@required Dio dio}) : _dio = dio;
 
-  Future<PostersFetchResponse> fetchPosters() async {
-    Response response = await _dio.get(
-      Url.posters,
-    );
+  Future<PostersFetchResponse> fetchPosters(int page) async {
+    Response response = page == null
+        ? await _dio.get(
+            Url.posters,
+          )
+        : await _dio.get(
+            Url.posters,
+            queryParameters: {
+              'page': page,
+            },
+          );
 
     return PostersFetchResponse.fromJson(response.data);
   }

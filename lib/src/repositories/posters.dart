@@ -10,7 +10,7 @@ class PostersRepository {
   PostersRepository({@required this.postersApiProvider})
       : assert(postersApiProvider != null);
 
-  Future<PostersFetchResponse> fetchPosters() async {
-    return await postersApiProvider.fetchPosters();
+  Future<PostersFetchResponse> fetchPosters({int page}) async {
+    return await postersApiProvider.fetchPosters(page);
   }
 }
