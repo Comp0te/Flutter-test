@@ -12,7 +12,7 @@ class AppState extends EquatableClass {
   AppState({
     @required this.users,
     @required this.posters,
-  }) : super([users]);
+  }) : super([users, posters]);
 
   factory AppState.init() => AppState(
         users: {},
@@ -49,5 +49,12 @@ class AppState extends EquatableClass {
         entitiesIds: postersIds,
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return '======= AppState users = $users\n,'
+        '======= AppState posters = $posters\n'
+        '';
   }
 }
