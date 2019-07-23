@@ -17,7 +17,6 @@ class HeroRegister extends StatelessWidget {
       child: Hero(
         tag: photo,
         child: Material(
-          elevation: 10,
           shadowColor: Colors.blue,
           color: Colors.transparent,
           child: InkWell(
