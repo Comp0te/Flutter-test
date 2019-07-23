@@ -55,25 +55,27 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
 
   Stream<PostersFetchState> _mapPostersFetchNextRequestToState(
       PostersFetchNextPageRequest event) async* {
-    yield currentState.update(
-      isLoadingNextPage: true,
-    );
-
-    try {
-      var postersFetchResponse =
-      await _postersRepository.fetchPosters(page: event.page);
-
-      dispatch(
-        PostersFetchRequestSuccess(
-          postersFetchResponse: postersFetchResponse,
-          isSuccessFirstRequest: false,
-        ),
+    if (!currentState.isLoadingNextPage) {
+      yield currentState.update(
+        isLoadingNextPage: true,
       );
-    } catch (err) {
-      dispatch(PostersFetchRequestFailure(
-        error: err,
-        isErrorFirstRequest: false,
-      ));
+
+      try {
+        var postersFetchResponse =
+            await _postersRepository.fetchPosters(page: event.page);
+
+        dispatch(
+          PostersFetchRequestSuccess(
+            postersFetchResponse: postersFetchResponse,
+            isSuccessFirstRequest: false,
+          ),
+        );
+      } catch (err) {
+        dispatch(PostersFetchRequestFailure(
+          error: err,
+          isErrorFirstRequest: false,
+        ));
+      }
     }
   }
 
