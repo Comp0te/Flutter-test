@@ -12,7 +12,7 @@ class AuthRepository {
       : assert(authApiProvider != null);
 
   void addAuthHeader(String token) {
-    authApiProvider.addHeaders([MapEntry('Authorization', 'Bearer $token')]);
+    authApiProvider.addHeaders([MapEntry('Authorization', 'JWT $token')]);
   }
 
   Future<AuthResponse> login(LoginInput data) async {
