@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_app/src/database/owners_table.dart';
-import 'package:flutter_app/src/database/poster_images_table.dart';
-import 'package:flutter_app/src/database/posters_table.dart';
-import 'package:flutter_app/src/utils/constants.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'package:flutter_app/src/database/tables.dart';
+import 'package:flutter_app/src/utils/constants.dart';
 
 class DBHelper {
   static Database _db;
@@ -45,7 +44,7 @@ class DBHelper {
         .execute(PostersTable.create)
         .whenComplete(() => print('---------------- posters table created'));
     await db
-        .execute(OwnersTable.create)
+        .execute(UsersTable.create)
         .whenComplete(() => print('---------------- owners table created'));
     await db
         .execute(PosterImagesTable.create)

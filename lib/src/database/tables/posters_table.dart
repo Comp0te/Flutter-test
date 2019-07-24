@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/database/owners_table.dart';
+import 'package:flutter_app/src/database/tables/users_table.dart';
 
 abstract class PostersTable {
   static final name = 'posters';
@@ -9,7 +9,6 @@ abstract class PostersTable {
   static final colText = 'text';
   static final colPrice = 'price';
   static final colCurrency = 'currency';
-  static final colImages = 'images';
   static final colContractPrice = 'contract_price';
   static final colLocation = 'location';
   static final colCategory = 'category';
@@ -21,13 +20,12 @@ abstract class PostersTable {
         ${colOwnerId} INTEGER,
         ${colTheme} TEXT,
         ${colPrice} REAL,
-        ${colImages} TEXT, 
         ${colContractPrice} INTEGER,
         ${colLocation} TEXT,
         ${colCategory} TEXT,
         ${colActivatedAt} TEXT,
         ${colIsActive} INTEGER,
         FOREIGN KEY (${colOwnerId})
-        REFERENCES ${OwnersTable.name}(${OwnersTable.colOwnerId})
+        REFERENCES ${UsersTable.name}(${UsersTable.colUserId})
         )''';
 }

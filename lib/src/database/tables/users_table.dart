@@ -1,7 +1,7 @@
-abstract class OwnersTable {
-  static final name = 'owners';
+abstract class UsersTable {
+  static final name = 'users';
 
-  static final colOwnerId = 'owner_id';
+  static final colUserId = 'user_id';
   static final colUsername = 'username';
   static final colEmail = 'email';
   static final colFirstName = 'first_name';
@@ -12,7 +12,7 @@ abstract class OwnersTable {
   static final colLanguage = 'language';
 
   static final create = '''CREATE TABLE ${name}(
-        ${colOwnerId} INTEGER PRIMARY KEY,
+        ${colUserId} INTEGER PRIMARY KEY,
         ${colUsername} TEXT,
         ${colEmail} TEXT,
         ${colFirstName} TEXT,
