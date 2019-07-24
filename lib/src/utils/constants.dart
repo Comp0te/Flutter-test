@@ -13,3 +13,9 @@ abstract class Url {
   static final register = 'registration/';
   static final posters = 'posters/';
 }
+
+abstract class DbConfig {
+  static final dbName = 'postres.db';
+  static final dbVersion = 1;
+
+}
