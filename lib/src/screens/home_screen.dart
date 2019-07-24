@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/utils/scroll_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -14,11 +15,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final int gridViewColumnCount = 2;
+  final double gridViewCrossAxisSpacing = 5;
+  final double gridViewMainAxisSpacing = 5;
+  final double gridViewPaddingHorizontal = 10;
+  final double gridViewPaddingVertical = 20;
+  final GlobalKey _gridViewKey = GlobalKey();
+
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
   StreamSubscription<PostersFetchState> postersFetchStateSubscription;
 
-  double get offset => _scrollController.hasClients ? _scrollController.offset : 0;
+  double get scrollOffset =>
+      _scrollController.hasClients && _scrollController.offset >= 0
+          ? _scrollController.offset
+          : 0;
 
   @override
   void initState() {
@@ -64,13 +75,47 @@ class _HomeScreenState extends State<HomeScreen> {
           animation: _scrollController,
           builder: (BuildContext context, Widget widget) {
             return Transform.rotate(
-              angle: (math.pi * offset / 1000),
+              angle: (math.pi * scrollOffset / 1000),
               child: Icon(
                 Icons.settings,
                 size: 40,
               ),
             );
           },
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(5),
+          child: BlocBuilder(
+            bloc: _appStateBloc,
+            builder: (BuildContext context, AppState state) {
+              return AnimatedBuilder(
+                animation: _scrollController,
+                builder: (BuildContext context, Widget widget) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 5,
+                        width: ScrollHelper.calcGridViewScrolledWidth(
+                          context: context,
+                          state: state,
+                          gridViewKey: _gridViewKey,
+                          scrollOffset: scrollOffset,
+                          columnCount: gridViewColumnCount,
+                          paddingHorizontal: gridViewPaddingHorizontal,
+                          paddingVertical: gridViewPaddingVertical,
+                          crossAxisSpacing: gridViewCrossAxisSpacing,
+                          mainAxisSpacing: gridViewMainAxisSpacing,
+                        ),
+                        decoration:
+                            BoxDecoration(color: Color.fromRGBO(0, 0, 255, 1)),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ),
         title: Text('Home'),
         actions: <Widget>[
@@ -97,16 +142,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   flex: 1,
                   child: GridView.builder(
+                    key: _gridViewKey,
                     padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 20,
+                      horizontal: gridViewPaddingHorizontal,
+                      vertical: gridViewPaddingVertical,
                     ),
                     controller: _scrollController,
                     itemCount: postersList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
+                      crossAxisCount: gridViewColumnCount,
+                      crossAxisSpacing: gridViewCrossAxisSpacing,
+                      mainAxisSpacing: gridViewMainAxisSpacing,
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return CachedNetworkImage(
@@ -144,3 +190,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+// TODO: Add onRefresh behaviour
