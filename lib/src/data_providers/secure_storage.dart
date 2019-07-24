@@ -17,17 +17,17 @@ class SecureStorageProvider {
   }
 
   Future<void> delete(String key) async {
-    secureStorage.delete(key: key);
+    await secureStorage.delete(key: key);
   }
 
   Future<void> clear() async {
-    secureStorage.deleteAll();
+    await secureStorage.deleteAll();
   }
 
   Future<void> write({
     @required String key,
     @required String value,
   }) async {
-    secureStorage.write(key: key, value: value);
+    await secureStorage.write(key: key, value: value);
   }
 }

@@ -21,15 +21,15 @@ class SecureStorageRepository {
   }
 
   Future<void> deleteToken() async {
-    storage.delete(SecureStorageRepository.tokenKey);
+    await storage.delete(SecureStorageRepository.tokenKey);
   }
 
   Future<void> clear() async {
-    storage.clear();
+    await storage.clear();
   }
 
   Future<void> saveToken(String token) async {
-    storage.write(
+    await storage.write(
       key: SecureStorageRepository.tokenKey,
       value: token,
     );
