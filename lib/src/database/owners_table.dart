@@ -20,6 +20,6 @@ abstract class OwnersTable {
         ${colAvatar} TEXT,
         ${colLocation} TEXT,
         ${colColorScheme} TEXT,
-        ${colLanguage} TEXT,
+        ${colLanguage} TEXT
         )''';
 }

@@ -19,8 +19,6 @@ abstract class PostersTable {
   static final create = '''CREATE TABLE ${PostersTable.name}(
         ${colPosterId} INTEGER PRIMARY KEY,
         ${colOwnerId} INTEGER,
-        FOREIGN KEY (${colOwnerId}) 
-        REFERENCES ${OwnersTable.name}(${OwnersTable.colOwnerId})
         ${colTheme} TEXT,
         ${colPrice} REAL,
         ${colImages} TEXT, 
@@ -28,6 +26,8 @@ abstract class PostersTable {
         ${colLocation} TEXT,
         ${colCategory} TEXT,
         ${colActivatedAt} TEXT,
-        ${colIsActive} INTEGER
+        ${colIsActive} INTEGER,
+        FOREIGN KEY (${colOwnerId})
+        REFERENCES ${OwnersTable.name}(${OwnersTable.colOwnerId})
         )''';
 }

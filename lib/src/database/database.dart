@@ -41,9 +41,14 @@ class DBHelper {
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute(PostersTable.create);
-    await db.execute(OwnersTable.create);
-    await db.execute(PosterImagesTable.create);
-
+    await db
+        .execute(PostersTable.create)
+        .whenComplete(() => print('---------------- posters table created'));
+    await db
+        .execute(OwnersTable.create)
+        .whenComplete(() => print('---------------- owners table created'));
+    await db
+        .execute(PosterImagesTable.create)
+        .whenComplete(() => print('---------------- images table created'));
   }
 }

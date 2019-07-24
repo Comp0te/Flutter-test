@@ -1,3 +1,5 @@
+import 'package:flutter_app/src/database/posters_table.dart';
+
 abstract class PosterImagesTable {
   static final name = 'poster_images';
 
@@ -9,5 +11,8 @@ abstract class PosterImagesTable {
         ${colPosterImageId} INTEGER PRIMARY KEY,
         ${colAdvert} TEXT,
         ${colFile} TEXT,
+        ${PostersTable.colPosterId} INTEGER,
+        FOREIGN KEY (${PostersTable.colPosterId}) 
+        REFERENCES ${PostersTable.name}(${PostersTable.colPosterId})
         )''';
 }
