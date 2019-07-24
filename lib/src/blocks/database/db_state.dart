@@ -1,0 +1,24 @@
+import 'package:meta/meta.dart';
+
+import 'package:flutter_app/src/utils/equatable_class.dart';
+
+@immutable
+class DBState extends EquatableClass {
+  final bool isDbLoading;
+
+  DBState({
+    @required this.isDbLoading,
+  }) : super([isDbLoading]);
+
+  factory DBState.init() => DBState(
+        isDbLoading: false,
+      );
+
+  factory DBState.loading() => DBState(
+        isDbLoading: true,
+      );
+
+  factory DBState.loaded() => DBState(
+        isDbLoading: false,
+      );
+}
