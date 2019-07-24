@@ -13,7 +13,7 @@ abstract class StateHelper {
     Map<String, V> eventEntitiesMap = Map.fromIterable(
       eventEntitiesList,
       key: (entity) => entity.id.toString(),
-      value: (entity) => entity,
+      value: (entity) => entity as V,
     );
     Map<String, V> newEntities = Map.from(stateEntities)
       ..addAll(eventEntitiesMap);

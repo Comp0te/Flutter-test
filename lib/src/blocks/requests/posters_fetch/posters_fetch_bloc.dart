@@ -48,7 +48,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       dispatch(
         PostersFetchRequestSuccess(postersFetchResponse: postersFetchResponse),
       );
-    } catch (err) {
+    } on Exception catch (err) {
       dispatch(PostersFetchRequestFailure(error: err));
     }
   }
@@ -70,7 +70,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
             isSuccessFirstRequest: false,
           ),
         );
-      } catch (err) {
+      } on Exception catch (err) {
         dispatch(PostersFetchRequestFailure(
           error: err,
           isErrorFirstRequest: false,

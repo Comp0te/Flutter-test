@@ -44,7 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ));
 
       dispatch(LoginRequestSuccess(loginResponse: loginResponse));
-    } catch (err) {
+    } on Exception catch (err) {
       dispatch(LoginRequestFailure(error: err));
     }
   }

@@ -15,7 +15,7 @@ abstract class ScrollHelper {
     double mainAxisSpacing = 0,
   }) {
     final Size screenSize = MediaQuery.of(context).size;
-    final RenderBox gridViewBox = gridViewKey.currentContext.findRenderObject();
+    final RenderBox gridViewBox = gridViewKey.currentContext.findRenderObject() as RenderBox;
     final double gridViewHeight =
         gridViewBox.hasSize ? gridViewBox.size.height - 2 * paddingVertical : 0;
 

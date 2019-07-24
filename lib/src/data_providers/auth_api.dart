@@ -15,7 +15,7 @@ class AuthApiProvider {
   }
 
   Future<AuthResponse> login(LoginInput data) async {
-    Response response = await _dio.post(
+    Response<Map<String, dynamic>> response = await _dio.post(
       Url.login,
       data: data.toJson(),
     );
@@ -24,7 +24,7 @@ class AuthApiProvider {
   }
 
   Future<AuthResponse> register(RegisterInput data) async {
-    Response response = await _dio.post(
+    Response<Map<String, dynamic>> response = await _dio.post(
       Url.register,
       data: data.toJson(),
     );

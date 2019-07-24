@@ -72,18 +72,18 @@ class PosterNormalized extends PosterBase {
   int ownerId;
 
   PosterNormalized({
-    @required id,
+    @required int id,
     @required this.ownerId,
-    @required theme,
-    @required text,
-    @required price,
-    @required currency,
-    @required images,
-    @required contractPrice,
-    @required location,
-    @required category,
-    @required activatedAt,
-    @required isActive,
+    @required String theme,
+    @required String text,
+    @required num price,
+    @required num currency,
+    @required List<PosterImage> images,
+    @required bool contractPrice,
+    @required dynamic location,
+    @required String category,
+    @required String activatedAt,
+    @required bool isActive,
   }) : super(id, theme, text, price, currency, images, contractPrice, location,
             category, activatedAt, isActive);
 }

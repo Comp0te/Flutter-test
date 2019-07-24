@@ -46,7 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       ));
 
       dispatch(RegisterRequestSuccess(registerResponse: registerResponse));
-    } catch (err) {
+    } on Exception catch (err) {
       dispatch(RegisterRequestFailure(error: err));
     }
   }
