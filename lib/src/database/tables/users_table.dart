@@ -1,7 +1,7 @@
 abstract class UsersTable {
   static final name = 'users';
 
-  static final colUserId = 'user_id';
+  static final colUserId = 'id';
   static final colUsername = 'username';
   static final colEmail = 'email';
   static final colFirstName = 'first_name';

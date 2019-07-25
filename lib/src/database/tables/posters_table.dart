@@ -3,8 +3,8 @@ import 'package:flutter_app/src/database/tables/users_table.dart';
 abstract class PostersTable {
   static final name = 'posters';
 
-  static final colPosterId = 'poster_id';
-  static final colOwnerId = 'owner_id';
+  static final colPosterId = 'pk';
+  static final colOwnerId = 'ownerId';
   static final colTheme = 'theme';
   static final colText = 'text';
   static final colPrice = 'price';
