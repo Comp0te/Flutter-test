@@ -78,6 +78,42 @@ Map<String, dynamic> _$PosterResponseToJson(PosterResponse instance) =>
       'owner': instance.owner,
     };
 
+PosterNormalized _$PosterNormalizedFromJson(Map<String, dynamic> json) {
+  return PosterNormalized(
+    id: json['pk'] as int,
+    ownerId: json['ownerId'] as int,
+    theme: json['theme'] as String,
+    text: json['text'] as String,
+    price: json['price'] as num,
+    currency: json['currency'] as num,
+    images: (json['images'] as List)
+        ?.map((e) =>
+            e == null ? null : PosterImage.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    contractPrice: json['contract_price'] as bool,
+    location: json['location'],
+    category: json['category'] as String,
+    activatedAt: json['activated_at'] as String,
+    isActive: json['is_active'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PosterNormalizedToJson(PosterNormalized instance) =>
+    <String, dynamic>{
+      'pk': instance.id,
+      'theme': instance.theme,
+      'text': instance.text,
+      'price': instance.price,
+      'currency': instance.currency,
+      'images': instance.images,
+      'contract_price': instance.contractPrice,
+      'location': instance.location,
+      'category': instance.category,
+      'activated_at': instance.activatedAt,
+      'is_active': instance.isActive,
+      'ownerId': instance.ownerId,
+    };
+
 PosterImage _$PosterImageFromJson(Map<String, dynamic> json) {
   return PosterImage(
     json['pk'] as int,
@@ -91,6 +127,23 @@ Map<String, dynamic> _$PosterImageToJson(PosterImage instance) =>
       'pk': instance.id,
       'advert': instance.advert,
       'file': instance.file,
+    };
+
+PosterImageDB _$PosterImageDBFromJson(Map<String, dynamic> json) {
+  return PosterImageDB(
+    id: json['pk'] as int,
+    advert: json['advert'] as int,
+    file: json['file'] as String,
+    posterId: json['posterId'] as int,
+  );
+}
+
+Map<String, dynamic> _$PosterImageDBToJson(PosterImageDB instance) =>
+    <String, dynamic>{
+      'pk': instance.id,
+      'advert': instance.advert,
+      'file': instance.file,
+      'posterId': instance.posterId,
     };
 
 PosterMeta _$PosterMetaFromJson(Map<String, dynamic> json) {

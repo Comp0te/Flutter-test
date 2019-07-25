@@ -68,6 +68,7 @@ class PosterResponse extends PosterBase {
   Map<String, dynamic> toJson() => _$PosterResponseToJson(this);
 }
 
+@JsonSerializable()
 class PosterNormalized extends PosterBase {
   int ownerId;
 
@@ -86,6 +87,11 @@ class PosterNormalized extends PosterBase {
     @required bool isActive,
   }) : super(id, theme, text, price, currency, images, contractPrice, location,
             category, activatedAt, isActive);
+
+  factory PosterNormalized.fromJson(Map<String, dynamic> json) =>
+      _$PosterNormalizedFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PosterNormalizedToJson(this);
 }
 
 @JsonSerializable()
@@ -101,6 +107,23 @@ class PosterImage {
       _$PosterImageFromJson(json);
 
   Map<String, dynamic> toJson() => _$PosterImageToJson(this);
+}
+
+@JsonSerializable()
+class PosterImageDB extends PosterImage {
+  int posterId;
+
+  PosterImageDB({
+    @required int id,
+    @required int advert,
+    @required String file,
+    @required this.posterId,
+  }) : super(id, advert, file);
+
+  factory PosterImageDB.fromJson(Map<String, dynamic> json) =>
+      _$PosterImageDBFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PosterImageDBToJson(this);
 }
 
 @JsonSerializable()
