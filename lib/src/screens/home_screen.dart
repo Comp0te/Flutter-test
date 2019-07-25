@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
 
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
         leading: AnimatedBuilder(
           animation: _scrollController,
