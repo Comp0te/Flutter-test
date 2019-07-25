@@ -64,4 +64,31 @@ class DBProvider {
       print('---===insertPosterImages - $err');
     }
   }
+
+  Future<List<Map<String, dynamic>>> getPosters() async {
+    try {
+      return db.query(PostersTable.name);
+    } catch (err) {
+      print('---===getPosters - $err');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUsers() async {
+    try {
+      return db.query(UsersTable.name);
+    } catch (err) {
+      print('---===getUsers - $err');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getPosterImages() async {
+    try {
+      return db.query(PosterImagesTable.name);
+    } catch (err) {
+      print('---===getPosterImages - $err');
+      return null;
+    }
+  }
 }
