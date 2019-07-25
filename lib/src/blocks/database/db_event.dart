@@ -30,3 +30,5 @@ class DBInsertPosterImages extends DBEvent {
   DBInsertPosterImages({this.posters})
       : super([posters]);
 }
+
+class DBGetNormalizedPosters extends DBEvent {}
