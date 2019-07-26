@@ -21,6 +21,7 @@ class App extends StatelessWidget {
         RepositoryProvider.of<DBRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
+    final DrawerBloc _mainDrawerBloc = DrawerBloc();
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -39,14 +40,23 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: BlocProvider(
-                            builder: (context) {
-                              return PostersFetchBloc(
-                                postersRepository: _postersRepository,
-                                appStateBloc: _appStateBloc,
-                                dbRepository: _dbRepository,
-                              );
-                            },
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<PostersFetchBloc>(
+                                builder: (context) {
+                                  return PostersFetchBloc(
+                                    postersRepository: _postersRepository,
+                                    appStateBloc: _appStateBloc,
+                                    dbRepository: _dbRepository,
+                                  );
+                                },
+                              ),
+                              BlocProvider<DrawerBloc>(
+                                builder: (context) {
+                                  return _mainDrawerBloc;
+                                },
+                              )
+                            ],
                             child: HomeScreen(),
                           ),
                         );
@@ -56,14 +66,23 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: BlocProvider(
-                            builder: (context) {
-                              return DBBloc(
-                                dbRepository: _dbRepository,
-                                appStateBloc: _appStateBloc,
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<DBBloc>(
+                                builder: (context) {
+                                  return DBBloc(
+                                    dbRepository: _dbRepository,
+                                    appStateBloc: _appStateBloc,
+                                  )..dispatch(DBGetNormalizedPosters());
+                                },
+                                child: DatabaseScreen(),
+                              ),
+                              BlocProvider<DrawerBloc>(
+                                builder: (context) {
+                                  return _mainDrawerBloc;
+                                },
                               )
-                                ..dispatch(DBGetNormalizedPosters());
-                            },
+                            ],
                             child: DatabaseScreen(),
                           ),
                         );
