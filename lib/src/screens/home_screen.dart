@@ -35,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _postersFetchBloc = BlocProvider.of<PostersFetchBloc>(context);
+    _postersFetchBloc = BlocProvider.of<PostersFetchBloc>(context)
+      ..dispatch(PostersFetchFirstPageRequest());
   }
 
   @override

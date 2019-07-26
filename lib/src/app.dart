@@ -32,7 +32,7 @@ class App extends StatelessWidget {
                 },
                 child: MaterialApp(
                   key: GlobalKey(),
-                  initialRoute: MainRouteNames.database,
+                  initialRoute: MainRouteNames.home,
                   onGenerateRoute: (RouteSettings settings) {
                     switch (settings.name) {
                       case MainRouteNames.home:
@@ -45,8 +45,7 @@ class App extends StatelessWidget {
                                 postersRepository: _postersRepository,
                                 appStateBloc: _appStateBloc,
                                 dbRepository: _dbRepository,
-                              )
-                                ..dispatch(PostersFetchFirstPageRequest());
+                              );
                             },
                             child: HomeScreen(),
                           ),
