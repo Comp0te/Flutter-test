@@ -13,7 +13,6 @@ class PosterBase {
   String text;
   num price;
   num currency;
-  List<PosterImage> images;
   @JsonKey(name: 'contract_price')
   bool contractPrice;
   dynamic location;
@@ -29,7 +28,6 @@ class PosterBase {
       this.text,
       this.price,
       this.currency,
-      this.images,
       this.contractPrice,
       this.location,
       this.category,
@@ -44,6 +42,7 @@ class PosterBase {
 
 @JsonSerializable()
 class PosterResponse extends PosterBase {
+  List<PosterImage> images;
   User owner;
 
   PosterResponse(
@@ -53,13 +52,13 @@ class PosterResponse extends PosterBase {
       String text,
       num price,
       num currency,
-      List<PosterImage> images,
+      this.images,
       bool contractPrice,
       int location,
       String category,
       String activatedAt,
       bool isActive)
-      : super(id, theme, text, price, currency, images, contractPrice, location,
+      : super(id, theme, text, price, currency, contractPrice, location,
             category, activatedAt, isActive);
 
   factory PosterResponse.fromJson(Map<String, dynamic> json) =>
@@ -71,6 +70,7 @@ class PosterResponse extends PosterBase {
 @JsonSerializable()
 class PosterNormalized extends PosterBase {
   int ownerId;
+  List<PosterImage> images;
 
   PosterNormalized({
     @required int id,
@@ -79,19 +79,56 @@ class PosterNormalized extends PosterBase {
     @required String text,
     @required num price,
     @required num currency,
-    @required List<PosterImage> images,
+    this.images,
     @required bool contractPrice,
     @required dynamic location,
     @required String category,
     @required String activatedAt,
     @required bool isActive,
-  }) : super(id, theme, text, price, currency, images, contractPrice, location,
+  }) : super(id, theme, text, price, currency, contractPrice, location,
             category, activatedAt, isActive);
 
   factory PosterNormalized.fromJson(Map<String, dynamic> json) =>
       _$PosterNormalizedFromJson(json);
 
   Map<String, dynamic> toJson() => _$PosterNormalizedToJson(this);
+}
+
+@JsonSerializable()
+class PosterNormalizedDB {
+  @JsonKey(name: 'activated_at')
+  String activatedAt;
+  String category;
+  @JsonKey(name: 'contract_price')
+  int contractPrice;
+  num currency;
+  @JsonKey(name: 'pk')
+  int id;
+  @JsonKey(name: 'is_active')
+  int isActive;
+  dynamic location;
+  int ownerId;
+  num price;
+  String text;
+  String theme;
+
+  PosterNormalizedDB(
+      this.activatedAt,
+      this.category,
+      this.contractPrice,
+      this.currency,
+      this.id,
+      this.isActive,
+      this.location,
+      this.ownerId,
+      this.price,
+      this.text,
+      this.theme);
+
+  factory PosterNormalizedDB.fromJson(Map<String, dynamic> json) =>
+      _$PosterNormalizedDBFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PosterNormalizedDBToJson(this);
 }
 
 @JsonSerializable()
@@ -107,6 +144,12 @@ class PosterImage {
       _$PosterImageFromJson(json);
 
   Map<String, dynamic> toJson() => _$PosterImageToJson(this);
+
+  @override
+  String toString() {
+    print('id - $id, advert = $advert, file - $file');
+    return super.toString();
+  }
 }
 
 @JsonSerializable()
