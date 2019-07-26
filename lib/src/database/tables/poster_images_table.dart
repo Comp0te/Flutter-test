@@ -10,7 +10,7 @@ abstract class PosterImagesTable {
 
   static final create = '''CREATE TABLE ${name}(
         ${colPosterImageId} INTEGER PRIMARY KEY,
-        ${colAdvert} TEXT,
+        ${colAdvert} INTEGER,
         ${colFile} TEXT,
         ${colPosterId} INTEGER,
         FOREIGN KEY (${colPosterId}) 
