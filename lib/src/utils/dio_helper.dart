@@ -10,11 +10,11 @@ class DioInstance {
     responseType: ResponseType.json,
   );
 
-  final Dio _dio = Dio(options)
-    ..interceptors.add(LogInterceptor(
-      requestBody: true,
-      responseBody: true,
-    ));
+  final Dio _dio = Dio(options);
+//    ..interceptors.add(LogInterceptor(
+//      requestBody: true,
+//      responseBody: true,
+//    ));
 
   Dio get dio => _dio;
 }
