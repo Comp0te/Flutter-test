@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'src/app.dart';
 import 'src/utils/dio_helper.dart';
 import 'src/repositories/repositories.dart';
 import 'src/data_providers/data_providers.dart';
 import 'src/blocks/blocks.dart';
-import 'src/app.dart';
+import 'src/database/database.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -22,6 +23,9 @@ void main() {
   );
   final PostersRepository _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
+  );
+  DBRepository _dbRepository = DBRepository(
+    dbProvider: DBProvider(db: DBHelper().db),
   );
 
   runApp(
@@ -40,6 +44,9 @@ void main() {
           }),
           RepositoryProvider<PostersRepository>(builder: (context) {
             return _postersRepository;
+          }),
+          RepositoryProvider<DBRepository>(builder: (context) {
+            return _dbRepository;
           }),
         ],
         child: App(),
