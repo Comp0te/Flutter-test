@@ -4,13 +4,18 @@ class SimpleBlocDelegate extends BlocDelegate {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
-    print('event --- $event');
+    print('- event --- $event, --- bloc - $bloc');
   }
 
   @override
   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
-    print('error --- $error');
+    print(
+      '************************************************************ \n'
+      'error --- $error bloc --- $bloc \n'
+      '************************************************************ \n'
+      '$stacktrace',
+    );
   }
 
   @override

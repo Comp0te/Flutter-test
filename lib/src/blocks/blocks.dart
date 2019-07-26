@@ -1,4 +1,4 @@
-export './block_delegate.dart';
+export './bloc_delegate.dart';
 
 export 'auth/bloc.dart';
 export 'app_state/bloc.dart';
