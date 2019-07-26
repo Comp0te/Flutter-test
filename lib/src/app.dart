@@ -17,6 +17,9 @@ class App extends StatelessWidget {
         RepositoryProvider.of<AuthRepository>(context);
     final PostersRepository _postersRepository =
         RepositoryProvider.of<PostersRepository>(context);
+    final DBRepository _dbRepository =
+        RepositoryProvider.of<DBRepository>(context);
+
     final AppStateBloc _appStateBloc = AppStateBloc();
 
     return BlocBuilder(
@@ -29,19 +32,47 @@ class App extends StatelessWidget {
                 },
                 child: MaterialApp(
                   key: GlobalKey(),
-                  initialRoute: MainRouteNames.home,
-                  routes: {
-                    MainRouteNames.home: (context) {
-                      return BlocProvider(
-                        builder: (context) {
-                          return PostersFetchBloc(
-                            postersRepository: _postersRepository,
-                            appStateBloc: _appStateBloc,
-                          )..dispatch(PostersFetchFirstPageRequest());
-                        },
-                        child: HomeScreen(),
-                      );
-                    },
+                  initialRoute: MainRouteNames.database,
+                  onGenerateRoute: (RouteSettings settings) {
+                    switch (settings.name) {
+                      case MainRouteNames.home:
+                        return PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          alignment: Alignment.center,
+                          child: BlocProvider(
+                            builder: (context) {
+                              return PostersFetchBloc(
+                                postersRepository: _postersRepository,
+                                appStateBloc: _appStateBloc,
+                                dbRepository: _dbRepository,
+                              )
+                                ..dispatch(PostersFetchFirstPageRequest());
+                            },
+                            child: HomeScreen(),
+                          ),
+                        );
+                        break;
+
+                      case MainRouteNames.database:
+                        return PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          alignment: Alignment.center,
+                          child: BlocProvider(
+                            builder: (context) {
+                              return DBBloc(
+                                dbRepository: _dbRepository,
+                                appStateBloc: _appStateBloc,
+                              )
+                                ..dispatch(DBGetNormalizedPosters());
+                            },
+                            child: DatabaseScreen(),
+                          ),
+                        );
+                        break;
+
+                      default:
+                        return null;
+                    }
                   },
                 ),
               )
