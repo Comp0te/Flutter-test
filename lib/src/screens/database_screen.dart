@@ -30,7 +30,9 @@ class DatabaseScreen extends StatelessWidget {
                             vertical: 5,
                             horizontal: 10,
                           ),
-                          title: Text(posters[index].text),
+                          title: Text(
+                            'id - ${posters[index].id} - ${posters[index].text}',
+                          ),
                           leading: SizedBox(
                             height: 50,
                             width: 50,
