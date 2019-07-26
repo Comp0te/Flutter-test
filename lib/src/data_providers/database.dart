@@ -5,14 +5,15 @@ import 'package:sqflite/sqflite.dart';
 import '../database/tables.dart';
 
 class DBProvider {
-  final Database db;
+  final Future<Database> db;
 
   DBProvider({
     @required this.db,
   }) : assert(db != null);
 
   Future<void> insertPosters(List<PosterNormalized> posters) async {
-    Batch batch = db.batch();
+    Database _db = await db;
+    Batch batch = _db.batch();
 
     try {
       posters.forEach((poster) {
@@ -30,7 +31,8 @@ class DBProvider {
   }
 
   Future<void> insertUsers(List<User> users) async {
-    Batch batch = db.batch();
+    Database _db = await db;
+    Batch batch = _db.batch();
 
     try {
       users.forEach((user) => batch.insert(
@@ -46,18 +48,34 @@ class DBProvider {
   }
 
   Future<void> insertPosterImages(List<PosterNormalized> posters) async {
-    Batch batch = db.batch();
+    Database _db = await db;
+    Batch batch = _db.batch();
 
     try {
-      posters.where((poster) => poster.images.isNotEmpty).forEach((poster) {
-        poster.images.forEach((image) => batch.insert(
-              PosterImagesTable.name,
-              poster.toJson()
-                ..addEntries(
-                    [MapEntry(PosterImagesTable.colPosterId, poster.id)]),
-              conflictAlgorithm: ConflictAlgorithm.replace,
-            ));
-      });
+      List<PosterImageDB> imagesDb = posters.fold<List<PosterImageDB>>(
+        [],
+        (acc, poster) {
+          if (poster.images != null && poster.images.isNotEmpty) {
+            acc.addAll(
+              poster.images
+                  .map<PosterImageDB>((image) => PosterImageDB(
+                      id: image.id,
+                      advert: image.advert,
+                      file: image.file,
+                      posterId: poster.id))
+                  .toList(),
+            );
+          }
+
+          return acc;
+        },
+      );
+
+      imagesDb.forEach((image) => batch.insert(
+            PosterImagesTable.name,
+            image.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          ));
 
       return batch.commit();
     } catch (err) {
@@ -66,8 +84,10 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getPosters() async {
+    Database _db = await db;
+
     try {
-      return db.query(PostersTable.name);
+      return _db.query(PostersTable.name);
     } catch (err) {
       print('---===getPosters - $err');
       return null;
@@ -75,8 +95,10 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
+    Database _db = await db;
+
     try {
-      return db.query(UsersTable.name);
+      return _db.query(UsersTable.name);
     } catch (err) {
       print('---===getUsers - $err');
       return null;
@@ -84,8 +106,10 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getPosterImages() async {
+    Database _db = await db;
+
     try {
-      return db.query(PosterImagesTable.name);
+      return _db.query(PosterImagesTable.name);
     } catch (err) {
       print('---===getPosterImages - $err');
       return null;
