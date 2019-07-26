@@ -9,15 +9,19 @@ import 'package:flutter_app/src/models/model.dart';
 
 class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   final PostersRepository _postersRepository;
+  final DBRepository _dbRepository;
   final AppStateBloc _appStateBloc;
 
   PostersFetchBloc({
     @required AppStateBloc appStateBloc,
     @required PostersRepository postersRepository,
+    @required DBRepository dbRepository,
   })  : assert(appStateBloc != null),
         assert(postersRepository != null),
+        assert(dbRepository != null),
         _appStateBloc = appStateBloc,
-        _postersRepository = postersRepository;
+        _postersRepository = postersRepository,
+        _dbRepository = dbRepository;
 
   PostersFetchState get initialState => PostersFetchState.init();
 
@@ -82,39 +86,43 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   Stream<PostersFetchState> _mapPostersFetchRequestSuccessToState(
     PostersFetchRequestSuccess event,
   ) async* {
+    List<User> users = event.postersFetchResponse.data
+        .map((posterResponse) => posterResponse.owner)
+        .toList();
+
+    List<PosterNormalized> posters = event.postersFetchResponse.data
+        .map((posterResponse) => PosterNormalized(
+              id: posterResponse.id,
+              ownerId: posterResponse.owner.id,
+              theme: posterResponse.theme,
+              text: posterResponse.text ?? '',
+              price: posterResponse.price,
+              currency: posterResponse.currency,
+              images: posterResponse.images,
+              contractPrice: posterResponse.contractPrice,
+              location: posterResponse.location,
+              category: posterResponse.category,
+              activatedAt: posterResponse.activatedAt,
+              isActive: posterResponse.isActive,
+            ))
+        .toList();
+
+    _appStateBloc.dispatch(
+      AppStateUpdateUsers(users: users),
+    );
+
+    _appStateBloc.dispatch(
+      AppStateUpdatePosters(posters: posters),
+    );
+
+      await _dbRepository.insertUsers(users);
+      await _dbRepository.insertPosters(posters);
+      await _dbRepository.insertPosterImages(posters);
+
     yield currentState.update(
       isLoadingFirstPage: event.isSuccessFirstRequest ? false : null,
       isLoadingNextPage: event.isSuccessFirstRequest ? null : false,
       data: event.postersFetchResponse,
-    );
-
-    _appStateBloc.dispatch(
-      AppStateUpdateUsers(
-        users: event.postersFetchResponse.data
-            .map((posterResponse) => posterResponse.owner)
-            .toList(),
-      ),
-    );
-
-    _appStateBloc.dispatch(
-      AppStateUpdatePosters(
-        posters: event.postersFetchResponse.data
-            .map((posterResponse) => PosterNormalized(
-                  id: posterResponse.id,
-                  ownerId: posterResponse.owner.id,
-                  theme: posterResponse.theme,
-                  text: posterResponse.text ?? '',
-                  price: posterResponse.price,
-                  currency: posterResponse.currency,
-                  images: posterResponse.images,
-                  contractPrice: posterResponse.contractPrice,
-                  location: posterResponse.location,
-                  category: posterResponse.category,
-                  activatedAt: posterResponse.activatedAt,
-                  isActive: posterResponse.isActive,
-                ))
-            .toList(),
-      ),
     );
   }
 
