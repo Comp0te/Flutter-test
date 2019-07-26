@@ -4,6 +4,7 @@ export 'auth/bloc.dart';
 export 'app_state/bloc.dart';
 export 'database/bloc.dart';
 export 'form_validation/bloc.dart';
+export 'drawer/bloc.dart';
 
 export 'requests/login/bloc.dart';
 export 'requests/register/bloc.dart';
