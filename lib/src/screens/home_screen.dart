@@ -157,7 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return CachedNetworkImage(
-                        imageUrl: postersList[index].images.isEmpty
+                        imageUrl: postersList[index].images == null ||
+                                postersList[index].images.isEmpty
                             ? 'http://via.placeholder.com/'
                                 '200x200.png?text=PlaceHolder'
                             : postersList[index].images[0]?.file,
