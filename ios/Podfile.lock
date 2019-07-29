@@ -1,4 +1,6 @@
 PODS:
+  - camera (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_secure_storage (3.2.0):
     - Flutter
@@ -16,6 +18,7 @@ PODS:
     - FMDB (~> 2.7.2)
 
 DEPENDENCIES:
+  - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
@@ -28,6 +31,8 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
+  camera:
+    :path: ".symlinks/plugins/camera/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
   flutter_secure_storage:
@@ -40,6 +45,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  camera: d56ad165545ae5a0ffb892376033760a969c68c8
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   flutter_secure_storage: 0c5779648ff644110e507909b77a57e620cbbf8b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
