@@ -24,8 +24,11 @@ void main() {
   final PostersRepository _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
   );
-  DBRepository _dbRepository = DBRepository(
+  final DBRepository _dbRepository = DBRepository(
     dbProvider: DBProvider(db: DBHelper().db),
+  );
+  final ImageStoreRepository _imageStoreRepository = ImageStoreRepository(
+    imageStoreProvider: ImageStoreProvider(),
   );
 
   runApp(
@@ -47,6 +50,9 @@ void main() {
           }),
           RepositoryProvider<DBRepository>(builder: (context) {
             return _dbRepository;
+          }),
+          RepositoryProvider<ImageStoreRepository>(builder: (context) {
+            return _imageStoreRepository;
           }),
         ],
         child: App(),
