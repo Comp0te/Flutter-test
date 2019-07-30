@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/utils/scroll_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
+import 'package:flutter_app/src/utils/scroll_helper.dart';
+import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
@@ -53,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
           PostersFetchNextPageRequest(page: state.data.meta.page + 1),
         );
       }
+
+      postersFetchStateSubscription.cancel();
     });
   }
 
@@ -66,9 +68,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return false;
   }
 
+  String _getUrlFromPosters(List<PosterNormalized> posters, int index) {
+    return posters[index].images != null && posters[index].images.isNotEmpty
+        ? posters[index].images[0]?.file
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final ImageStoreRepository _imageStoreRepository =
+        RepositoryProvider.of<ImageStoreRepository>(context);
 
     return Scaffold(
       drawer: MainDrawer(),
@@ -157,24 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSpacing: gridViewMainAxisSpacing,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return CachedNetworkImage(
-                        imageUrl: postersList[index].images == null ||
-                                postersList[index].images.isEmpty
-                            ? 'http://via.placeholder.com/'
-                                '200x200.png?text=PlaceHolder'
-                            : postersList[index].images[0]?.file,
-                        imageBuilder: (context, imageProvider) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                        placeholder: (context, url) => Spinner(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ImageStoreBloc _imageStoreBloc = ImageStoreBloc(
+                        imageStoreRepository: _imageStoreRepository,
+                      );
+
+                      return ImageFromStore(
+                        imageStoreBloc: _imageStoreBloc,
+                        url: _getUrlFromPosters(postersList, index),
                       );
                     },
                   ),
