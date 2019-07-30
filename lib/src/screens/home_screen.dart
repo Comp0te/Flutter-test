@@ -194,3 +194,5 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // TODO: Add onRefresh behaviour
+// TODO: synchronize the recording and reading of images from the Documents directory
+// TODO: Find a solution of double call initState on ios
