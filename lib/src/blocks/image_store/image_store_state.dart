@@ -1,11 +1,11 @@
-import 'dart:io' as Io;
+import 'dart:io' as io;
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/utils/equatable_class.dart';
 
 @immutable
 class ImageStoreState extends EquatableClass {
-  final Io.File image;
+  final io.File image;
   final bool isLoading;
 
   ImageStoreState({
@@ -21,7 +21,7 @@ class ImageStoreState extends EquatableClass {
         isLoading: true,
       );
 
-  factory ImageStoreState.loaded(Io.File image) => ImageStoreState(
+  factory ImageStoreState.loaded(io.File image) => ImageStoreState(
         isLoading: false,
         image: image,
       );

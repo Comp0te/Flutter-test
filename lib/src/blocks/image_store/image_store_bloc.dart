@@ -16,19 +16,7 @@ class ImageStoreBloc extends Bloc<ImageStoreEvent, ImageStoreState> {
 
   @override
   Stream<ImageStoreState> mapEventToState(ImageStoreEvent event) async* {
-    if (event is SaveImageToStore) {
-      yield ImageStoreState.loading();
-
-      try {
-        final imageFile = await _imageStoreRepository.saveImage(event.url);
-
-        yield ImageStoreState.loaded(imageFile);
-      } catch (err) {
-        print('image save error: $err');
-
-        yield ImageStoreState.init();
-      }
-    } else if (event is ReadImageFromStore) {
+    if (event is GetImage && event.url != null) {
       yield ImageStoreState.loading();
 
       try {
@@ -36,7 +24,7 @@ class ImageStoreBloc extends Bloc<ImageStoreEvent, ImageStoreState> {
 
         yield ImageStoreState.loaded(imageFile);
       } catch (err) {
-        print('image read error: $err');
+        print('get image error: $err');
 
         yield ImageStoreState.init();
       }
