@@ -1,25 +1,21 @@
-import 'dart:io' as Io;
+import 'dart:io' as io;
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/data_providers/data_providers.dart';
 
 class ImageStoreRepository {
-  final ImagesStoreProvider _imagesStoreProvider;
+  final ImageStoreProvider _imageStoreProvider;
 
   ImageStoreRepository({
-    @required ImagesStoreProvider imagesStoreProvider,
-  })  : assert(imagesStoreProvider != null),
-        _imagesStoreProvider = imagesStoreProvider;
+    @required ImageStoreProvider imageStoreProvider,
+  })  : assert(imageStoreProvider != null),
+        _imageStoreProvider = imageStoreProvider;
 
-  Future<Io.File> getImage(String url) async {
-    return _imagesStoreProvider.getImage(url);
+  Future<io.File> getImage(String url) async {
+    return _imageStoreProvider.getImage(url);
   }
 
-  Future<Io.File> getImageFromNetwork(String url) async {
-    return _imagesStoreProvider.getImageFromNetwork(url);
-  }
-
-  Future<Io.File> saveImage(String url) async {
-    return _imagesStoreProvider.saveImage(url);
+  Future<void> saveImage(String url) async {
+    return _imageStoreProvider.saveImage(url: url);
   }
 }
