@@ -83,18 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        leading: AnimatedBuilder(
-          animation: _scrollController,
-          builder: (BuildContext context, Widget widget) {
-            return Transform.rotate(
-              angle: (math.pi * scrollOffset / 1000),
-              child: Icon(
-                Icons.settings,
-                size: 40,
-              ),
-            );
-          },
-        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(5),
           child: BlocBuilder(
@@ -130,15 +118,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         title: Text('Home'),
+        centerTitle: true,
         actions: <Widget>[
+          AnimatedBuilder(
+            animation: _scrollController,
+            builder: (BuildContext context, Widget widget) {
+              return IconButton(
+                icon: Transform.rotate(
+                  angle: (math.pi * scrollOffset / 1000),
+                  child: Icon(
+                    Icons.settings,
+                    size: 30,
+                  ),
+                ),
+                onPressed: () {
+                  _scrollController.jumpTo(0);
+                },
+              );
+            },
+          ),
           IconButton(
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(
+              Icons.exit_to_app,
+              size: 30,
+            ),
             onPressed: () {
               BlocProvider.of<AuthBloc>(context).dispatch(
                 LoggedOut(),
               );
             },
-          )
+          ),
         ],
       ),
       body: NotificationListener<ScrollNotification>(
