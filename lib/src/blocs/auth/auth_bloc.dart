@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
-import 'package:flutter_app/src/blocks/auth/bloc.dart';
+import 'package:flutter_app/src/blocs/auth/bloc.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

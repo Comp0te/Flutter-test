@@ -5,7 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/utils/constants.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 class LoginScreen extends StatefulWidget {
   final double heroRegisterWidth;

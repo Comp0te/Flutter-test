@@ -8,7 +8,7 @@ import 'src/app.dart';
 import 'src/utils/dio_helper.dart';
 import 'src/repositories/repositories.dart';
 import 'src/data_providers/data_providers.dart';
-import 'src/blocks/blocks.dart';
+import 'src/blocs/blocs.dart';
 import 'src/database/database.dart';
 
 void main() {

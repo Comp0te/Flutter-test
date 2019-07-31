@@ -4,7 +4,7 @@ import 'package:page_transition/page_transition.dart';
 
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 import 'package:flutter_app/src/screens/screens.dart';
 

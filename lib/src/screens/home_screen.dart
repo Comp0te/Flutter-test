@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
