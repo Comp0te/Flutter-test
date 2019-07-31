@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -100,7 +99,7 @@ class App extends StatelessWidget {
                                 },
                               ),
                             ],
-                            child: CameraBottomNavigation(),
+                            child: CameraScreen(),
                           ),
                         );
                         break;

@@ -5,12 +5,12 @@ import 'package:flutter_app/src/blocks/blocks.dart';
 import 'package:flutter_app/src/screens/screens.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class CameraBottomTabBar extends StatefulWidget {
+class CameraScreen extends StatefulWidget {
   @override
-  _CameraBottomTabBarState createState() => _CameraBottomTabBarState();
+  _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraBottomTabBarState extends State<CameraBottomTabBar> {
+class _CameraScreenState extends State<CameraScreen> {
   final ActiveIndexBloc _drawerBloc = ActiveIndexBloc();
 
   List<Widget> tabScreens = [
