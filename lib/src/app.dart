@@ -22,6 +22,7 @@ class App extends StatelessWidget {
         RepositoryProvider.of<DBRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
+    final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -40,14 +41,23 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: BlocProvider<PostersFetchBloc>(
-                            builder: (context) {
-                              return PostersFetchBloc(
-                                postersRepository: _postersRepository,
-                                appStateBloc: _appStateBloc,
-                                dbRepository: _dbRepository,
-                              );
-                            },
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<PostersFetchBloc>(
+                                builder: (context) {
+                                  return PostersFetchBloc(
+                                    postersRepository: _postersRepository,
+                                    appStateBloc: _appStateBloc,
+                                    dbRepository: _dbRepository,
+                                  );
+                                },
+                              ),
+                              BlocProvider<ActiveIndexBloc>(
+                                builder: (context) {
+                                  return _drawerActiveIndexBloc;
+                                },
+                              )
+                            ],
                             child: HomeScreen(),
                           ),
                         );
@@ -57,13 +67,22 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: BlocProvider<DBBloc>(
-                            builder: (context) {
-                              return DBBloc(
-                                dbRepository: _dbRepository,
-                                appStateBloc: _appStateBloc,
-                              )..dispatch(DBGetNormalizedPosters());
-                            },
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<DBBloc>(
+                                builder: (context) {
+                                  return DBBloc(
+                                    dbRepository: _dbRepository,
+                                    appStateBloc: _appStateBloc,
+                                  )..dispatch(DBGetNormalizedPosters());
+                                },
+                              ),
+                              BlocProvider<ActiveIndexBloc>(
+                                builder: (context) {
+                                  return _drawerActiveIndexBloc;
+                                },
+                              )
+                            ],
                             child: DatabaseScreen(),
                           ),
                         );
@@ -73,7 +92,16 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: CameraBottomNavigation(),
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<ActiveIndexBloc>(
+                                builder: (context) {
+                                  return _drawerActiveIndexBloc;
+                                },
+                              ),
+                            ],
+                            child: CameraBottomNavigation(),
+                          ),
                         );
                         break;
 
