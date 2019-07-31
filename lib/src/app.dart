@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -21,7 +22,6 @@ class App extends StatelessWidget {
         RepositoryProvider.of<DBRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
-    final DrawerBloc _mainDrawerBloc = DrawerBloc();
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -40,23 +40,14 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: MultiBlocProvider(
-                            providers: [
-                              BlocProvider<PostersFetchBloc>(
-                                builder: (context) {
-                                  return PostersFetchBloc(
-                                    postersRepository: _postersRepository,
-                                    appStateBloc: _appStateBloc,
-                                    dbRepository: _dbRepository,
-                                  );
-                                },
-                              ),
-                              BlocProvider<DrawerBloc>(
-                                builder: (context) {
-                                  return _mainDrawerBloc;
-                                },
-                              )
-                            ],
+                          child: BlocProvider<PostersFetchBloc>(
+                            builder: (context) {
+                              return PostersFetchBloc(
+                                postersRepository: _postersRepository,
+                                appStateBloc: _appStateBloc,
+                                dbRepository: _dbRepository,
+                              );
+                            },
                             child: HomeScreen(),
                           ),
                         );
@@ -66,25 +57,23 @@ class App extends StatelessWidget {
                         return PageTransition(
                           type: PageTransitionType.rightToLeft,
                           alignment: Alignment.center,
-                          child: MultiBlocProvider(
-                            providers: [
-                              BlocProvider<DBBloc>(
-                                builder: (context) {
-                                  return DBBloc(
-                                    dbRepository: _dbRepository,
-                                    appStateBloc: _appStateBloc,
-                                  )..dispatch(DBGetNormalizedPosters());
-                                },
-                                child: DatabaseScreen(),
-                              ),
-                              BlocProvider<DrawerBloc>(
-                                builder: (context) {
-                                  return _mainDrawerBloc;
-                                },
-                              )
-                            ],
+                          child: BlocProvider<DBBloc>(
+                            builder: (context) {
+                              return DBBloc(
+                                dbRepository: _dbRepository,
+                                appStateBloc: _appStateBloc,
+                              )..dispatch(DBGetNormalizedPosters());
+                            },
                             child: DatabaseScreen(),
                           ),
+                        );
+                        break;
+
+                      case MainRouteNames.camera:
+                        return PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          alignment: Alignment.center,
+                          child: CameraBottomNavigation(),
                         );
                         break;
 
