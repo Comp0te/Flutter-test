@@ -6,6 +6,7 @@ abstract class AuthRouteNames {
 abstract class MainRouteNames {
   static const home = '/';
   static const database = '/database';
+  static const camera = '/camera';
 }
 
 abstract class Url {
