@@ -19,6 +19,29 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       } catch (err) {
         print('--- availableCameras error --- $err');
       }
+    } else if (event is ToggleCameraAudio) {
+      yield currentState.update(isAudioEnabled: !currentState.isAudioEnabled);
+    } else if (event is SelectCamera) {
+      try {
+        if (currentState.cameraController != null) {
+          await currentState.cameraController.dispose();
+        }
+
+        final newController = CameraController(
+          event.cameraDescription,
+          ResolutionPreset.high,
+          enableAudio: currentState.isAudioEnabled,
+        );
+        await newController.initialize();
+
+        yield currentState.update(
+          cameraController: newController,
+        );
+      } catch (err) {
+        print('camera select error - $err');
+      }
     }
   }
 }
+
+// TODO: finish logic
