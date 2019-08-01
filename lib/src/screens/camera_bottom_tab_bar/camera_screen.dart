@@ -11,22 +11,40 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  final ActiveIndexBloc _drawerBloc = ActiveIndexBloc();
+  final ActiveIndexBloc _activeTabBloc = ActiveIndexBloc();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final tabScreens = <Widget>[];
 
-  List<Widget> tabScreens = [
-    CameraPhotoTab(),
-    CameraVideoTab(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    tabScreens.addAll([
+      CameraPhotoTab(
+        scaffoldKey: _scaffoldKey,
+      ),
+      CameraVideoTab(),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      bloc: _drawerBloc,
+      bloc: _activeTabBloc,
       builder: (
         BuildContext context,
         ActiveIndexState state,
       ) {
         return Scaffold(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: FloatingActionButton(
+//            elevation: 20,
+            child: state.activeIndex == 0
+                ? Icon(Icons.photo_camera, size: 40)
+                : Icon(Icons.videocam, size: 40),
+            onPressed: () {}
+          ),
+          key: _scaffoldKey,
           appBar: AppBar(
             title: Text('Camera'),
             centerTitle: true,
@@ -45,9 +63,9 @@ class _CameraScreenState extends State<CameraScreen> {
             ],
             currentIndex: state.activeIndex,
             selectedItemColor: Colors.blue,
-            iconSize: 30,
+            iconSize: 20,
             onTap: (int index) {
-              _drawerBloc.dispatch(SetActiveIndex(activeIndex: index));
+              _activeTabBloc.dispatch(SetActiveIndex(activeIndex: index));
             },
           ),
           body: tabScreens[state.activeIndex],
