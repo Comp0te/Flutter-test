@@ -89,10 +89,16 @@ class App extends StatelessWidget {
 
                       case MainRouteNames.camera:
                         return PageTransition(
-                          type: PageTransitionType.rightToLeft,
+                          type: PageTransitionType.fade,
                           alignment: Alignment.center,
                           child: MultiBlocProvider(
                             providers: [
+                              BlocProvider<CameraBloc>(
+                                builder: (context) {
+                                  return CameraBloc()
+                                    ..dispatch(GetAvailableCameras());
+                                },
+                              ),
                               BlocProvider<ActiveIndexBloc>(
                                 builder: (context) {
                                   return _drawerActiveIndexBloc;
