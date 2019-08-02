@@ -1,10 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/utils/equatable_class.dart';
-
+// don't extends EquatableClass in order to regularly update state by reference
 @immutable
-class CameraState extends EquatableClass {
+class CameraState {
   final List<CameraDescription> cameras;
   final CameraController cameraController;
   final bool isAudioEnabled;
@@ -17,13 +16,7 @@ class CameraState extends EquatableClass {
     this.isAudioEnabled,
     this.photoPath,
     this.videoPath,
-  }) : super([
-          cameras,
-          cameraController,
-          isAudioEnabled,
-          photoPath,
-          videoPath,
-        ]);
+  });
 
   factory CameraState.init() => CameraState(
         cameras: [],
