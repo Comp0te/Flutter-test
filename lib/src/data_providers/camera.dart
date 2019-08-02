@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class CameraProvider {
   static final String photoDir = 'pictures';
+  static final String videoDir = 'video';
 
   Future<String> get _directoryPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -17,7 +18,8 @@ class CameraProvider {
 
   String _getFilePath(String dirPath) => join(dirPath, '$_timestamp.jpg');
 
-  Future<String> takePicture({@required CameraController cameraController}) async {
+  Future<String> takePicture(
+      {@required CameraController cameraController}) async {
     if (!cameraController.value.isInitialized) {
       return null;
     }
@@ -38,6 +40,49 @@ class CameraProvider {
       print('take photo exeption ---- $e');
       return null;
     }
+
     return photoPath;
+  }
+
+  Future<String> startRecordingVideo({
+    @required CameraController cameraController,
+  }) async {
+    if (!cameraController.value.isInitialized) {
+      return null;
+    }
+
+    final videoDirPath = join(await _directoryPath, videoDir);
+
+    await io.Directory(videoDirPath).create(recursive: true);
+
+    if (cameraController.value.isRecordingVideo) {
+      return null;
+    }
+
+    final videoPath = _getFilePath(videoDirPath);
+
+    try {
+      await cameraController.startVideoRecording(videoPath);
+    } on CameraException catch (e) {
+      print('start recording video exeption ---- $e');
+      return null;
+    }
+
+    return videoPath;
+  }
+
+  Future<void> stopRecordingVideo({
+    @required CameraController cameraController,
+  }) async {
+    if (!cameraController.value.isRecordingVideo) {
+      return;
+    }
+
+    try {
+      await cameraController.stopVideoRecording();
+    } on CameraException catch (e) {
+      print('stop recording video exeption ---- $e');
+      return;
+    }
   }
 }

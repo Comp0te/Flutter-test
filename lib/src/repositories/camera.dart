@@ -12,6 +12,20 @@ class CameraRepository {
         _cameraProvider = cameraProvider;
 
   Future<String> takePicture(CameraController cameraController) async {
-    return _cameraProvider.takePicture(cameraController: cameraController);
+    return _cameraProvider.takePicture(
+      cameraController: cameraController,
+    );
+  }
+
+  Future<String> startRecordingVideo(CameraController cameraController) async {
+    return _cameraProvider.startRecordingVideo(
+      cameraController: cameraController,
+    );
+  }
+
+  Future<void> stopRecordingVideo(CameraController cameraController) async {
+    return _cameraProvider.stopRecordingVideo(
+      cameraController: cameraController,
+    );
   }
 }
