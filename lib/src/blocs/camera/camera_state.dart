@@ -8,16 +8,25 @@ class CameraState extends EquatableClass {
   final List<CameraDescription> cameras;
   final CameraController cameraController;
   final bool isAudioEnabled;
+  final String photoPath;
+  final String videoPath;
 
   CameraState({
     @required this.cameras,
     this.cameraController,
     this.isAudioEnabled,
-  }) : super([cameras, cameraController, isAudioEnabled]);
+    this.photoPath,
+    this.videoPath,
+  }) : super([
+          cameras,
+          cameraController,
+          isAudioEnabled,
+          photoPath,
+          videoPath,
+        ]);
 
   factory CameraState.init() => CameraState(
         cameras: [],
-        cameraController: null,
         isAudioEnabled: true,
       );
 
@@ -25,11 +34,15 @@ class CameraState extends EquatableClass {
     List<CameraDescription> cameras,
     CameraController cameraController,
     bool isAudioEnabled,
+    String photoPath,
+    String videoPath,
   }) {
     return CameraState(
       cameras: cameras ?? this.cameras,
       cameraController: cameraController ?? this.cameraController,
       isAudioEnabled: isAudioEnabled ?? this.isAudioEnabled,
+      photoPath: photoPath ?? this.photoPath,
+      videoPath: videoPath ?? this.videoPath,
     );
   }
 }
