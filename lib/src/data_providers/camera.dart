@@ -6,11 +6,6 @@ import 'package:path_provider/path_provider.dart';
 
 class CameraProvider {
   static final String photoDir = 'pictures';
-  final CameraController _cameraController;
-
-  CameraProvider({@required CameraController cameraController})
-      : assert(cameraController != null),
-        _cameraController = cameraController;
 
   Future<String> get _directoryPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -22,8 +17,8 @@ class CameraProvider {
 
   String _getFilePath(String dirPath) => join(dirPath, '$_timestamp.jpg');
 
-  Future<String> takePicture() async {
-    if (!_cameraController.value.isInitialized) {
+  Future<String> takePicture({@required CameraController cameraController}) async {
+    if (!cameraController.value.isInitialized) {
       return null;
     }
 
@@ -31,14 +26,14 @@ class CameraProvider {
 
     await io.Directory(photoDirPath).create(recursive: true);
 
-    if (_cameraController.value.isTakingPicture) {
+    if (cameraController.value.isTakingPicture) {
       return null;
     }
 
     final photoPath = _getFilePath(photoDirPath);
 
     try {
-      await _cameraController.takePicture(photoPath);
+      await cameraController.takePicture(photoPath);
     } on CameraException catch (e) {
       print('take photo exeption ---- $e');
       return null;

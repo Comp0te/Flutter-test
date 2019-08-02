@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/data_providers/data_providers.dart';
@@ -10,7 +11,7 @@ class CameraRepository {
       : assert(cameraProvider != null),
         _cameraProvider = cameraProvider;
 
-  Future<String> takePicture() async {
-    return _cameraProvider.takePicture();
+  Future<String> takePicture(CameraController cameraController) async {
+    return _cameraProvider.takePicture(cameraController: cameraController);
   }
 }
