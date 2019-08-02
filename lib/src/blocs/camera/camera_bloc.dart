@@ -62,6 +62,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     ToggleCameraAudio event,
   ) async* {
     yield currentState.update(isAudioEnabled: !currentState.isAudioEnabled);
+
+    dispatch(SelectCamera(
+      cameraDescription: currentState.cameraController.description,
+    ));
   }
 
   Stream<CameraState> _mapSelectCameraToState(
