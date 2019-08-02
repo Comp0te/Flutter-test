@@ -27,6 +27,9 @@ void main() {
   DBRepository _dbRepository = DBRepository(
     dbProvider: DBProvider(db: DBHelper().db),
   );
+  CameraRepository _cameraRepository = CameraRepository(
+    cameraProvider: CameraProvider(),
+  );
 
   runApp(
     BlocProvider(
@@ -47,6 +50,9 @@ void main() {
           }),
           RepositoryProvider<DBRepository>(builder: (context) {
             return _dbRepository;
+          }),
+          RepositoryProvider<CameraRepository>(builder: (context) {
+            return _cameraRepository;
           }),
         ],
         child: App(),
