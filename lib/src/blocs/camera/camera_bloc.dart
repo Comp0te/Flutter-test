@@ -18,8 +18,8 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
   @override
   Stream<CameraState> mapEventToState(CameraEvent event) async* {
-    if (event is GetAvailableCameras) {
-      yield* _mapGetAvailableCamerasToState(event);
+    if (event is InitCamera) {
+      yield* _mapInitCameraToState(event);
     } else if (event is ToggleCameraAudio) {
       yield* _mapToggleCameraAudioToState(event);
     } else if (event is SelectCamera) {
@@ -33,13 +33,24 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     }
   }
 
-  Stream<CameraState> _mapGetAvailableCamerasToState(
-    GetAvailableCameras event,
-  ) async* {
+  Stream<CameraState> _mapInitCameraToState(InitCamera event) async* {
     try {
       final cameras = await availableCameras();
 
+      final backCameraList = cameras
+          .where((camera) => camera.lensDirection == CameraLensDirection.back)
+          .toList();
+
+      final controller = CameraController(
+        backCameraList.isNotEmpty ? backCameraList[0] : cameras[0],
+        ResolutionPreset.high,
+        enableAudio: currentState.isAudioEnabled,
+      );
+
+      await controller.initialize();
+
       yield currentState.update(
+        cameraController: controller,
         cameras: cameras,
       );
     } catch (err) {

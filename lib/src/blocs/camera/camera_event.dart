@@ -7,7 +7,7 @@ abstract class CameraEvent extends Equatable {
   CameraEvent([List props = const []]) : super(props);
 }
 
-class GetAvailableCameras extends CameraEvent {}
+class InitCamera extends CameraEvent {}
 
 class ToggleCameraAudio extends CameraEvent {}
 
