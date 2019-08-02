@@ -99,7 +99,7 @@ class App extends StatelessWidget {
                                 builder: (context) {
                                   return CameraBloc(
                                     cameraRepository: _cameraRepository,
-                                  )..dispatch(GetAvailableCameras());
+                                  )..dispatch(InitCamera());
                                 },
                               ),
                               BlocProvider<ActiveIndexBloc>(
