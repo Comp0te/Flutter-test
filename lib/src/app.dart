@@ -19,6 +19,8 @@ class App extends StatelessWidget {
         RepositoryProvider.of<PostersRepository>(context);
     final DBRepository _dbRepository =
         RepositoryProvider.of<DBRepository>(context);
+    final CameraRepository _cameraRepository =
+        RepositoryProvider.of<CameraRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
     final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
@@ -95,8 +97,9 @@ class App extends StatelessWidget {
                             providers: [
                               BlocProvider<CameraBloc>(
                                 builder: (context) {
-                                  return CameraBloc()
-                                    ..dispatch(GetAvailableCameras());
+                                  return CameraBloc(
+                                    cameraRepository: _cameraRepository,
+                                  )..dispatch(GetAvailableCameras());
                                 },
                               ),
                               BlocProvider<ActiveIndexBloc>(
