@@ -19,6 +19,8 @@ class App extends StatelessWidget {
         RepositoryProvider.of<PostersRepository>(context);
     final DBRepository _dbRepository =
         RepositoryProvider.of<DBRepository>(context);
+    final ImageStoreRepository _imageStoreRepository =
+        RepositoryProvider.of<ImageStoreRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
     final DrawerBloc _mainDrawerBloc = DrawerBloc();
@@ -33,12 +35,12 @@ class App extends StatelessWidget {
                 },
                 child: MaterialApp(
                   key: GlobalKey(),
-                  initialRoute: MainRouteNames.home,
+//                  initialRoute: MainRouteNames.home,
                   onGenerateRoute: (RouteSettings settings) {
                     switch (settings.name) {
                       case MainRouteNames.home:
                         return PageTransition(
-                          type: PageTransitionType.rightToLeft,
+                          type: PageTransitionType.fade,
                           alignment: Alignment.center,
                           child: MultiBlocProvider(
                             providers: [
@@ -48,6 +50,7 @@ class App extends StatelessWidget {
                                     postersRepository: _postersRepository,
                                     appStateBloc: _appStateBloc,
                                     dbRepository: _dbRepository,
+                                    imageStoreRepository: _imageStoreRepository,
                                   );
                                 },
                               ),

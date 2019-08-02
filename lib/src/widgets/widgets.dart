@@ -6,3 +6,4 @@ export './form_field_username.dart';
 export './hero_register.dart';
 export './submit_button.dart';
 export './spinner.dart';
+export './image_from_store.dart';

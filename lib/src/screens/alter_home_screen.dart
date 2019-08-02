@@ -9,12 +9,12 @@ import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocks/blocks.dart';
 
-class HomeScreen extends StatefulWidget {
+class AlterHomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _AlterHomeScreenState createState() => _AlterHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AlterHomeScreenState extends State<AlterHomeScreen> {
   final int gridViewColumnCount = 2;
   final double gridViewCrossAxisSpacing = 5;
   final double gridViewMainAxisSpacing = 5;

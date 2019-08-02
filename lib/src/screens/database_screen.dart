@@ -1,14 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/blocks/blocks.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
 class DatabaseScreen extends StatelessWidget {
+  String _getUrlFromPosters(List<PosterNormalized> posters, int index) {
+    return posters[index].images != null && posters[index].images.isNotEmpty
+        ? posters[index].images[0]?.file
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final ImageStoreRepository _imageStoreRepository =
+        RepositoryProvider.of<ImageStoreRepository>(context);
+
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
@@ -23,6 +33,10 @@ class DatabaseScreen extends StatelessWidget {
           return state.posters.isNotEmpty
               ? ListView.builder(
                   itemBuilder: (context, int index) {
+                    ImageStoreBloc _imageStoreBloc = ImageStoreBloc(
+                      imageStoreRepository: _imageStoreRepository,
+                    );
+
                     return Column(
                       children: <Widget>[
                         ListTile(
@@ -36,25 +50,9 @@ class DatabaseScreen extends StatelessWidget {
                           leading: SizedBox(
                             height: 50,
                             width: 50,
-                            child: CachedNetworkImage(
-                              imageUrl: posters[index].images == null ||
-                                      posters[index].images.isEmpty
-                                  ? 'http://via.placeholder.com/'
-                                      '200x200.png?text=PlaceHolder'
-                                  : posters[index].images[0]?.file,
-                              imageBuilder: (context, imageProvider) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
-                              placeholder: (context, url) => Spinner(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                            child: ImageFromStore(
+                              imageStoreBloc: _imageStoreBloc,
+                              url: _getUrlFromPosters(posters, index),
                             ),
                           ),
                         ),

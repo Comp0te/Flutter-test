@@ -11,17 +11,21 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   final PostersRepository _postersRepository;
   final DBRepository _dbRepository;
   final AppStateBloc _appStateBloc;
+  final ImageStoreRepository _imageStoreRepository;
 
   PostersFetchBloc({
     @required AppStateBloc appStateBloc,
     @required PostersRepository postersRepository,
     @required DBRepository dbRepository,
+    @required ImageStoreRepository imageStoreRepository,
   })  : assert(appStateBloc != null),
         assert(postersRepository != null),
         assert(dbRepository != null),
+        assert(imageStoreRepository != null),
         _appStateBloc = appStateBloc,
         _postersRepository = postersRepository,
-        _dbRepository = dbRepository;
+        _dbRepository = dbRepository,
+        _imageStoreRepository = imageStoreRepository;
 
   PostersFetchState get initialState => PostersFetchState.init();
 
@@ -115,9 +119,15 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       AppStateUpdatePosters(posters: posters),
     );
 
-      await _dbRepository.insertUsers(users);
-      await _dbRepository.insertPosters(posters);
-      await _dbRepository.insertPosterImages(posters);
+    await _dbRepository.insertUsers(users);
+    await _dbRepository.insertPosters(posters);
+    await _dbRepository.insertPosterImages(posters);
+
+    Stream.fromIterable(posters).listen((poster) async {
+      if (poster.images != null && poster.images.isNotEmpty) {
+        await _imageStoreRepository.saveImage(poster.images[0].file);
+      }
+    });
 
     yield currentState.update(
       isLoadingFirstPage: event.isSuccessFirstRequest ? false : null,
