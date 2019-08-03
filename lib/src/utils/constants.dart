@@ -7,6 +7,7 @@ abstract class MainRouteNames {
   static const home = '/';
   static const database = '/database';
   static const camera = '/camera';
+  static const cameraPhotoPreview = '/cameraPhotoPreview';
 }
 
 abstract class Url {
