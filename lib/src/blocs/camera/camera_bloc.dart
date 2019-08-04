@@ -49,7 +49,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
       await controller.initialize();
 
-      yield currentState.update(
+      yield currentState.copyWith(
         cameraController: controller,
         cameras: cameras,
       );
@@ -61,7 +61,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   Stream<CameraState> _mapToggleCameraAudioToState(
     ToggleCameraAudio event,
   ) async* {
-    yield currentState.update(isAudioEnabled: !currentState.isAudioEnabled);
+    yield currentState.copyWith(isAudioEnabled: !currentState.isAudioEnabled);
 
     dispatch(SelectCamera(
       cameraDescription: currentState.cameraController.description,
@@ -83,7 +83,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       );
       await newController.initialize();
 
-      yield currentState.update(
+      yield currentState.copyWith(
         cameraController: newController,
       );
     } catch (err) {
@@ -96,7 +96,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       currentState.cameraController,
     );
 
-    yield currentState.update(photoPath: photoPath);
+    yield currentState.copyWith(photoPath: photoPath);
   }
 
   Stream<CameraState> _mapStartVideoRecordingToState(
@@ -106,7 +106,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       currentState.cameraController,
     );
 
-    yield currentState.update(videoPath: videoPath);
+    yield currentState.copyWith(
+      videoPath: videoPath,
+      isVideoRecording: true,
+    );
   }
 
   Stream<CameraState> _mapStopVideoRecordingToState(
@@ -116,6 +119,6 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       currentState.cameraController,
     );
 
-    yield currentState.update();
+    yield currentState.copyWith(isVideoRecording: false);
   }
 }
