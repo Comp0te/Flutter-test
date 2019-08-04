@@ -28,4 +28,8 @@ class CameraRepository {
       cameraController: cameraController,
     );
   }
+
+  Future<void> deleteFile({@required String path}) async {
+     return _cameraProvider.deleteFile(path: path);
+  }
 }
