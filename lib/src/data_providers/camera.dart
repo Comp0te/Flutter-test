@@ -16,7 +16,11 @@ class CameraProvider {
 
   String get _timestamp => DateTime.now().millisecondsSinceEpoch.toString();
 
-  String _getFilePath(String dirPath) => join(dirPath, '$_timestamp.jpg');
+  String _getFilePath(
+    String dirPath,
+    String extension,
+  ) =>
+      join(dirPath, '$_timestamp.$extension');
 
   Future<String> takePicture(
       {@required CameraController cameraController}) async {
@@ -32,7 +36,7 @@ class CameraProvider {
       return null;
     }
 
-    final photoPath = _getFilePath(photoDirPath);
+    final photoPath = _getFilePath(photoDirPath, 'jpg');
 
     try {
       await cameraController.takePicture(photoPath);
@@ -59,7 +63,7 @@ class CameraProvider {
       return null;
     }
 
-    final videoPath = _getFilePath(videoDirPath);
+    final videoPath = _getFilePath(videoDirPath, 'mp4');
 
     try {
       await cameraController.startVideoRecording(videoPath);
@@ -84,5 +88,10 @@ class CameraProvider {
       print('stop recording video exeption ---- $e');
       return;
     }
+  }
+
+  Future<void> deleteFile({@required String path}) async {
+    final file = await io.File(path);
+    await file.delete();
   }
 }
