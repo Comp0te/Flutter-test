@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,41 +52,75 @@ class _CameraScreenState extends State<CameraScreen>
     return Scaffold(
       drawer: MainDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BlocBuilder(
-        bloc: _cameraBloc,
-        builder: (BuildContext context, CameraState state) {
-          return GestureDetector(
-            onLongPressStart: (_) =>
-                _cameraBloc.dispatch(StartVideoRecording()),
-            onLongPressUp: () => _cameraBloc.dispatch(StopVideoRecording()),
-            child: FloatingActionButton(
-              child: isRecodingVideo(state)
-                  ? Icon(Icons.videocam, size: 40)
-                  : Icon(Icons.photo_camera, size: 40),
-              onPressed: () => _cameraBloc.dispatch(TakePicture()),
-            ),
-          );
-        },
+      floatingActionButton: GestureDetector(
+        onLongPressStart: (_) => _cameraBloc.dispatch(StartVideoRecording()),
+        onLongPressUp: () => _cameraBloc.dispatch(StopVideoRecording()),
+        child: FloatingActionButton(
+          heroTag: HeroTag.cameraFAB,
+          child: Icon(Icons.camera, size: 40),
+          onPressed: () => _cameraBloc.dispatch(TakePicture()),
+        ),
       ),
-      body: Stack(
-        children: <Widget>[
-          Column(children: <Widget>[
-            _cameraPreviewWidget(),
-          ]),
-          Positioned(
-            bottom: 30,
-            right: 30,
-            child: IconButton(
-              iconSize: 40,
-              icon: Icon(
-                Icons.settings_applications,
-                color: Colors.blue,
-                size: 40,
+      body: BlocListener(
+        bloc: _cameraBloc,
+        condition: (CameraState prevState, CameraState curState) {
+          return (prevState.photoPath != curState.photoPath &&
+                  curState.photoPath != null) ||
+              (prevState.isVideoRecording && !curState.isVideoRecording);
+        },
+        listener: (context, CameraState state) {
+          if (state.photoPath != null || state.videoPath != null) {
+            Navigator.pushNamed(context, MainRouteNames.cameraPreview,
+                arguments: CameraPreviewScreenArgs(
+                  photoPath: state.photoPath,
+                  videoPath: state.videoPath,
+                ));
+          }
+        },
+        child: Stack(
+          children: <Widget>[
+            Column(children: <Widget>[
+              _cameraPreviewWidget(),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.black),
+                      child: Text(
+                        'Tap for photo, hold for video',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              onPressed: _onPressSettingsButton,
+            ]),
+            Positioned(
+              bottom: 30,
+              right: 30,
+              child: Hero(
+                tag: HeroTag.cameraIconButton,
+                child: Material(
+                  shadowColor: Colors.blue,
+                  color: Colors.transparent,
+                  child: IconButton(
+                    iconSize: 40,
+                    icon: Icon(
+                      Icons.settings_applications,
+                      color: Colors.blue,
+                      size: 40,
+                    ),
+                    onPressed: _onPressSettingsButton,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
