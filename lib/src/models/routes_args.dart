@@ -1,7 +1,6 @@
-import 'package:meta/meta.dart';
-
-class PhotoPreviewScreenArgs {
+class CameraPreviewScreenArgs {
   final String photoPath;
+  final String videoPath;
 
-  PhotoPreviewScreenArgs({@required this.photoPath});
+  CameraPreviewScreenArgs({this.videoPath, this.photoPath});
 }
