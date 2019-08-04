@@ -8,6 +8,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 
 import 'package:flutter_app/src/screens/screens.dart';
 
+import 'models/model.dart';
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,9 @@ class App extends StatelessWidget {
 
     final AppStateBloc _appStateBloc = AppStateBloc();
     final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
+    final CameraBloc _cameraBloc = CameraBloc(
+      cameraRepository: _cameraRepository,
+    );
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -97,9 +102,7 @@ class App extends StatelessWidget {
                             providers: [
                               BlocProvider<CameraBloc>(
                                 builder: (context) {
-                                  return CameraBloc(
-                                    cameraRepository: _cameraRepository,
-                                  )..dispatch(InitCamera());
+                                  return _cameraBloc..dispatch(InitCamera());
                                 },
                               ),
                               BlocProvider<ActiveIndexBloc>(
@@ -109,6 +112,22 @@ class App extends StatelessWidget {
                               ),
                             ],
                             child: CameraScreen(),
+                          ),
+                        );
+                        break;
+
+                      case MainRouteNames.cameraPreview:
+                        final args = settings.arguments;
+
+                        return PageTransition(
+                          type: PageTransitionType.leftToRight,
+                          alignment: Alignment.centerLeft,
+                          child: BlocProvider<CameraBloc>.value(
+                            value: _cameraBloc,
+                            child: CameraPreviewScreen(
+                              screenArgs:
+                                  args is CameraPreviewScreenArgs ? args : null,
+                            ),
                           ),
                         );
                         break;
