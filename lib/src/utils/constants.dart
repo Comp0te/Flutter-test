@@ -7,7 +7,7 @@ abstract class MainRouteNames {
   static const home = '/';
   static const database = '/database';
   static const camera = '/camera';
-  static const cameraPhotoPreview = '/cameraPhotoPreview';
+  static const cameraPhotoPreview = '/camera/photoPreview';
 }
 
 abstract class Url {
@@ -20,5 +20,9 @@ abstract class Url {
 abstract class DbConfig {
   static final dbName = 'postres.db';
   static final dbVersion = 1;
+}
 
+abstract class HeroTag {
+  static final cameraIconButton = 'cameraIconButton';
+  static final cameraFAB = 'cameraFAB';
 }
