@@ -30,6 +30,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       yield* _mapStartVideoRecordingToState(event);
     } else if (event is StopVideoRecording) {
       yield* _mapStopVideoRecordingToState(event);
+    } else if (event is DeleteCameraFile) {
+      yield* _mapDeleteCameraFileToState(event);
+    } else if (event is ResetCameraFiles) {
+      yield* _mapResetCameraFilesToState(event);
     }
   }
 
@@ -120,5 +124,25 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     );
 
     yield currentState.copyWith(isVideoRecording: false);
+  }
+
+  Stream<CameraState> _mapDeleteCameraFileToState(
+    DeleteCameraFile event,
+  ) async* {
+    try {
+      await _cameraRepository.deleteFile(
+        path: event.path,
+      );
+    } catch (e) {
+      print('error --- delete camera file = $e');
+    }
+
+    yield currentState.resetCameraFiles();
+  }
+
+  Stream<CameraState> _mapResetCameraFilesToState(
+    ResetCameraFiles event,
+  ) async* {
+    yield currentState.resetCameraFiles();
   }
 }

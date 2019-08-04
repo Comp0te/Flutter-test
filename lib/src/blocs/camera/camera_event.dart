@@ -22,3 +22,11 @@ class TakePicture extends CameraEvent {}
 class StartVideoRecording extends CameraEvent {}
 
 class StopVideoRecording extends CameraEvent {}
+
+class DeleteCameraFile extends CameraEvent {
+  final String path;
+
+  DeleteCameraFile({@required this.path}) : super([path]);
+}
+
+class ResetCameraFiles extends CameraEvent {}
