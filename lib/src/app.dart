@@ -25,23 +25,49 @@ class App extends StatelessWidget {
         RepositoryProvider.of<ImageStoreRepository>(context);
     final CameraRepository _cameraRepository =
         RepositoryProvider.of<CameraRepository>(context);
+    final FirebaseMessagingRepository _firebaseMessagingRepository =
+        RepositoryProvider.of<FirebaseMessagingRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
     final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
     final CameraBloc _cameraBloc = CameraBloc(
       cameraRepository: _cameraRepository,
     );
+    final FirebaseMessagingBloc _firebaseMessagingBloc = FirebaseMessagingBloc(
+      firebaseMessagingRepository: _firebaseMessagingRepository,
+    );
+
+    final GlobalKey<NavigatorState> mainNavigatorKey =
+        GlobalKey<NavigatorState>();
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
       builder: (BuildContext context, AuthState state) {
         return state.isAuthenticated
-            ? BlocProvider(
-                builder: (context) {
-                  return _appStateBloc;
-                },
+            ? MultiBlocProvider(
+                providers: [
+                  BlocProvider<AppStateBloc>(
+                    builder: (context) {
+                      return _appStateBloc;
+                    },
+                  ),
+                  BlocProvider<FirebaseMessagingBloc>(
+                    builder: (context) {
+                      return _firebaseMessagingBloc
+                        ..dispatch(
+                          RequestNotificationPermissions(),
+                        )
+                        ..dispatch(
+                          ConfigureFirebaseMessaging(
+                            navigatorKey: mainNavigatorKey,
+                          ),
+                        );
+                    },
+                  )
+                ],
                 child: MaterialApp(
                   key: GlobalKey(),
+                  navigatorKey: mainNavigatorKey,
                   initialRoute: MainRouteNames.home,
                   onGenerateRoute: (RouteSettings settings) {
                     switch (settings.name) {
