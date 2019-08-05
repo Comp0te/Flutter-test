@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-import 'model.dart';
+import '../model.dart';
 
 part 'poster.g.dart';
 

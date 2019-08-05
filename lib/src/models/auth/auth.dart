@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import './model.dart';
+import '../model.dart';
 
 part 'auth.g.dart';
 
