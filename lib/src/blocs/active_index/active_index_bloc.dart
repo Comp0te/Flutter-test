@@ -11,7 +11,7 @@ class ActiveIndexBloc extends Bloc<ActiveIndexEvent, ActiveIndexState> {
     ActiveIndexEvent event,
   ) async* {
     if (event is SetActiveIndex) {
-      yield currentState.update(
+      yield currentState.copyWith(
         activeIndex: event.activeIndex,
       );
     }

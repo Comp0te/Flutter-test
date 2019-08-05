@@ -26,7 +26,7 @@ class PostersFetchState extends EquatableClass {
         isLoadingNextPage: false,
       );
 
-  PostersFetchState update({
+  PostersFetchState copyWith({
     bool isLoadingFirstPage,
     bool isLoadingNextPage,
     PostersFetchResponse data,

@@ -20,7 +20,7 @@ class RegisterState extends EquatableClass {
 
   factory RegisterState.init() => RegisterState(isLoading: false);
 
-  RegisterState update({
+  RegisterState copyWith({
     @required bool isLoading,
     AuthResponse data,
     Exception error,

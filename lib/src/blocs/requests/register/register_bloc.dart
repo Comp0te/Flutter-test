@@ -33,7 +33,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapRegisterRequestToState(RegisterRequest event) async* {
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: true,
     );
 
@@ -56,7 +56,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async* {
     await secureStorageRepository.saveToken(event.registerResponse.token);
 
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: false,
       data: event.registerResponse,
     );
@@ -66,7 +66,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> _mapRegisterRequestFailureToState(
     RegisterRequestFailure event,
   ) async* {
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: false,
       error: event.error,
     );

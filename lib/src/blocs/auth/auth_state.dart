@@ -10,7 +10,7 @@ class AuthState extends EquatableClass {
 
   factory AuthState.init() => AuthState(isAuthenticated: false);
 
-  AuthState update({@required bool isAuthenticated}) {
+  AuthState copyWith({@required bool isAuthenticated}) {
     return AuthState(isAuthenticated: isAuthenticated);
   }
 }

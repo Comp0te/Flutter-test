@@ -20,7 +20,7 @@ class LoginState extends EquatableClass {
 
   factory LoginState.init() => LoginState(isLoading: false);
 
-  LoginState update({
+  LoginState copyWith({
     @required bool isLoading,
     AuthResponse data,
     Exception error,

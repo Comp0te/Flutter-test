@@ -33,7 +33,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginRequestToState(LoginRequest event) async* {
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: true,
     );
 
@@ -54,7 +54,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     await secureStorageRepository.saveToken(event.loginResponse.token);
 
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: false,
       data: event.loginResponse,
     );
@@ -64,7 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginRequestFailureToState(
     LoginRequestFailure event,
   ) async* {
-    yield currentState.update(
+    yield currentState.copyWith(
       isLoading: false,
       error: event.error,
     );

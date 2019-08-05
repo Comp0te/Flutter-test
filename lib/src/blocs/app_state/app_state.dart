@@ -19,7 +19,7 @@ class AppState extends EquatableClass {
         posters: {},
       );
 
-  AppState update({
+  AppState copyWith({
     List<User> users,
     List<PosterNormalized> posters,
   }) {

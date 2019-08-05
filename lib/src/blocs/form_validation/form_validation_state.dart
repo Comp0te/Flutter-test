@@ -12,7 +12,7 @@ class FormValidationState extends EquatableClass {
   factory FormValidationState.init() =>
       FormValidationState(isFormAutoValidate: false);
 
-  FormValidationState update({@required bool isFormAutoValidate}) {
+  FormValidationState copyWith({@required bool isFormAutoValidate}) {
     return FormValidationState(isFormAutoValidate: isFormAutoValidate);
   }
 }

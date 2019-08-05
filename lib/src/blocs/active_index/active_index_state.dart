@@ -12,7 +12,7 @@ class ActiveIndexState extends EquatableClass {
   factory ActiveIndexState.init() =>
       ActiveIndexState(activeIndex: 0);
 
-  ActiveIndexState update({@required int activeIndex}) {
+  ActiveIndexState copyWith({@required int activeIndex}) {
     return ActiveIndexState(activeIndex: activeIndex);
   }
 }

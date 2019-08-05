@@ -27,16 +27,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final bool hasToken = await secureStorageRepository.hasToken();
 
       if (hasToken) {
-        yield currentState.update(isAuthenticated: true);
+        yield currentState.copyWith(isAuthenticated: true);
       }
     }
 
     if (event is LoggedIn) {
-      yield currentState.update(isAuthenticated: true);
+      yield currentState.copyWith(isAuthenticated: true);
     }
 
     if (event is LoggedOut) {
-      yield currentState.update(isAuthenticated: false);
+      yield currentState.copyWith(isAuthenticated: false);
       await secureStorageRepository.deleteToken();
     }
   }

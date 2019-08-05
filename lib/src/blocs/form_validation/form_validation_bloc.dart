@@ -14,7 +14,7 @@ class FormValidationBloc
     FormValidationEvent event,
   ) async* {
     if (event is ToggleFormAutoValidation) {
-      yield currentState.update(
+      yield currentState.copyWith(
         isFormAutoValidate: !currentState.isFormAutoValidate,
       );
     }
