@@ -41,6 +41,7 @@ dependencies:
   camera: ^0.5.2+2
   video_player: ^0.10.1+6
   back_button_interceptor: ^4.0.6
+  firebase_messaging: ^5.1.2
 
 
 dev_dependencies:
