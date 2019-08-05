@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,13 +34,18 @@ void main() {
   CameraRepository _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
   );
+  FirebaseMessagingRepository _firebaseMessaging = FirebaseMessagingRepository(
+    firebaseMessagingProvider: FirebaseMessagingProvider(
+      firebaseMessaging: FirebaseMessaging(),
+    ),
+  );
 
   runApp(
     BlocProvider(
       builder: (context) => AuthBloc(
-            secureStorageRepository: _secureStorageRepository,
-            authRepository: _authRepository,
-          )..dispatch(AppStarted()),
+        secureStorageRepository: _secureStorageRepository,
+        authRepository: _authRepository,
+      )..dispatch(AppStarted()),
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider<SecureStorageRepository>(builder: (context) {
@@ -59,6 +65,9 @@ void main() {
           }),
           RepositoryProvider<CameraRepository>(builder: (context) {
             return _cameraRepository;
+          }),
+          RepositoryProvider<FirebaseMessagingRepository>(builder: (context) {
+            return _firebaseMessaging;
           }),
         ],
         child: App(),
