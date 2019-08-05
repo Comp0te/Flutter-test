@@ -11,6 +11,9 @@ class CameraState extends EquatableClass {
   final String photoPath;
   final String videoPath;
 
+  bool get isInitialized =>
+      cameraController != null && cameraController.value.isInitialized;
+
   CameraState({
     @required this.cameras,
     this.cameraController,

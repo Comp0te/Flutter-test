@@ -133,18 +133,17 @@ class _CameraScreenState extends State<CameraScreen>
         return Expanded(
           child: Container(
             child: Center(
-              child: (state.cameraController == null ||
-                      !state.cameraController.value.isInitialized)
-                  ? Spinner()
-                  : AspectRatio(
+              child: state.isInitialized
+                  ? AspectRatio(
                       aspectRatio: state.cameraController.value.aspectRatio,
                       child: CameraPreview(state.cameraController),
-                    ),
+                    )
+                  : Spinner(),
             ),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
-                color: isRecodingVideo(state)
+                color: state.isVideoRecording
                     ? Colors.redAccent
                     : Colors.transparent,
                 width: 3.0,
@@ -223,7 +222,7 @@ class _CameraScreenState extends State<CameraScreen>
                 ),
                 groupValue: state.cameraController?.description,
                 value: cameraDescription,
-                onChanged: isRecodingVideo(state)
+                onChanged: state.isVideoRecording
                     ? null
                     : (cameraDescription) {
                         _cameraBloc.dispatch(SelectCamera(
@@ -244,8 +243,4 @@ class _CameraScreenState extends State<CameraScreen>
       },
     );
   }
-
-  bool isRecodingVideo(CameraState state) =>
-      state.cameraController != null &&
-      state.cameraController.value.isRecordingVideo;
 }
