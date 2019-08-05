@@ -4,9 +4,11 @@ import 'package:page_transition/page_transition.dart';
 
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 import 'package:flutter_app/src/screens/screens.dart';
+
+import 'models/model.dart';
 
 class App extends StatelessWidget {
   @override
@@ -21,9 +23,14 @@ class App extends StatelessWidget {
         RepositoryProvider.of<DBRepository>(context);
     final ImageStoreRepository _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
+    final CameraRepository _cameraRepository =
+        RepositoryProvider.of<CameraRepository>(context);
 
     final AppStateBloc _appStateBloc = AppStateBloc();
-    final DrawerBloc _mainDrawerBloc = DrawerBloc();
+    final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
+    final CameraBloc _cameraBloc = CameraBloc(
+      cameraRepository: _cameraRepository,
+    );
 
     return BlocBuilder(
       bloc: BlocProvider.of<AuthBloc>(context),
@@ -35,7 +42,7 @@ class App extends StatelessWidget {
                 },
                 child: MaterialApp(
                   key: GlobalKey(),
-//                  initialRoute: MainRouteNames.home,
+                  initialRoute: MainRouteNames.home,
                   onGenerateRoute: (RouteSettings settings) {
                     switch (settings.name) {
                       case MainRouteNames.home:
@@ -54,9 +61,9 @@ class App extends StatelessWidget {
                                   );
                                 },
                               ),
-                              BlocProvider<DrawerBloc>(
+                              BlocProvider<ActiveIndexBloc>(
                                 builder: (context) {
-                                  return _mainDrawerBloc;
+                                  return _drawerActiveIndexBloc;
                                 },
                               )
                             ],
@@ -78,15 +85,52 @@ class App extends StatelessWidget {
                                     appStateBloc: _appStateBloc,
                                   )..dispatch(DBGetNormalizedPosters());
                                 },
-                                child: DatabaseScreen(),
                               ),
-                              BlocProvider<DrawerBloc>(
+                              BlocProvider<ActiveIndexBloc>(
                                 builder: (context) {
-                                  return _mainDrawerBloc;
+                                  return _drawerActiveIndexBloc;
                                 },
                               )
                             ],
                             child: DatabaseScreen(),
+                          ),
+                        );
+                        break;
+
+                      case MainRouteNames.camera:
+                        return PageTransition(
+                          type: PageTransitionType.fade,
+                          alignment: Alignment.center,
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider<CameraBloc>(
+                                builder: (context) {
+                                  return _cameraBloc..dispatch(InitCamera());
+                                },
+                              ),
+                              BlocProvider<ActiveIndexBloc>(
+                                builder: (context) {
+                                  return _drawerActiveIndexBloc;
+                                },
+                              ),
+                            ],
+                            child: CameraScreen(),
+                          ),
+                        );
+                        break;
+
+                      case MainRouteNames.cameraPreview:
+                        final args = settings.arguments;
+
+                        return PageTransition(
+                          type: PageTransitionType.leftToRight,
+                          alignment: Alignment.centerLeft,
+                          child: BlocProvider<CameraBloc>.value(
+                            value: _cameraBloc,
+                            child: CameraPreviewScreen(
+                              screenArgs:
+                                  args is CameraPreviewScreenArgs ? args : null,
+                            ),
                           ),
                         );
                         break;

@@ -3,7 +3,7 @@ import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
 class DatabaseScreen extends StatelessWidget {

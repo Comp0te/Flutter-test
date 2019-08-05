@@ -11,7 +11,7 @@ import 'package:flutter_app/src/widgets/submit_button.dart';
 
 import 'package:flutter_app/src/utils/validators.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override

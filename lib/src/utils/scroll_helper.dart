@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/blocks/blocks.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 
 // TODO: rework for greater versatility and readability
 abstract class ScrollHelper {

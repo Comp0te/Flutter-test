@@ -8,7 +8,7 @@ import 'src/app.dart';
 import 'src/utils/dio_helper.dart';
 import 'src/repositories/repositories.dart';
 import 'src/data_providers/data_providers.dart';
-import 'src/blocks/blocks.dart';
+import 'src/blocs/blocs.dart';
 import 'src/database/database.dart';
 
 void main() {
@@ -29,6 +29,9 @@ void main() {
   );
   final ImageStoreRepository _imageStoreRepository = ImageStoreRepository(
     imageStoreProvider: ImageStoreProvider(),
+  );
+  CameraRepository _cameraRepository = CameraRepository(
+    cameraProvider: CameraProvider(),
   );
 
   runApp(
@@ -53,6 +56,9 @@ void main() {
           }),
           RepositoryProvider<ImageStoreRepository>(builder: (context) {
             return _imageStoreRepository;
+          }),
+          RepositoryProvider<CameraRepository>(builder: (context) {
+            return _cameraRepository;
           }),
         ],
         child: App(),
