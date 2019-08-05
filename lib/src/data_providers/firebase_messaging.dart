@@ -28,13 +28,15 @@ class FirebaseMessagingProvider {
 
   MessageHandler _makeOnResume(GlobalKey<NavigatorState> navigatorKey) {
     return (Map<String, dynamic> message) async {
+      var data = message['data'] ?? message;
+
       print(' =============== onResume ================= \n'
           '$message');
-      if (message['data']['route'].toString() == MainRouteNames.database) {
+      if (data['route'] == MainRouteNames.database) {
         await navigatorKey.currentState.pushReplacementNamed(
           MainRouteNames.database,
         );
-      } else if (message['data']['route'].toString() == MainRouteNames.camera) {
+      } else if (data['route'] == MainRouteNames.camera) {
         await navigatorKey.currentState.pushReplacementNamed(
           MainRouteNames.camera,
         );
