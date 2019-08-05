@@ -8,6 +8,7 @@ export 'image_store/bloc.dart';
 export 'active_index/bloc.dart';
 export 'camera/bloc.dart';
 export 'video_player/bloc.dart';
+export 'firebase_messaging/bloc.dart';
 
 export 'requests/login/bloc.dart';
 export 'requests/register/bloc.dart';
