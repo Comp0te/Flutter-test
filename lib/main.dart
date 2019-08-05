@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
-import 'src/utils/dio_helper.dart';
+import 'package:flutter_app/src/utils/helpers/dio_helper.dart';
 import 'src/repositories/repositories.dart';
 import 'src/data_providers/data_providers.dart';
 import 'src/blocs/blocs.dart';

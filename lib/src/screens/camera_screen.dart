@@ -6,7 +6,7 @@ import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/blocs/blocs.dart';
-import 'package:flutter_app/src/utils/camera_helper.dart';
+import 'package:flutter_app/src/utils/helpers/camera_helper.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
