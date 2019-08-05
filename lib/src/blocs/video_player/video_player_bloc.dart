@@ -10,6 +10,12 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   VideoPlayerState get initialState => VideoPlayerState.init();
 
   @override
+  void dispose() {
+    currentState.videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Stream<VideoPlayerState> mapEventToState(VideoPlayerEvent event) async* {
     if (event is InitVideoPlayerWithFile) {
       yield* _mapInitVideoPlayerWithFileToState(event);
