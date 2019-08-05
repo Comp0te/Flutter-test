@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -73,7 +74,9 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                           File(widget.screenArgs.photoPath),
                           fit: BoxFit.contain,
                         )
-                      : Text('VideoPlayer'),
+                      : CustomVideoPlayer(
+                          videoPath: widget.screenArgs.videoPath,
+                        ),
                 ),
               ),
             ],

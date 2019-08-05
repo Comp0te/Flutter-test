@@ -7,3 +7,4 @@ export './hero_register.dart';
 export './submit_button.dart';
 export './spinner.dart';
 export './drawer_item.dart';
+export './custom_video_player.dart';
