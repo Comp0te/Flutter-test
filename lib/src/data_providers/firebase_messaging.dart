@@ -30,16 +30,16 @@ class FirebaseMessagingProvider {
     return (Map<String, dynamic> message) async {
       print(' =============== onResume ================= \n'
           '$message');
-      if (message['route'] == MainRouteNames.database) {
-        await navigatorKey.currentState.popAndPushNamed(
+      if (message['data']['route'].toString() == MainRouteNames.database) {
+        await navigatorKey.currentState.pushReplacementNamed(
           MainRouteNames.database,
         );
-      } else if (message['route'] == MainRouteNames.camera) {
-        await navigatorKey.currentState.popAndPushNamed(
-          MainRouteNames.database,
+      } else if (message['data']['route'].toString() == MainRouteNames.camera) {
+        await navigatorKey.currentState.pushReplacementNamed(
+          MainRouteNames.camera,
         );
       } else {
-        await navigatorKey.currentState.popAndPushNamed(
+        await navigatorKey.currentState.pushReplacementNamed(
           MainRouteNames.home,
         );
       }
