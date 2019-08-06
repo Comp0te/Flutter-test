@@ -70,72 +70,77 @@ class _RegisterScreenState extends State<RegisterScreen> {
             _registerBloc.dispatch(RegisterRequestInit());
           }
         },
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                HeroRegister(
-                  width: MediaQuery.of(context).size.width,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: BlocBuilder(
-                    bloc: _formValidationBloc,
-                    builder: (
-                      BuildContext context,
-                      FormValidationState formValidationState,
-                    ) {
-                      return FormBuilder(
-                        key: _fbKey,
-                        autovalidate: formValidationState.isFormAutoValidate,
-                        child: Column(
-                          children: <Widget>[
-                            FormFieldUserName(
-                              controller: _usernameController,
-                            ),
-                            FormFieldEmail(
-                              controller: _emailController,
-                            ),
-                            FormFieldPassword(
-                              label: 'Password',
-                              controller: _password1Controller,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: FormFieldPassword(
-                                label: 'Confirm Password',
-                                controller: _password2Controller,
-                                validatorsList: [
-                                  Validators.makeConfirmPasswordValidator(
-                                    passwordController: _password1Controller,
-                                  )
-                                ],
-                              ),
-                            ),
-                            BlocBuilder(
-                              bloc: _registerBloc,
-                              builder: (
-                                BuildContext context,
-                                RegisterState registerState,
-                              ) {
-                                return SubmitButton(
-                                  isLoading: registerState.isLoading,
-                                  title: 'Submit',
-                                  onPress: _makeOnPressSubmit(
-                                    formValidationState,
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  HeroRegister(
+                    width: MediaQuery.of(context).size.width,
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
+                    child: BlocBuilder(
+                      bloc: _formValidationBloc,
+                      builder: (
+                        BuildContext context,
+                        FormValidationState formValidationState,
+                      ) {
+                        return FormBuilder(
+                          key: _fbKey,
+                          autovalidate: formValidationState.isFormAutoValidate,
+                          child: Column(
+                            children: <Widget>[
+                              FormFieldUserName(
+                                controller: _usernameController,
+                              ),
+                              FormFieldEmail(
+                                controller: _emailController,
+                              ),
+                              FormFieldPassword(
+                                label: 'Password',
+                                controller: _password1Controller,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: FormFieldPassword(
+                                  label: 'Confirm Password',
+                                  controller: _password2Controller,
+                                  validatorsList: [
+                                    Validators.makeConfirmPasswordValidator(
+                                      passwordController: _password1Controller,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              BlocBuilder(
+                                bloc: _registerBloc,
+                                builder: (
+                                  BuildContext context,
+                                  RegisterState registerState,
+                                ) {
+                                  return SubmitButton(
+                                    isLoading: registerState.isLoading,
+                                    title: 'Submit',
+                                    onPress: _makeOnPressSubmit(
+                                      formValidationState,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

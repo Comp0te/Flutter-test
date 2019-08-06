@@ -82,68 +82,73 @@ class _LoginScreenState extends State<LoginScreen>
             _loginBloc.dispatch(LoginRequestInit());
           }
         },
-        child: Center(
-          child: SingleChildScrollView(
-            padding: widget.paddingHorizontalScreen,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                BlocBuilder(
-                  bloc: _formValidationBloc,
-                  builder: (
-                    BuildContext context,
-                    FormValidationState formValidationState,
-                  ) {
-                    return FormBuilder(
-                      key: _fbKey,
-                      autovalidate: formValidationState.isFormAutoValidate,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            margin: widget.marginBottomEmail,
-                            child: FormFieldEmail(
-                              controller: _emailController,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Center(
+            child: SingleChildScrollView(
+              padding: widget.paddingHorizontalScreen,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  BlocBuilder(
+                    bloc: _formValidationBloc,
+                    builder: (
+                      BuildContext context,
+                      FormValidationState formValidationState,
+                    ) {
+                      return FormBuilder(
+                        key: _fbKey,
+                        autovalidate: formValidationState.isFormAutoValidate,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              margin: widget.marginBottomEmail,
+                              child: FormFieldEmail(
+                                controller: _emailController,
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: widget.marginBottomPassword,
-                            child: FormFieldPassword(
-                              controller: _passwordController,
+                            Container(
+                              margin: widget.marginBottomPassword,
+                              child: FormFieldPassword(
+                                controller: _passwordController,
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 40, top: 20),
-                            child: BlocBuilder(
-                              bloc: _loginBloc,
-                              builder: (
-                                BuildContext context,
-                                LoginState loginState,
-                              ) {
-                                return Opacity(
-                                  opacity: widget.submitOpacity,
-                                  child: SubmitButton(
-                                    isLoading: loginState.isLoading,
-                                    title: 'Submit',
-                                    color: widget.color,
-                                    onPress: _getOnPressSubmit(
-                                      formValidationState,
+                            Container(
+                              margin: EdgeInsets.only(bottom: 40, top: 20),
+                              child: BlocBuilder(
+                                bloc: _loginBloc,
+                                builder: (
+                                  BuildContext context,
+                                  LoginState loginState,
+                                ) {
+                                  return Opacity(
+                                    opacity: widget.submitOpacity,
+                                    child: SubmitButton(
+                                      isLoading: loginState.isLoading,
+                                      title: 'Submit',
+                                      color: widget.color,
+                                      onPress: _getOnPressSubmit(
+                                        formValidationState,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                          HeroRegister(
-                            width: widget.heroRegisterWidth,
-                            onTap: _toRegistrationScreen,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
+                            HeroRegister(
+                              width: widget.heroRegisterWidth,
+                              onTap: _toRegistrationScreen,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
