@@ -31,10 +31,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final FormValidationBloc _formValidationBloc = FormValidationBloc();
+  final _fbKey = GlobalKey<FormBuilderState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formValidationBloc = FormValidationBloc();
+  final _passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +45,29 @@ class _LoginScreenState extends State<LoginScreen>
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
-    VoidCallback _getOnPressSubmit(FormValidationState state) {
-      return () {
-        if (_fbKey.currentState.validate()) {
-          _loginBloc.dispatch(LoginRequest(
-            email: _emailController.text,
-            password: _passwordController.text,
-          ));
-        } else if (!state.isFormAutoValidate) {
-          _formValidationBloc.dispatch(ToggleFormAutoValidation());
-        }
+    void submitForm(FormValidationState state) {
+      if (_fbKey.currentState.validate()) {
+        _loginBloc.dispatch(LoginRequest(
+          email: _emailController.text,
+          password: _passwordController.text,
+        ));
+      } else if (!state.isFormAutoValidate) {
+        _formValidationBloc.dispatch(ToggleFormAutoValidation());
+      }
+    }
+
+    VoidCallback _makeOnPressSubmit(FormValidationState state) {
+      return () => submitForm(state);
+    }
+
+    void _onEmailSubmitted(_) {
+      FocusScope.of(context).requestFocus(_passwordFocusNode);
+    }
+
+    ValueChanged<String> _makeOnPasswordSubmitted(FormValidationState state) {
+      return (_) {
+        submitForm(state);
+        FocusScope.of(context).unfocus();
       };
     }
 
@@ -108,12 +122,17 @@ class _LoginScreenState extends State<LoginScreen>
                               margin: widget.marginBottomEmail,
                               child: FormFieldEmail(
                                 controller: _emailController,
+                                onFiledSubmitted: _onEmailSubmitted,
                               ),
                             ),
                             Container(
                               margin: widget.marginBottomPassword,
                               child: FormFieldPassword(
                                 controller: _passwordController,
+                                focusNode: _passwordFocusNode,
+                                onFiledSubmitted: _makeOnPasswordSubmitted(
+                                    formValidationState),
+                                textInputAction: TextInputAction.done,
                               ),
                             ),
                             Container(
@@ -130,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       isLoading: loginState.isLoading,
                                       title: 'Submit',
                                       color: widget.color,
-                                      onPress: _getOnPressSubmit(
+                                      onPress: _makeOnPressSubmit(
                                         formValidationState,
                                       ),
                                     ),
