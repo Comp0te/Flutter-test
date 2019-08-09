@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/utils/constants.dart';
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
       OrientationHelper.isLandscape(context)
-          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.43)
+          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
           : BoxConstraints();
 
   @override
