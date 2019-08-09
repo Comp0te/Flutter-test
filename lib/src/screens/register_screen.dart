@@ -19,29 +19,45 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _password1Controller = TextEditingController();
-  final TextEditingController _password2Controller = TextEditingController();
-  final FormValidationBloc _formValidationBloc = FormValidationBloc();
+  final _fbKey = GlobalKey<FormBuilderState>();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _password1Controller = TextEditingController();
+  final _password2Controller = TextEditingController();
+  final _formValidationBloc = FormValidationBloc();
+  final _emailFocusNode = FocusNode();
+  final _password1FocusNode = FocusNode();
+  final _password2FocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final RegisterBloc _registerBloc = BlocProvider.of<RegisterBloc>(context);
 
+    void _submitForm(FormValidationState state) {
+      if (_fbKey.currentState.validate()) {
+        _registerBloc.dispatch(RegisterRequest(
+          username: _usernameController.text,
+          email: _emailController.text,
+          password1: _password1Controller.text,
+          password2: _password2Controller.text,
+        ));
+      } else if (!state.isFormAutoValidate) {
+        _formValidationBloc.dispatch(ToggleFormAutoValidation());
+      }
+    }
+
     VoidCallback _makeOnPressSubmit(FormValidationState state) {
-      return () {
-        if (_fbKey.currentState.validate()) {
-          _registerBloc.dispatch(RegisterRequest(
-            username: _usernameController.text,
-            email: _emailController.text,
-            password1: _password1Controller.text,
-            password2: _password2Controller.text,
-          ));
-        } else if (!state.isFormAutoValidate) {
-          _formValidationBloc.dispatch(ToggleFormAutoValidation());
-        }
+      return () => _submitForm(state);
+    }
+
+    ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
+      return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
+    }
+
+    ValueChanged<String> _makeOnDoneActionSubmitted(FormValidationState state) {
+      return (_) {
+        _submitForm(state);
+        FocusScope.of(context).unfocus();
       };
     }
 
@@ -98,13 +114,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: <Widget>[
                               FormFieldUserName(
                                 controller: _usernameController,
+                                onFiledSubmitted: _makeOnNextActionSubmitted(
+                                  _emailFocusNode,
+                                ),
                               ),
                               FormFieldEmail(
                                 controller: _emailController,
+                                focusNode: _emailFocusNode,
+                                onFiledSubmitted: _makeOnNextActionSubmitted(
+                                  _password1FocusNode,
+                                ),
                               ),
                               FormFieldPassword(
                                 label: 'Password',
                                 controller: _password1Controller,
+                                focusNode: _password1FocusNode,
+                                onFiledSubmitted: _makeOnNextActionSubmitted(
+                                  _password2FocusNode,
+                                ),
                               ),
                               Container(
                                 margin: EdgeInsets.only(bottom: 10),
@@ -116,6 +143,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       passwordController: _password1Controller,
                                     )
                                   ],
+                                  focusNode: _password2FocusNode,
+                                  onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                    formValidationState,
+                                  ),
+                                  textInputAction: TextInputAction.done,
                                 ),
                               ),
                               BlocBuilder(
