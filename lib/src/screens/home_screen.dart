@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
-  StreamSubscription<PostersFetchState> postersFetchStateSubscription;
 
   double get scrollOffset =>
       _scrollController.hasClients && _scrollController.offset >= 0
@@ -39,22 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ..dispatch(PostersFetchFirstPageRequest());
   }
 
-  @override
-  void dispose() {
-    postersFetchStateSubscription?.cancel();
-    super.dispose();
-  }
-
   void loadMorePosters() {
-    postersFetchStateSubscription =
-        _postersFetchBloc.state.take(1).listen((state) {
+    _postersFetchBloc.state.take(1).listen((state) {
       if (state.hasNextPage && !state.isLoadingNextPage) {
         _postersFetchBloc.dispatch(
           PostersFetchNextPageRequest(page: state.data.meta.page + 1),
         );
       }
-
-      postersFetchStateSubscription.cancel();
     });
   }
 
