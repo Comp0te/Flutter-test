@@ -5,12 +5,18 @@ class FormFieldEmail extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final List<FormFieldValidator> validatorsList;
+  final ValueChanged<String> onFiledSubmitted;
+  final TextInputAction textInputAction;
+  final FocusNode focusNode;
 
   const FormFieldEmail({
     Key key,
     @required this.controller,
     this.label = "Email",
     this.validatorsList = const [],
+    this.onFiledSubmitted,
+    this.textInputAction = TextInputAction.next,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -22,7 +28,10 @@ class FormFieldEmail extends StatelessWidget {
         controller: controller,
         attribute: label,
         autocorrect: false,
+        focusNode: focusNode,
         keyboardType: TextInputType.emailAddress,
+        textInputAction: textInputAction,
+        onFieldSubmitted: onFiledSubmitted,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0),
           labelText: label,
