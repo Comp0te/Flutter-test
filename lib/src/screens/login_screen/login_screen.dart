@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen>
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
-    void submitForm(FormValidationState state) {
+    void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
         _loginBloc.dispatch(LoginRequest(
           email: _emailController.text,
@@ -57,16 +57,16 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     VoidCallback _makeOnPressSubmit(FormValidationState state) {
-      return () => submitForm(state);
+      return () => _submitForm(state);
     }
 
-    void _onEmailSubmitted(_) {
-      FocusScope.of(context).requestFocus(_passwordFocusNode);
+    ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
+      return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
     }
 
-    ValueChanged<String> _makeOnPasswordSubmitted(FormValidationState state) {
+    ValueChanged<String> _makeOnDoneActionSubmitted(FormValidationState state) {
       return (_) {
-        submitForm(state);
+        _submitForm(state);
         FocusScope.of(context).unfocus();
       };
     }
@@ -122,7 +122,9 @@ class _LoginScreenState extends State<LoginScreen>
                               margin: widget.marginBottomEmail,
                               child: FormFieldEmail(
                                 controller: _emailController,
-                                onFiledSubmitted: _onEmailSubmitted,
+                                onFiledSubmitted: _makeOnNextActionSubmitted(
+                                  _passwordFocusNode,
+                                ),
                               ),
                             ),
                             Container(
@@ -130,8 +132,9 @@ class _LoginScreenState extends State<LoginScreen>
                               child: FormFieldPassword(
                                 controller: _passwordController,
                                 focusNode: _passwordFocusNode,
-                                onFiledSubmitted: _makeOnPasswordSubmitted(
-                                    formValidationState),
+                                onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                  formValidationState,
+                                ),
                                 textInputAction: TextInputAction.done,
                               ),
                             ),
