@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -35,6 +36,11 @@ class _LoginScreenState extends State<LoginScreen>
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FormValidationBloc _formValidationBloc = FormValidationBloc();
+
+  BoxConstraints _getFormFieldConstraints(BuildContext context) =>
+      OrientationHelper.isLandscape(context)
+          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.43)
+          : BoxConstraints();
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
           }
         },
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
             child: SingleChildScrollView(
               padding: widget.paddingHorizontalScreen,
@@ -104,17 +108,32 @@ class _LoginScreenState extends State<LoginScreen>
                         autovalidate: formValidationState.isFormAutoValidate,
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              margin: widget.marginBottomEmail,
-                              child: FormFieldEmail(
-                                controller: _emailController,
-                              ),
-                            ),
-                            Container(
-                              margin: widget.marginBottomPassword,
-                              child: FormFieldPassword(
-                                controller: _passwordController,
-                              ),
+                            Flex(
+                              direction:
+                                  OrientationHelper.isLandscape(context)
+                                      ? Axis.horizontal
+                                      : Axis.vertical,
+                              mainAxisSize:
+                                  OrientationHelper.isLandscape(context)
+                                      ? MainAxisSize.max
+                                      : MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  constraints: _getFormFieldConstraints(context),
+                                  margin: widget.marginBottomEmail,
+                                  child: FormFieldEmail(
+                                    controller: _emailController,
+                                  ),
+                                ),
+                                Container(
+                                  constraints: _getFormFieldConstraints(context),
+                                  margin: widget.marginBottomPassword,
+                                  child: FormFieldPassword(
+                                    controller: _passwordController,
+                                  ),
+                                ),
+                              ],
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 40, top: 20),
