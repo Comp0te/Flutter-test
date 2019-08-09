@@ -16,6 +16,6 @@ class ImageStoreRepository {
   }
 
   Future<void> saveImage(String url) async {
-    return _imageStoreProvider.saveImage(url: url);
+    return _imageStoreProvider.computeSaveImage(url);
   }
 }

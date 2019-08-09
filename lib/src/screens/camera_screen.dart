@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,11 +23,13 @@ class _CameraScreenState extends State<CameraScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _cameraBloc = BlocProvider.of<CameraBloc>(context);
+    OrientationHelper.setOnlyPortraitUP();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    OrientationHelper.setAllOrientations();
     super.dispose();
   }
 

@@ -4,12 +4,10 @@ import 'package:flutter_app/src/widgets/hero_register.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-import 'package:flutter_app/src/widgets/form_field_email.dart';
-import 'package:flutter_app/src/widgets/form_field_password.dart';
-import 'package:flutter_app/src/widgets/form_field_username.dart';
-import 'package:flutter_app/src/widgets/submit_button.dart';
+import 'package:flutter_app/src/widgets/widgets.dart';
 
 import 'package:flutter_app/src/utils/validators.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
@@ -28,6 +26,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailFocusNode = FocusNode();
   final _password1FocusNode = FocusNode();
   final _password2FocusNode = FocusNode();
+
+  BoxConstraints _getFormFieldConstraints(BuildContext context) =>
+      OrientationHelper.isLandscape(context)
+          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
+          : BoxConstraints();
 
   @override
   Widget build(BuildContext context) {
@@ -112,42 +115,88 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           autovalidate: formValidationState.isFormAutoValidate,
                           child: Column(
                             children: <Widget>[
-                              FormFieldUserName(
-                                controller: _usernameController,
-                                onFiledSubmitted: _makeOnNextActionSubmitted(
-                                  _emailFocusNode,
-                                ),
-                              ),
-                              FormFieldEmail(
-                                controller: _emailController,
-                                focusNode: _emailFocusNode,
-                                onFiledSubmitted: _makeOnNextActionSubmitted(
-                                  _password1FocusNode,
-                                ),
-                              ),
-                              FormFieldPassword(
-                                label: 'Password',
-                                controller: _password1Controller,
-                                focusNode: _password1FocusNode,
-                                onFiledSubmitted: _makeOnNextActionSubmitted(
-                                  _password2FocusNode,
-                                ),
+                              Flex(
+                                direction:
+                                    OrientationHelper.isLandscape(context)
+                                        ? Axis.horizontal
+                                        : Axis.vertical,
+                                mainAxisSize:
+                                    OrientationHelper.isLandscape(context)
+                                        ? MainAxisSize.max
+                                        : MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    constraints:
+                                        _getFormFieldConstraints(context),
+                                    child: FormFieldUserName(
+                                      controller: _usernameController,
+                                      onFiledSubmitted: _makeOnNextActionSubmitted(
+                                        _emailFocusNode,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    constraints:
+                                        _getFormFieldConstraints(context),
+                                    child: FormFieldEmail(
+                                      controller: _emailController,
+                                      focusNode: _emailFocusNode,
+                                      onFiledSubmitted: _makeOnNextActionSubmitted(
+                                        _password1FocusNode,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               Container(
                                 margin: EdgeInsets.only(bottom: 10),
-                                child: FormFieldPassword(
-                                  label: 'Confirm Password',
-                                  controller: _password2Controller,
-                                  validatorsList: [
-                                    Validators.makeConfirmPasswordValidator(
-                                      passwordController: _password1Controller,
-                                    )
+                                child: Flex(
+                                  direction:
+                                      OrientationHelper.isLandscape(context)
+                                          ? Axis.horizontal
+                                          : Axis.vertical,
+                                  mainAxisSize:
+                                      OrientationHelper.isLandscape(context)
+                                          ? MainAxisSize.max
+                                          : MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      constraints:
+                                          _getFormFieldConstraints(context),
+                                      child: FormFieldPassword(
+                                        label: 'Password',
+                                        controller: _password1Controller,
+                                        focusNode: _password1FocusNode,
+                                        onFiledSubmitted: _makeOnNextActionSubmitted(
+                                          _password2FocusNode,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      constraints:
+                                          _getFormFieldConstraints(context),
+                                      child: FormFieldPassword(
+                                        label: 'Confirm Password',
+                                        controller: _password2Controller,
+                                        validatorsList: [
+                                          Validators
+                                              .makeConfirmPasswordValidator(
+                                            passwordController:
+                                                _password1Controller,
+                                          )
+                                        ],
+                                        focusNode: _password2FocusNode,
+                                        onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                          formValidationState,
+                                        ),
+                                        textInputAction: TextInputAction.done,
+                                      ),
+                                    ),
                                   ],
-                                  focusNode: _password2FocusNode,
-                                  onFiledSubmitted: _makeOnDoneActionSubmitted(
-                                    formValidationState,
-                                  ),
-                                  textInputAction: TextInputAction.done,
                                 ),
                               ),
                               BlocBuilder(

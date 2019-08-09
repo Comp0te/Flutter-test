@@ -1,10 +1,10 @@
-import 'dart:async';
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/utils/helpers/scroll_helper.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -15,16 +15,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final int gridViewColumnCount = 2;
   final double gridViewCrossAxisSpacing = 5;
   final double gridViewMainAxisSpacing = 5;
   final double gridViewPaddingHorizontal = 10;
   final double gridViewPaddingVertical = 20;
-  final GlobalKey _gridViewKey = GlobalKey();
+  final _gridViewKey = GlobalKey();
 
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
-  StreamSubscription<PostersFetchState> postersFetchStateSubscription;
 
   double get scrollOffset =>
       _scrollController.hasClients && _scrollController.offset >= 0
@@ -39,22 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ..dispatch(PostersFetchFirstPageRequest());
   }
 
-  @override
-  void dispose() {
-    postersFetchStateSubscription?.cancel();
-    super.dispose();
-  }
-
   void loadMorePosters() {
-    postersFetchStateSubscription =
-        _postersFetchBloc.state.take(1).listen((state) {
+    _postersFetchBloc.state.take(1).listen((state) {
       if (state.hasNextPage && !state.isLoadingNextPage) {
         _postersFetchBloc.dispatch(
           PostersFetchNextPageRequest(page: state.data.meta.page + 1),
         );
       }
-
-      postersFetchStateSubscription.cancel();
     });
   }
 
@@ -71,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final gridViewColumnCount = OrientationHelper.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
       drawer: MainDrawer(),

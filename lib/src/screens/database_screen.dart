@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/repositories/repositories.dart';
+import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 
 class DatabaseScreen extends StatelessWidget {
-  String _getUrlFromPosters(List<PosterNormalized> posters, int index) {
-    return posters[index].images != null && posters[index].images.isNotEmpty
-        ? posters[index].images[0]?.file
-        : null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final ImageStoreRepository _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
+    final showImageCount = OrientationHelper.isPortrait(context) ? 3 : 5;
+
+    Future<List<Widget>> _getImagesFromStore(
+      PosterNormalized poster,
+      int showImageCount,
+    ) {
+      if (poster.images != null && poster.images.isNotEmpty) {
+        return Stream.fromIterable(poster.images)
+            .take(showImageCount)
+            .map((image) => Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: ImageFromStore(
+                      imageStoreBloc: ImageStoreBloc(
+                        imageStoreRepository: _imageStoreRepository,
+                      ),
+                      url: image.file,
+                    ),
+                  ),
+                ))
+            .toList();
+      }
+
+      return Future.value([
+        Image.asset(
+          'assets/placeholder.png',
+          fit: BoxFit.cover,
+          width: 50,
+          height: 50,
+        )
+      ]);
+    }
 
     return Scaffold(
       drawer: MainDrawer(),
@@ -30,16 +59,15 @@ class DatabaseScreen extends StatelessWidget {
         builder: (context, AppState state) {
           var posters = state.posters.values.toList();
 
-          return state.posters.isNotEmpty
-              ? ListView.builder(
-                  itemBuilder: (context, int index) {
-                    ImageStoreBloc _imageStoreBloc = ImageStoreBloc(
-                      imageStoreRepository: _imageStoreRepository,
-                    );
-
-                    return Column(
-                      children: <Widget>[
-                        ListTile(
+          return state.posters.isEmpty
+              ? Spinner()
+              : ListView.separated(
+                  itemBuilder: (context, int index) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: ListTile(
                           contentPadding: EdgeInsets.symmetric(
                             vertical: 5,
                             horizontal: 10,
@@ -47,25 +75,34 @@ class DatabaseScreen extends StatelessWidget {
                           title: Text(
                             'id - ${posters[index].id} - ${posters[index].text}',
                           ),
-                          leading: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ImageFromStore(
-                              imageStoreBloc: _imageStoreBloc,
-                              url: _getUrlFromPosters(posters, index),
-                            ),
-                          ),
+                          subtitle: Text('price - ${posters[index].price}'),
                         ),
-                        Divider(
-                          height: 1,
-                          color: Colors.blue,
-                        )
-                      ],
-                    );
-                  },
+                      ),
+                      FutureBuilder<List<Widget>>(
+                        future: _getImagesFromStore(
+                          posters[index],
+                          showImageCount,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Row(
+                              children: snapshot.data,
+                              mainAxisSize: MainAxisSize.min,
+                            );
+                          }
+
+                          return Spinner();
+                        },
+                      ),
+                    ],
+                  ),
                   itemCount: state.posters.length,
-                )
-              : Spinner();
+                  separatorBuilder: (context, int index) => Divider(
+                    height: 2,
+                    color: index % 2 == 0 ? Colors.red : Colors.blue,
+                  ),
+                );
         },
       ),
     );

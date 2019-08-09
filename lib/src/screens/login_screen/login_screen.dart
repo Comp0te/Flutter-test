@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/servises/snackbar.dart';
 import 'package:flutter_app/src/utils/constants.dart';
@@ -36,6 +37,11 @@ class _LoginScreenState extends State<LoginScreen>
   final _passwordController = TextEditingController();
   final _formValidationBloc = FormValidationBloc();
   final _passwordFocusNode = FocusNode();
+
+  BoxConstraints _getFormFieldConstraints(BuildContext context) =>
+      OrientationHelper.isLandscape(context)
+          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
+          : BoxConstraints();
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +103,7 @@ class _LoginScreenState extends State<LoginScreen>
           }
         },
         child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
             child: SingleChildScrollView(
               padding: widget.paddingHorizontalScreen,
@@ -118,25 +122,40 @@ class _LoginScreenState extends State<LoginScreen>
                         autovalidate: formValidationState.isFormAutoValidate,
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              margin: widget.marginBottomEmail,
-                              child: FormFieldEmail(
-                                controller: _emailController,
-                                onFiledSubmitted: _makeOnNextActionSubmitted(
-                                  _passwordFocusNode,
+                            Flex(
+                              direction:
+                                  OrientationHelper.isLandscape(context)
+                                      ? Axis.horizontal
+                                      : Axis.vertical,
+                              mainAxisSize:
+                                  OrientationHelper.isLandscape(context)
+                                      ? MainAxisSize.max
+                                      : MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  constraints: _getFormFieldConstraints(context),
+                                  margin: widget.marginBottomEmail,
+                                  child: FormFieldEmail(
+                                    controller: _emailController,
+                                    onFiledSubmitted: _makeOnNextActionSubmitted(
+                                      _passwordFocusNode,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Container(
-                              margin: widget.marginBottomPassword,
-                              child: FormFieldPassword(
-                                controller: _passwordController,
-                                focusNode: _passwordFocusNode,
-                                onFiledSubmitted: _makeOnDoneActionSubmitted(
-                                  formValidationState,
+                                Container(
+                                  constraints: _getFormFieldConstraints(context),
+                                  margin: widget.marginBottomPassword,
+                                  child: FormFieldPassword(
+                                    controller: _passwordController,
+                                    focusNode: _passwordFocusNode,
+                                    onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                      formValidationState,
+                                    ),
+                                    textInputAction: TextInputAction.done,
+                                  ),
                                 ),
-                                textInputAction: TextInputAction.done,
-                              ),
+                              ],
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 40, top: 20),

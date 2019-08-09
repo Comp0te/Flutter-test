@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,11 +29,13 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
     super.initState();
     _cameraBloc = BlocProvider.of<CameraBloc>(context);
     BackButtonInterceptor.add(androidBackHandler);
+    OrientationHelper.setAllOrientations();
   }
 
   @override
   void dispose() {
     BackButtonInterceptor.remove(androidBackHandler);
+    OrientationHelper.setOnlyPortraitUP();
     super.dispose();
   }
 
