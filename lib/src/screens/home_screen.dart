@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/utils/helpers/scroll_helper.dart';
+import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -15,12 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final int gridViewColumnCount = 2;
   final double gridViewCrossAxisSpacing = 5;
   final double gridViewMainAxisSpacing = 5;
   final double gridViewPaddingHorizontal = 10;
   final double gridViewPaddingVertical = 20;
-  final GlobalKey _gridViewKey = GlobalKey();
+  final _gridViewKey = GlobalKey();
 
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final gridViewColumnCount = OrientationHelper.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
       drawer: MainDrawer(),
