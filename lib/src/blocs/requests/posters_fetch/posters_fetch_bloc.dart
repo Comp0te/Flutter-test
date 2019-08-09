@@ -123,9 +123,10 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
     await _dbRepository.insertPosters(posters);
     await _dbRepository.insertPosterImages(posters);
 
-    Stream.fromIterable(posters).listen((poster) async {
+    Stream.fromIterable(posters).listen((poster) {
       if (poster.images != null && poster.images.isNotEmpty) {
-        await _imageStoreRepository.saveImage(poster.images[0].file);
+        Stream.fromIterable(poster.images)
+            .forEach((image) => _imageStoreRepository.saveImage(image.file));
       }
     });
 
