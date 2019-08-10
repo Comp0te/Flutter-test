@@ -27,3 +27,5 @@ class FirebaseMessagingBloc
     }
   }
 }
+
+// TODO: improve permission handling
