@@ -63,7 +63,12 @@ class App extends StatelessWidget {
                           ),
                         );
                     },
-                  )
+                  ),
+                  BlocProvider<ActiveIndexBloc>(
+                    builder: (context) {
+                      return _drawerActiveIndexBloc;
+                    },
+                  ),
                 ],
                 child: MaterialApp(
                   key: GlobalKey(),
@@ -87,11 +92,6 @@ class App extends StatelessWidget {
                                   );
                                 },
                               ),
-                              BlocProvider<ActiveIndexBloc>(
-                                builder: (context) {
-                                  return _drawerActiveIndexBloc;
-                                },
-                              )
                             ],
                             child: HomeScreen(),
                           ),
@@ -112,11 +112,6 @@ class App extends StatelessWidget {
                                   )..dispatch(DBGetNormalizedPosters());
                                 },
                               ),
-                              BlocProvider<ActiveIndexBloc>(
-                                builder: (context) {
-                                  return _drawerActiveIndexBloc;
-                                },
-                              )
                             ],
                             child: DatabaseScreen(),
                           ),
@@ -132,11 +127,6 @@ class App extends StatelessWidget {
                               BlocProvider<CameraBloc>(
                                 builder: (context) {
                                   return _cameraBloc..dispatch(InitCamera());
-                                },
-                              ),
-                              BlocProvider<ActiveIndexBloc>(
-                                builder: (context) {
-                                  return _drawerActiveIndexBloc;
                                 },
                               ),
                             ],
