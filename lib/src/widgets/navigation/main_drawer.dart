@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/widgets/widgets.dart';
 
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/routes/main.dart';
+import 'package:flutter_app/src/widgets/widgets.dart';
 
 class MainDrawer extends StatefulWidget {
   @override
