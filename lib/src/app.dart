@@ -8,8 +8,6 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 
 import 'package:flutter_app/src/screens/screens.dart';
 
-import 'models/model.dart';
-
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
