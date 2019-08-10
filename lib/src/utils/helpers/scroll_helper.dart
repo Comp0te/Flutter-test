@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-// TODO: rework for greater versatility and readability
 abstract class ScrollHelper {
   static double calcGridViewScrolledWidth({
     @required BuildContext context,
@@ -15,24 +14,26 @@ abstract class ScrollHelper {
     double mainAxisSpacing = 0,
   }) {
     final Size screenSize = MediaQuery.of(context).size;
-    final RenderBox gridViewBox = gridViewKey.currentContext.findRenderObject() as RenderBox;
-    final double gridViewHeight =
+    final RenderBox gridViewBox =
+        gridViewKey.currentContext.findRenderObject() as RenderBox;
+
+    final double gridViewContentHeight =
         gridViewBox.hasSize ? gridViewBox.size.height - 2 * paddingVertical : 0;
 
-    final double itemHeight = (screenSize.width -
-            2 * paddingHorizontal +
-            crossAxisSpacing * (columnCount - 1)) /
-        columnCount;
+    final double itemsTotalWidth = screenSize.width -
+        2 * paddingHorizontal +
+        crossAxisSpacing * (columnCount - 1);
 
-    final double totalItemsCount = state.posters.isNotEmpty
-        ? state.posters.length -
-            gridViewHeight *
-                columnCount /
-                (itemHeight + mainAxisSpacing * (columnCount - 1))
-        : 0;
+    final double itemHeight = itemsTotalWidth / columnCount;
 
-    final double fillRate = totalItemsCount != 0
-        ? (columnCount * scrollOffset / itemHeight) / totalItemsCount
+    final double visibleItems = (gridViewContentHeight * columnCount) /
+        (itemHeight + mainAxisSpacing * (columnCount - 1));
+
+    final double invisibleItems =
+        state.posters.isNotEmpty ? state.posters.length - visibleItems : 0;
+
+    final double fillRate = invisibleItems != 0
+        ? columnCount * scrollOffset / itemHeight / invisibleItems
         : 0;
 
     return fillRate > 1 ? screenSize.width : screenSize.width * fillRate;
