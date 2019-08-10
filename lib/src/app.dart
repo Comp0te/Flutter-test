@@ -30,9 +30,6 @@ class App extends StatelessWidget {
 
     final AppStateBloc _appStateBloc = AppStateBloc();
     final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
-    final CameraBloc _cameraBloc = CameraBloc(
-      cameraRepository: _cameraRepository,
-    );
     final FirebaseMessagingBloc _firebaseMessagingBloc = FirebaseMessagingBloc(
       firebaseMessagingRepository: _firebaseMessagingRepository,
     );
@@ -126,27 +123,13 @@ class App extends StatelessWidget {
                             providers: [
                               BlocProvider<CameraBloc>(
                                 builder: (context) {
-                                  return _cameraBloc..dispatch(InitCamera());
+                                  return CameraBloc(
+                                    cameraRepository: _cameraRepository,
+                                  )..dispatch(InitCamera());
                                 },
                               ),
                             ],
                             child: CameraScreen(),
-                          ),
-                        );
-                        break;
-
-                      case MainRouteNames.cameraPreview:
-                        final args = settings.arguments;
-
-                        return PageTransition(
-                          type: PageTransitionType.leftToRight,
-                          alignment: Alignment.centerLeft,
-                          child: BlocProvider<CameraBloc>.value(
-                            value: _cameraBloc,
-                            child: CameraPreviewScreen(
-                              screenArgs:
-                                  args is CameraPreviewScreenArgs ? args : null,
-                            ),
                           ),
                         );
                         break;

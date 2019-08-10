@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/screens/screens.dart';
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/utils/helpers/camera_helper.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -73,11 +74,15 @@ class _CameraScreenState extends State<CameraScreen>
         },
         listener: (context, CameraState state) {
           if (state.photoPath != null || state.videoPath != null) {
-            Navigator.pushNamed(context, MainRouteNames.cameraPreview,
-                arguments: CameraPreviewScreenArgs(
-                  photoPath: state.photoPath,
-                  videoPath: state.videoPath,
-                ));
+            Navigator.of(context).push(PageTransition(
+                  type: PageTransitionType.leftToRight,
+                  alignment: Alignment.centerLeft,
+                  child: BlocProvider<CameraBloc>.value(
+                    value: _cameraBloc,
+                    child: CameraPreviewScreen(),
+                  ),
+                )
+            );
           }
         },
         child: Stack(
