@@ -1,6 +1,5 @@
-import 'package:flutter_app/src/models/model.dart';
-import 'package:meta/meta.dart';
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -16,6 +15,7 @@ class DBBloc extends Bloc<DBEvent, DBState> {
   })  : assert(dbRepository != null),
         assert(appStateBloc != null);
 
+  @override
   DBState get initialState => DBState.init();
 
   @override
@@ -35,7 +35,7 @@ class DBBloc extends Bloc<DBEvent, DBState> {
     } else if (event is DBGetNormalizedPosters) {
       yield DBState.loading();
 
-      List<PosterNormalized> posters = await dbRepository.getNormalizedPosters();
+      final posters = await dbRepository.getNormalizedPosters();
       appStateBloc.dispatch(AppStateUpdatePosters(posters: posters));
 
       yield DBState.loaded();

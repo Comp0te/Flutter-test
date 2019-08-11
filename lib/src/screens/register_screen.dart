@@ -30,11 +30,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
       OrientationHelper.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
-          : BoxConstraints();
+          : const BoxConstraints();
 
   @override
   Widget build(BuildContext context) {
-    final RegisterBloc _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    final _registerBloc = BlocProvider.of<RegisterBloc>(context);
 
     void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: const Text('Registration'),
         centerTitle: true,
       ),
       body: BlocListener(
@@ -132,7 +132,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         _getFormFieldConstraints(context),
                                     child: FormFieldUserName(
                                       controller: _usernameController,
-                                      onFiledSubmitted: _makeOnNextActionSubmitted(
+                                      onFiledSubmitted:
+                                          _makeOnNextActionSubmitted(
                                         _emailFocusNode,
                                       ),
                                     ),
@@ -143,7 +144,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     child: FormFieldEmail(
                                       controller: _emailController,
                                       focusNode: _emailFocusNode,
-                                      onFiledSubmitted: _makeOnNextActionSubmitted(
+                                      onFiledSubmitted:
+                                          _makeOnNextActionSubmitted(
                                         _password1FocusNode,
                                       ),
                                     ),
@@ -151,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ],
                               ),
                               Container(
-                                margin: EdgeInsets.only(bottom: 10),
+                                margin: const EdgeInsets.only(bottom: 10),
                                 child: Flex(
                                   direction:
                                       OrientationHelper.isLandscape(context)
@@ -171,7 +173,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         label: 'Password',
                                         controller: _password1Controller,
                                         focusNode: _password1FocusNode,
-                                        onFiledSubmitted: _makeOnNextActionSubmitted(
+                                        onFiledSubmitted:
+                                            _makeOnNextActionSubmitted(
                                           _password2FocusNode,
                                         ),
                                       ),
@@ -190,7 +193,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           )
                                         ],
                                         focusNode: _password2FocusNode,
-                                        onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                        onFiledSubmitted:
+                                            _makeOnDoneActionSubmitted(
                                           formValidationState,
                                         ),
                                         textInputAction: TextInputAction.done,

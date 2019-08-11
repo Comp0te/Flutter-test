@@ -10,12 +10,12 @@ class AuthApiProvider {
 
   AuthApiProvider({@required Dio dio}) : _dio = dio;
 
-  addHeaders(Iterable<MapEntry<String, String>> headers) {
+  void addHeaders(Iterable<MapEntry<String, String>> headers) {
     _dio.options.headers.addEntries(headers);
   }
 
   Future<AuthResponse> login(LoginInput data) async {
-    Response<Map<String, dynamic>> response = await _dio.post(
+    final response = await _dio.post<Map<String, dynamic>>(
       Url.login,
       data: data.toJson(),
     );
@@ -24,7 +24,7 @@ class AuthApiProvider {
   }
 
   Future<AuthResponse> register(RegisterInput data) async {
-    Response<Map<String, dynamic>> response = await _dio.post(
+    final response = await _dio.post<Map<String, dynamic>>(
       Url.register,
       data: data.toJson(),
     );

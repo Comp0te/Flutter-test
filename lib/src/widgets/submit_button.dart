@@ -21,9 +21,7 @@ class SubmitButton extends StatelessWidget {
       child: isLoading
           ? Container(
               width: 30,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
+              child: const CircularProgressIndicator(strokeWidth: 2),
             )
           : Container(
               width: 120,

@@ -56,10 +56,10 @@ class CameraState extends EquatableClass {
 
   CameraState resetCameraFiles() {
     return CameraState(
-      cameras: this.cameras,
-      cameraController: this.cameraController,
-      isAudioEnabled: this.isAudioEnabled,
-      isVideoRecording: this.isVideoRecording,
+      cameras: cameras,
+      cameraController: cameraController,
+      isAudioEnabled: isAudioEnabled,
+      isVideoRecording: isVideoRecording,
       photoPath: null,
       videoPath: null,
     );

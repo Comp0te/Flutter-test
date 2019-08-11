@@ -27,6 +27,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
         _dbRepository = dbRepository,
         _imageStoreRepository = imageStoreRepository;
 
+  @override
   PostersFetchState get initialState => PostersFetchState.init();
 
   @override
@@ -51,7 +52,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
     );
 
     try {
-      var postersFetchResponse = await _postersRepository.fetchPosters();
+      final postersFetchResponse = await _postersRepository.fetchPosters();
 
       dispatch(
         PostersFetchRequestSuccess(postersFetchResponse: postersFetchResponse),
@@ -69,7 +70,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       );
 
       try {
-        var postersFetchResponse =
+        final postersFetchResponse =
             await _postersRepository.fetchPosters(page: event.page);
 
         dispatch(
@@ -90,11 +91,11 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   Stream<PostersFetchState> _mapPostersFetchRequestSuccessToState(
     PostersFetchRequestSuccess event,
   ) async* {
-    List<User> users = event.postersFetchResponse.data
+    final users = event.postersFetchResponse.data
         .map((posterResponse) => posterResponse.owner)
         .toList();
 
-    List<PosterNormalized> posters = event.postersFetchResponse.data
+    final posters = event.postersFetchResponse.data
         .map((posterResponse) => PosterNormalized(
               id: posterResponse.id,
               ownerId: posterResponse.owner.id,
@@ -111,13 +112,9 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
             ))
         .toList();
 
-    _appStateBloc.dispatch(
-      AppStateUpdateUsers(users: users),
-    );
-
-    _appStateBloc.dispatch(
-      AppStateUpdatePosters(posters: posters),
-    );
+    _appStateBloc
+      ..dispatch(AppStateUpdateUsers(users: users))
+      ..dispatch(AppStateUpdatePosters(posters: posters));
 
     await _dbRepository.insertUsers(users);
     await _dbRepository.insertPosters(posters);

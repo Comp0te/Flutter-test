@@ -10,7 +10,10 @@ class DBHelper {
   static Database _db;
 
   Future<Database> get db async {
-    if (_db != null) return _db;
+    if (_db != null) {
+      return _db;
+    }
+
     try {
       _db = await _initDb();
 
@@ -22,15 +25,15 @@ class DBHelper {
   }
 
   Future<Database> _initDb() async {
-    String databasesPath = await getDatabasesPath();
+    final databasesPath = await getDatabasesPath();
 
-    bool isDbDirExist = await Directory(databasesPath).exists();
+    final isDbDirExist = await Directory(databasesPath).exists();
 
     if (!isDbDirExist) {
       await Directory(databasesPath).create(recursive: true);
     }
 
-    String path = join(databasesPath, DbConfig.dbName);
+    final path = join(databasesPath, DbConfig.dbName);
 
     return await openDatabase(
       path,

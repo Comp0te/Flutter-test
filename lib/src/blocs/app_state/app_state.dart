@@ -41,11 +41,11 @@ class AppState extends EquatableClass {
   }) {
     return AppState(
       users: StateHelper.deleteEntities<User>(
-        stateEntities: this.users,
+        stateEntities: users,
         entitiesIds: usersIds,
       ),
       posters: StateHelper.deleteEntities<PosterNormalized>(
-        stateEntities: this.posters,
+        stateEntities: posters,
         entitiesIds: postersIds,
       ),
     );

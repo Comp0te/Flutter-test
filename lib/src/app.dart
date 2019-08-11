@@ -18,17 +18,16 @@ class App extends StatelessWidget {
   }
 
   Widget _main(BuildContext context) {
-    final FirebaseMessagingRepository _firebaseMessagingRepository =
+    final _firebaseMessagingRepository =
         RepositoryProvider.of<FirebaseMessagingRepository>(context);
 
-    final AppStateBloc _appStateBloc = AppStateBloc();
-    final ActiveIndexBloc _drawerActiveIndexBloc = ActiveIndexBloc();
-    final FirebaseMessagingBloc _firebaseMessagingBloc = FirebaseMessagingBloc(
+    final _appStateBloc = AppStateBloc();
+    final _drawerActiveIndexBloc = ActiveIndexBloc();
+    final _firebaseMessagingBloc = FirebaseMessagingBloc(
       firebaseMessagingRepository: _firebaseMessagingRepository,
     );
 
-    final GlobalKey<NavigatorState> mainNavigatorKey =
-        GlobalKey<NavigatorState>();
+    final mainNavigatorKey = GlobalKey<NavigatorState>();
 
     return MultiBlocProvider(
       providers: [

@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
-import 'package:flutter_app/src/utils/helpers/dio_helper.dart';
+import 'src/utils/helpers/dio_helper.dart';
 import 'src/repositories/repositories.dart';
 import 'src/data_providers/data_providers.dart';
 import 'src/blocs/blocs.dart';
@@ -14,27 +13,26 @@ import 'src/database/database.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final Dio dio = DioInstance().dio;
-  final SecureStorageRepository _secureStorageRepository =
-      SecureStorageRepository(
+  final dio = DioInstance().dio;
+  final _secureStorageRepository = SecureStorageRepository(
     storage: SecureStorageProvider(secureStorage: FlutterSecureStorage()),
   );
-  final AuthRepository _authRepository = AuthRepository(
+  final _authRepository = AuthRepository(
     authApiProvider: AuthApiProvider(dio: dio),
   );
-  final PostersRepository _postersRepository = PostersRepository(
+  final _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
   );
-  final DBRepository _dbRepository = DBRepository(
+  final _dbRepository = DBRepository(
     dbProvider: DBProvider(db: DBHelper().db),
   );
-  final ImageStoreRepository _imageStoreRepository = ImageStoreRepository(
+  final _imageStoreRepository = ImageStoreRepository(
     imageStoreProvider: ImageStoreProvider(),
   );
-  CameraRepository _cameraRepository = CameraRepository(
+  final _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
   );
-  FirebaseMessagingRepository _firebaseMessaging = FirebaseMessagingRepository(
+  final _firebaseMessaging = FirebaseMessagingRepository(
     firebaseMessagingProvider: FirebaseMessagingProvider(
       firebaseMessaging: FirebaseMessaging(),
     ),

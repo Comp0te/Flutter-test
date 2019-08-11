@@ -23,22 +23,20 @@ class DBRepository {
   }
 
   Future<List<PosterNormalized>> getNormalizedPosters() async {
-    var postersTable = await dbProvider.getPosters();
+    final postersTable = await dbProvider.getPosters();
 
-    List<PosterNormalizedDB> posters =
-        postersTable.map<PosterNormalizedDB>((posterMap) {
+    final posters = postersTable.map<PosterNormalizedDB>((posterMap) {
       return PosterNormalizedDB.fromJson(posterMap);
     }).toList();
 
-    var posterImagesTable = await dbProvider.getPosterImages();
+    final posterImagesTable = await dbProvider.getPosterImages();
 
-    List<PosterImageDB> posterImages =
-        posterImagesTable.map<PosterImageDB>((posterImageMap) {
+    final posterImages = posterImagesTable.map<PosterImageDB>((posterImageMap) {
       return PosterImageDB.fromJson(posterImageMap);
     }).toList();
 
     return posters.map<PosterNormalized>((poster) {
-      var images =
+      final images =
           posterImages.where((image) => image.posterId == poster.id).toList();
       return PosterNormalized(
         id: poster.id,

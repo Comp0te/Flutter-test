@@ -15,19 +15,19 @@ abstract class PostersTable {
   static final colActivatedAt = 'activated_at';
   static final colIsActive = 'is_active';
 
-  static final create = '''CREATE TABLE ${name}(
-        ${colPosterId} INTEGER PRIMARY KEY,
-        ${colOwnerId} INTEGER,
-        ${colTheme} TEXT,
-        ${colText} TEXT,
-        ${colPrice} REAL,
-        ${colCurrency} REAL,
-        ${colContractPrice} INTEGER,
-        ${colLocation} TEXT,
-        ${colCategory} TEXT,
-        ${colActivatedAt} TEXT,
-        ${colIsActive} INTEGER,
-        FOREIGN KEY (${colOwnerId})
+  static final create = '''CREATE TABLE $name(
+        $colPosterId INTEGER PRIMARY KEY,
+        $colOwnerId INTEGER,
+        $colTheme TEXT,
+        $colText TEXT,
+        $colPrice REAL,
+        $colCurrency REAL,
+        $colContractPrice INTEGER,
+        $colLocation TEXT,
+        $colCategory TEXT,
+        $colActivatedAt TEXT,
+        $colIsActive INTEGER,
+        FOREIGN KEY ($colOwnerId)
         REFERENCES ${UsersTable.name}(${UsersTable.colUserId})
         )''';
 }

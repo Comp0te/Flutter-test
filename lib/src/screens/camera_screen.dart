@@ -157,7 +157,7 @@ class _CameraScreenState extends State<CameraScreen>
   }
 
   void _onPressSettingsButton() {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       backgroundColor: Colors.blue.withOpacity(0.7),
       context: context,
       builder: (context) {
@@ -209,7 +209,7 @@ class _CameraScreenState extends State<CameraScreen>
       builder: (BuildContext context, CameraState state) {
         final toggles = state.cameras.map((cameraDescription) {
           return Padding(
-            padding: EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 20),
             child: SizedBox(
               width: 90.0,
               child: RadioListTile<CameraDescription>(
@@ -236,7 +236,7 @@ class _CameraScreenState extends State<CameraScreen>
         });
 
         return state.cameras.isEmpty
-            ? Text('No camera found')
+            ? const Text('No camera found')
             : Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [...toggles],

@@ -23,7 +23,7 @@ class FormFieldEmail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      constraints: BoxConstraints(maxHeight: 60),
+      constraints: const BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
         controller: controller,
         attribute: label,
@@ -33,7 +33,7 @@ class FormFieldEmail extends StatelessWidget {
         textInputAction: textInputAction,
         onFieldSubmitted: onFiledSubmitted,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(0),
           labelText: label,
           icon: Icon(Icons.alternate_email),
         ),

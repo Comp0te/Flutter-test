@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app/src/utils/helpers/scroll_helper.dart';
 import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,14 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final gridViewColumnCount = OrientationHelper.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(5),
+          preferredSize: const Size.fromHeight(5),
           child: BlocBuilder(
             bloc: _appStateBloc,
             builder: (BuildContext context, AppState state) {
@@ -89,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisSpacing: gridViewCrossAxisSpacing,
                           mainAxisSpacing: gridViewMainAxisSpacing,
                         ),
-                        decoration:
-                            BoxDecoration(color: Color.fromRGBO(0, 0, 255, 1)),
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(0, 0, 255, 1)),
                       ),
                     ],
                   );
@@ -99,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        title: Text('Home'),
+        title: const Text('Home'),
         centerTitle: true,
         actions: <Widget>[
           AnimatedBuilder(
@@ -137,8 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BlocBuilder(
           bloc: _appStateBloc,
           builder: (BuildContext context, AppState appState) {
-            List<PosterNormalized> postersList =
-                appState.posters.values.toList();
+            final postersList = appState.posters.values.toList();
 
             return Column(
               children: <Widget>[

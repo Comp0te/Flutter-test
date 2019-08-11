@@ -29,7 +29,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
       ));
     _animationController = AnimationController(
       vsync: this, // the SingleTickerProviderStateMixin
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
   }
 

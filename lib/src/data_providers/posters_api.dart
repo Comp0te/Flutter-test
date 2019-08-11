@@ -11,13 +11,13 @@ class PostersApiProvider {
   PostersApiProvider({@required Dio dio}) : _dio = dio;
 
   Future<PostersFetchResponse> fetchPosters(int page) async {
-    Response<Map<String, dynamic>> response = page == null
-        ? await _dio.get(
+    final response = page == null
+        ? await _dio.get<Map<String, dynamic>>(
             Url.posters,
           )
-        : await _dio.get(
+        : await _dio.get<Map<String, dynamic>>(
             Url.posters,
-            queryParameters: {
+            queryParameters: <String, dynamic>{
               'page': page,
             },
           );

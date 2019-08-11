@@ -91,7 +91,7 @@ class CameraProvider {
   }
 
   Future<void> deleteFile({@required String path}) async {
-    final file = await io.File(path);
+    final file = io.File(path);
     await file.delete();
   }
 }

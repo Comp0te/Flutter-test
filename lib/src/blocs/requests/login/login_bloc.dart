@@ -17,6 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   })  : assert(secureStorageRepository != null),
         assert(authRepository != null);
 
+  @override
   LoginState get initialState => LoginState.init();
 
   @override
@@ -38,7 +39,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     try {
-      var loginResponse = await authRepository.login(LoginInput(
+      final loginResponse = await authRepository.login(LoginInput(
         email: event.email,
         password: event.password,
       ));

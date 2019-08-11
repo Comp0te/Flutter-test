@@ -17,6 +17,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   })  : assert(secureStorageRepository != null),
         assert(authRepository != null);
 
+  @override
   RegisterState get initialState => RegisterState.init();
 
   @override
@@ -38,7 +39,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
 
     try {
-      var registerResponse = await authRepository.register(RegisterInput(
+      final registerResponse = await authRepository.register(RegisterInput(
         username: event.username,
         email: event.email,
         password1: event.password1,

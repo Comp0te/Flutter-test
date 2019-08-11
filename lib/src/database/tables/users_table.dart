@@ -11,15 +11,15 @@ abstract class UsersTable {
   static final colColorScheme = 'color_scheme';
   static final colLanguage = 'language';
 
-  static final create = '''CREATE TABLE ${name}(
-        ${colUserId} INTEGER PRIMARY KEY,
-        ${colUsername} TEXT,
-        ${colEmail} TEXT,
-        ${colFirstName} TEXT,
-        ${colLastName} TEXT, 
-        ${colAvatar} TEXT,
-        ${colLocation} TEXT,
-        ${colColorScheme} TEXT,
-        ${colLanguage} TEXT
+  static final create = '''CREATE TABLE $name(
+        $colUserId INTEGER PRIMARY KEY,
+        $colUsername TEXT,
+        $colEmail TEXT,
+        $colFirstName TEXT,
+        $colLastName TEXT, 
+        $colAvatar TEXT,
+        $colLocation TEXT,
+        $colColorScheme TEXT,
+        $colLanguage TEXT
         )''';
 }

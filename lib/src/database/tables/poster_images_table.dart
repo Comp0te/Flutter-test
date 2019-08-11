@@ -8,12 +8,12 @@ abstract class PosterImagesTable {
   static final colFile = 'file';
   static final colPosterId = 'posterId';
 
-  static final create = '''CREATE TABLE ${name}(
-        ${colPosterImageId} INTEGER PRIMARY KEY,
-        ${colAdvert} INTEGER,
-        ${colFile} TEXT,
-        ${colPosterId} INTEGER,
-        FOREIGN KEY (${colPosterId}) 
+  static final create = '''CREATE TABLE $name(
+        $colPosterImageId INTEGER PRIMARY KEY,
+        $colAdvert INTEGER,
+        $colFile TEXT,
+        $colPosterId INTEGER,
+        FOREIGN KEY ($colPosterId) 
         REFERENCES ${PostersTable.name}(${PostersTable.colPosterId})
         )''';
 }

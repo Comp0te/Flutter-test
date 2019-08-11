@@ -17,8 +17,11 @@ class DrawerItemOptions {
 
 class DrawerItem extends StatelessWidget implements DrawerItemOptions {
   final int itemIndex;
+  @override
   final Icon icon;
+  @override
   final String title;
+  @override
   final String routeName;
 
   DrawerItem({

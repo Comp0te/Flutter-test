@@ -28,7 +28,7 @@ class FirebaseMessagingProvider {
 
   MessageHandler _makeOnResume(GlobalKey<NavigatorState> navigatorKey) {
     return (Map<String, dynamic> message) async {
-      var data = message['data'] ?? message;
+      final data = message['data'] as Map<String, dynamic> ?? message;
 
       print(' =============== onResume ================= \n'
           '$message');

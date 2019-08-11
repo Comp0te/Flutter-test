@@ -4,7 +4,7 @@ class Spinner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
+      child: const SizedBox(
         height: 50,
         width: 50,
         child: CircularProgressIndicator(

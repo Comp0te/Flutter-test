@@ -30,7 +30,7 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Interval(
+        curve: const Interval(
           0.0,
           0.5,
           curve: Curves.linear,
@@ -51,8 +51,8 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
       ),
     );
     _marginEmail = Tween<EdgeInsets>(
-      begin: EdgeInsets.only(bottom: 20),
-      end: EdgeInsets.only(bottom: 0),
+      begin: const EdgeInsets.only(bottom: 20),
+      end: const EdgeInsets.only(bottom: 0),
     ).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -64,8 +64,8 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
       ),
     );
     _marginPassword = Tween<EdgeInsets>(
-      begin: EdgeInsets.only(bottom: 40),
-      end: EdgeInsets.only(bottom: 0),
+      begin: const EdgeInsets.only(bottom: 40),
+      end: const EdgeInsets.only(bottom: 0),
     ).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -77,8 +77,8 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
       ),
     );
     _paddingScreen = Tween<EdgeInsets>(
-      begin: EdgeInsets.symmetric(horizontal: 0),
-      end: EdgeInsets.symmetric(horizontal: 30),
+      begin: const EdgeInsets.symmetric(horizontal: 0),
+      end: const EdgeInsets.symmetric(horizontal: 30),
     ).animate(
       CurvedAnimation(
         parent: _animationController,

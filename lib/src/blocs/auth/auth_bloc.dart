@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
     if (event is AppStarted) {
-      final bool hasToken = await secureStorageRepository.hasToken();
+      final hasToken = await secureStorageRepository.hasToken();
 
       if (hasToken) {
         yield currentState.copyWith(isAuthenticated: true);

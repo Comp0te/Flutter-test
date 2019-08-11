@@ -12,6 +12,7 @@ class ImageStoreBloc extends Bloc<ImageStoreEvent, ImageStoreState> {
   })  : assert(imageStoreRepository != null),
         _imageStoreRepository = imageStoreRepository;
 
+  @override
   ImageStoreState get initialState => ImageStoreState.init();
 
   @override

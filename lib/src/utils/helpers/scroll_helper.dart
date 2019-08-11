@@ -13,26 +13,26 @@ abstract class ScrollHelper {
     double crossAxisSpacing = 0,
     double mainAxisSpacing = 0,
   }) {
-    final Size screenSize = MediaQuery.of(context).size;
-    final RenderBox gridViewBox =
+    final screenSize = MediaQuery.of(context).size;
+    final gridViewBox =
         gridViewKey.currentContext.findRenderObject() as RenderBox;
 
-    final double gridViewContentHeight =
+    final gridViewContentHeight =
         gridViewBox.hasSize ? gridViewBox.size.height - 2 * paddingVertical : 0;
 
-    final double itemsTotalWidth = screenSize.width -
+    final itemsTotalWidth = screenSize.width -
         2 * paddingHorizontal +
         crossAxisSpacing * (columnCount - 1);
 
-    final double itemHeight = itemsTotalWidth / columnCount;
+    final itemHeight = itemsTotalWidth / columnCount;
 
-    final double visibleItems = (gridViewContentHeight * columnCount) /
+    final visibleItems = (gridViewContentHeight * columnCount) /
         (itemHeight + mainAxisSpacing * (columnCount - 1));
 
-    final double invisibleItems =
+    final invisibleItems =
         state.posters.isNotEmpty ? state.posters.length - visibleItems : 0;
 
-    final double fillRate = invisibleItems != 0
+    final fillRate = invisibleItems != 0
         ? columnCount * scrollOffset / itemHeight / invisibleItems
         : 0;
 

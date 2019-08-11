@@ -28,9 +28,8 @@ class ImageStoreProvider {
 
   Future<io.File> getImage(String url) async {
     final imageFile = await getImageFile(url);
-    final bool isImageFileExist = await imageFile.exists();
 
-    if (isImageFileExist) {
+    if (imageFile.existsSync()) {
       return imageFile;
     }
 
@@ -45,7 +44,7 @@ class ImageStoreProvider {
     final imageFile = await getImageFile(url);
     final imageFromNetwork = await fetchImageFromNetwork(url);
 
-    var message = SaveImageIsolateMessage(
+    final message = SaveImageIsolateMessage(
       fileForSaving: imageFile,
       fileFromNetwork: imageFromNetwork,
     );

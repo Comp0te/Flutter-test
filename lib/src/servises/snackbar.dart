@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 abstract class SnackBarService {
-  static showError({
+  static ScaffoldState showError({
     @required BuildContext context,
     @required Exception error,
   }) {
@@ -10,7 +10,7 @@ abstract class SnackBarService {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

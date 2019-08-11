@@ -12,8 +12,8 @@ class DBProvider {
   }) : assert(db != null);
 
   Future<void> insertPosters(List<PosterNormalized> posters) async {
-    Database _db = await db;
-    Batch batch = _db.batch();
+    final _db = await db;
+    final batch = _db.batch();
 
     try {
       posters.forEach((poster) {
@@ -31,8 +31,8 @@ class DBProvider {
   }
 
   Future<void> insertUsers(List<User> users) async {
-    Database _db = await db;
-    Batch batch = _db.batch();
+    final _db = await db;
+    final batch = _db.batch();
 
     try {
       users.forEach((user) => batch.insert(
@@ -48,11 +48,11 @@ class DBProvider {
   }
 
   Future<void> insertPosterImages(List<PosterNormalized> posters) async {
-    Database _db = await db;
-    Batch batch = _db.batch();
+    final _db = await db;
+    final batch = _db.batch();
 
     try {
-      List<PosterImageDB> imagesDb = posters.fold<List<PosterImageDB>>(
+      final imagesDb = posters.fold<List<PosterImageDB>>(
         [],
         (acc, poster) {
           if (poster.images != null && poster.images.isNotEmpty) {
@@ -84,7 +84,7 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getPosters() async {
-    Database _db = await db;
+    final _db = await db;
 
     try {
       return _db.query(PostersTable.name);
@@ -95,7 +95,7 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
-    Database _db = await db;
+    final _db = await db;
 
     try {
       return _db.query(UsersTable.name);
@@ -106,7 +106,7 @@ class DBProvider {
   }
 
   Future<List<Map<String, dynamic>>> getPosterImages() async {
-    Database _db = await db;
+    final _db = await db;
 
     try {
       return _db.query(PosterImagesTable.name);

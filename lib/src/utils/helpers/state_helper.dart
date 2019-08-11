@@ -5,17 +5,16 @@ abstract class StateHelper {
     @required Map<String, V> stateEntities,
     @required List<V> eventEntitiesList,
   }) {
-
     if (eventEntitiesList == null) {
       return stateEntities;
     }
 
-    Map<String, V> eventEntitiesMap = Map.fromIterable(
+    final eventEntitiesMap = Map.fromIterable(
       eventEntitiesList,
       key: (entity) => entity.id.toString(),
       value: (entity) => entity as V,
     );
-    Map<String, V> newEntities = Map.from(stateEntities)
+    final newEntities = Map.of(stateEntities)
       ..addAll(eventEntitiesMap);
 
     return newEntities;

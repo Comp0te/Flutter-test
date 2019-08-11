@@ -12,7 +12,7 @@ class SecureStorageRepository {
   }) : assert(storage != null);
 
   Future<bool> hasToken() async {
-    var token = await storage.read(SecureStorageRepository.tokenKey);
+    final token = await storage.read(SecureStorageRepository.tokenKey);
     return token != null;
   }
 

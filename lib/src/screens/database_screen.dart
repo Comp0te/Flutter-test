@@ -10,8 +10,8 @@ import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
 class DatabaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AppStateBloc _appStateBloc = BlocProvider.of<AppStateBloc>(context);
-    final ImageStoreRepository _imageStoreRepository =
+    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
+    final _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
     final showImageCount = OrientationHelper.isPortrait(context) ? 3 : 5;
 
@@ -51,13 +51,13 @@ class DatabaseScreen extends StatelessWidget {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Database posters'),
+        title: const Text('Database posters'),
         centerTitle: true,
       ),
       body: BlocBuilder(
         bloc: _appStateBloc,
         builder: (context, AppState state) {
-          var posters = state.posters.values.toList();
+          final posters = state.posters.values.toList();
 
           return state.posters.isEmpty
               ? Spinner()
@@ -68,7 +68,7 @@ class DatabaseScreen extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                             vertical: 5,
                             horizontal: 10,
                           ),

@@ -41,11 +41,11 @@ class _LoginScreenState extends State<LoginScreen>
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
       OrientationHelper.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
-          : BoxConstraints();
+          : const BoxConstraints();
 
   @override
   Widget build(BuildContext context) {
-    final LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
+    final _loginBloc = BlocProvider.of<LoginBloc>(context);
 
     void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
         centerTitle: true,
         backgroundColor: widget.color,
       ),
@@ -123,10 +123,9 @@ class _LoginScreenState extends State<LoginScreen>
                         child: Column(
                           children: <Widget>[
                             Flex(
-                              direction:
-                                  OrientationHelper.isLandscape(context)
-                                      ? Axis.horizontal
-                                      : Axis.vertical,
+                              direction: OrientationHelper.isLandscape(context)
+                                  ? Axis.horizontal
+                                  : Axis.vertical,
                               mainAxisSize:
                                   OrientationHelper.isLandscape(context)
                                       ? MainAxisSize.max
@@ -134,22 +133,26 @@ class _LoginScreenState extends State<LoginScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
-                                  constraints: _getFormFieldConstraints(context),
+                                  constraints:
+                                      _getFormFieldConstraints(context),
                                   margin: widget.marginBottomEmail,
                                   child: FormFieldEmail(
                                     controller: _emailController,
-                                    onFiledSubmitted: _makeOnNextActionSubmitted(
+                                    onFiledSubmitted:
+                                        _makeOnNextActionSubmitted(
                                       _passwordFocusNode,
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  constraints: _getFormFieldConstraints(context),
+                                  constraints:
+                                      _getFormFieldConstraints(context),
                                   margin: widget.marginBottomPassword,
                                   child: FormFieldPassword(
                                     controller: _passwordController,
                                     focusNode: _passwordFocusNode,
-                                    onFiledSubmitted: _makeOnDoneActionSubmitted(
+                                    onFiledSubmitted:
+                                        _makeOnDoneActionSubmitted(
                                       formValidationState,
                                     ),
                                     textInputAction: TextInputAction.done,
@@ -158,7 +161,8 @@ class _LoginScreenState extends State<LoginScreen>
                               ],
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: 40, top: 20),
+                              margin:
+                                  const EdgeInsets.only(bottom: 40, top: 20),
                               child: BlocBuilder(
                                 bloc: _loginBloc,
                                 builder: (

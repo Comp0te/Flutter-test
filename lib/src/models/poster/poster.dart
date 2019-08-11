@@ -64,6 +64,7 @@ class PosterResponse extends PosterBase {
   factory PosterResponse.fromJson(Map<String, dynamic> json) =>
       _$PosterResponseFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PosterResponseToJson(this);
 }
 
@@ -91,6 +92,7 @@ class PosterNormalized extends PosterBase {
   factory PosterNormalized.fromJson(Map<String, dynamic> json) =>
       _$PosterNormalizedFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PosterNormalizedToJson(this);
 }
 
@@ -166,6 +168,7 @@ class PosterImageDB extends PosterImage {
   factory PosterImageDB.fromJson(Map<String, dynamic> json) =>
       _$PosterImageDBFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PosterImageDBToJson(this);
 }
 
