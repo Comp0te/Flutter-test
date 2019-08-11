@@ -86,9 +86,14 @@ class DatabaseScreen extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                            return Row(
-                              children: snapshot.data,
-                              mainAxisSize: MainAxisSize.min,
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              child: Row(
+                                children: snapshot.data,
+                                mainAxisSize: MainAxisSize.min,
+                              ),
                             );
                           }
 
