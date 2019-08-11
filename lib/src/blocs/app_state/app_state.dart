@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/utils/equatable_class.dart';
-import 'package:flutter_app/src/utils/helpers/state_helper.dart';
+import 'package:flutter_app/src/utils/helpers/helpers.dart';
 
 @immutable
 class AppState extends EquatableClass {

@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/utils/constants.dart';
-import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
+import 'package:flutter_app/src/utils/helpers/helpers.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
-import 'package:flutter_app/src/utils/helpers/camera_helper.dart';
 
 class CameraScreen extends StatefulWidget {
   @override

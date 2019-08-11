@@ -5,7 +5,7 @@ import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/utils/helpers/orientation_helper.dart';
+import 'package:flutter_app/src/utils/helpers/helpers.dart';
 
 class DatabaseScreen extends StatelessWidget {
   @override
