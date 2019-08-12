@@ -25,6 +25,11 @@ class _MainDrawerState extends State<MainDrawer> {
       icon: Icon(Icons.camera),
       routeName: MainRouteNames.camera,
     ),
+    DrawerItemOptions(
+      title: 'Google maps',
+      icon: Icon(Icons.map),
+      routeName: MainRouteNames.googleMap,
+    ),
   ];
 
   @override
