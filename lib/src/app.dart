@@ -75,6 +75,11 @@ class App extends StatelessWidget {
               return MainRoutes.cameraScreenRoute(context);
               break;
 
+            case MainRouteNames.googleMap:
+              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 3));
+              return MainRoutes.googleMapRoute(context);
+              break;
+
             default:
               return null;
           }

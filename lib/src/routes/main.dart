@@ -10,6 +10,7 @@ abstract class MainRouteNames {
   static const database = '/database';
   static const camera = '/camera';
   static const cameraPreview = '/camera/preview';
+  static const googleMap = '/googleMap';
 }
 
 abstract class MainRoutes {
@@ -85,6 +86,14 @@ abstract class MainRoutes {
         value: cameraBloc,
         child: CameraPreviewScreen(),
       ),
+    );
+  }
+
+  static Route<RegisterScreen> googleMapRoute(BuildContext context) {
+    return PageTransition(
+      type: PageTransitionType.fade,
+      alignment: Alignment.center,
+      child: GoogleMapScreen(),
     );
   }
 }
