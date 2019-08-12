@@ -54,61 +54,63 @@ class DatabaseScreen extends StatelessWidget {
         title: const Text('Database posters'),
         centerTitle: true,
       ),
-      body: BlocBuilder(
-        bloc: _appStateBloc,
-        builder: (context, AppState state) {
-          final posters = state.posters.values.toList();
+      body: SafeArea(
+        child: BlocBuilder(
+          bloc: _appStateBloc,
+          builder: (context, AppState state) {
+            final posters = state.posters.values.toList();
 
-          return state.posters.isEmpty
-              ? Spinner()
-              : ListView.separated(
-                  itemBuilder: (context, int index) => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 10,
+            return state.posters.isEmpty
+                ? Spinner()
+                : ListView.separated(
+                    itemBuilder: (context, int index) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
+                            title: Text(
+                              'id - ${posters[index].id} - ${posters[index].text}',
+                            ),
+                            subtitle: Text('price - ${posters[index].price}'),
                           ),
-                          title: Text(
-                            'id - ${posters[index].id} - ${posters[index].text}',
+                        ),
+                        FutureBuilder<List<Widget>>(
+                          future: _getImagesFromStore(
+                            posters[index],
+                            showImageCount,
                           ),
-                          subtitle: Text('price - ${posters[index].price}'),
-                        ),
-                      ),
-                      FutureBuilder<List<Widget>>(
-                        future: _getImagesFromStore(
-                          posters[index],
-                          showImageCount,
-                        ),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: Row(
-                                children: snapshot.data,
-                                mainAxisSize: MainAxisSize.min,
-                              ),
-                            );
-                          }
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: Row(
+                                  children: snapshot.data,
+                                  mainAxisSize: MainAxisSize.min,
+                                ),
+                              );
+                            }
 
-                          return Spinner();
-                        },
-                      ),
-                    ],
-                  ),
-                  itemCount: state.posters.length,
-                  separatorBuilder: (context, int index) => Divider(
-                    height: 2,
-                    color: index % 2 == 0 ? Colors.red : Colors.blue,
-                  ),
-                );
-        },
+                            return Spinner();
+                          },
+                        ),
+                      ],
+                    ),
+                    itemCount: state.posters.length,
+                    separatorBuilder: (context, int index) => Divider(
+                      height: 2,
+                      color: index % 2 == 0 ? Colors.red : Colors.blue,
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }

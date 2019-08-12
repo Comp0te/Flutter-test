@@ -93,68 +93,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  HeroRegister(
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: BlocBuilder(
-                      bloc: _formValidationBloc,
-                      builder: (
-                        BuildContext context,
-                        FormValidationState formValidationState,
-                      ) {
-                        return FormBuilder(
-                          key: _fbKey,
-                          autovalidate: formValidationState.isFormAutoValidate,
-                          child: Column(
-                            children: <Widget>[
-                              Flex(
-                                direction:
-                                    OrientationHelper.isLandscape(context)
-                                        ? Axis.horizontal
-                                        : Axis.vertical,
-                                mainAxisSize:
-                                    OrientationHelper.isLandscape(context)
-                                        ? MainAxisSize.max
-                                        : MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
-                                    child: FormFieldUserName(
-                                      controller: _usernameController,
-                                      onFiledSubmitted:
-                                          _makeOnNextActionSubmitted(
-                                        _emailFocusNode,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
-                                    child: FormFieldEmail(
-                                      controller: _emailController,
-                                      focusNode: _emailFocusNode,
-                                      onFiledSubmitted:
-                                          _makeOnNextActionSubmitted(
-                                        _password1FocusNode,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: Flex(
+          child: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    HeroRegister(
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      child: BlocBuilder(
+                        bloc: _formValidationBloc,
+                        builder: (
+                          BuildContext context,
+                          FormValidationState formValidationState,
+                        ) {
+                          return FormBuilder(
+                            key: _fbKey,
+                            autovalidate: formValidationState.isFormAutoValidate,
+                            child: Column(
+                              children: <Widget>[
+                                Flex(
                                   direction:
                                       OrientationHelper.isLandscape(context)
                                           ? Axis.horizontal
@@ -169,62 +131,102 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     Container(
                                       constraints:
                                           _getFormFieldConstraints(context),
-                                      child: FormFieldPassword(
-                                        label: 'Password',
-                                        controller: _password1Controller,
-                                        focusNode: _password1FocusNode,
+                                      child: FormFieldUserName(
+                                        controller: _usernameController,
                                         onFiledSubmitted:
                                             _makeOnNextActionSubmitted(
-                                          _password2FocusNode,
+                                          _emailFocusNode,
                                         ),
                                       ),
                                     ),
                                     Container(
                                       constraints:
                                           _getFormFieldConstraints(context),
-                                      child: FormFieldPassword(
-                                        label: 'Confirm Password',
-                                        controller: _password2Controller,
-                                        validatorsList: [
-                                          Validators
-                                              .makeConfirmPasswordValidator(
-                                            passwordController:
-                                                _password1Controller,
-                                          )
-                                        ],
-                                        focusNode: _password2FocusNode,
+                                      child: FormFieldEmail(
+                                        controller: _emailController,
+                                        focusNode: _emailFocusNode,
                                         onFiledSubmitted:
-                                            _makeOnDoneActionSubmitted(
-                                          formValidationState,
+                                            _makeOnNextActionSubmitted(
+                                          _password1FocusNode,
                                         ),
-                                        textInputAction: TextInputAction.done,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              BlocBuilder(
-                                bloc: _registerBloc,
-                                builder: (
-                                  BuildContext context,
-                                  RegisterState registerState,
-                                ) {
-                                  return SubmitButton(
-                                    isLoading: registerState.isLoading,
-                                    title: 'Submit',
-                                    onPress: _makeOnPressSubmit(
-                                      formValidationState,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  child: Flex(
+                                    direction:
+                                        OrientationHelper.isLandscape(context)
+                                            ? Axis.horizontal
+                                            : Axis.vertical,
+                                    mainAxisSize:
+                                        OrientationHelper.isLandscape(context)
+                                            ? MainAxisSize.max
+                                            : MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        constraints:
+                                            _getFormFieldConstraints(context),
+                                        child: FormFieldPassword(
+                                          label: 'Password',
+                                          controller: _password1Controller,
+                                          focusNode: _password1FocusNode,
+                                          onFiledSubmitted:
+                                              _makeOnNextActionSubmitted(
+                                            _password2FocusNode,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        constraints:
+                                            _getFormFieldConstraints(context),
+                                        child: FormFieldPassword(
+                                          label: 'Confirm Password',
+                                          controller: _password2Controller,
+                                          validatorsList: [
+                                            Validators
+                                                .makeConfirmPasswordValidator(
+                                              passwordController:
+                                                  _password1Controller,
+                                            )
+                                          ],
+                                          focusNode: _password2FocusNode,
+                                          onFiledSubmitted:
+                                              _makeOnDoneActionSubmitted(
+                                            formValidationState,
+                                          ),
+                                          textInputAction: TextInputAction.done,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                BlocBuilder(
+                                  bloc: _registerBloc,
+                                  builder: (
+                                    BuildContext context,
+                                    RegisterState registerState,
+                                  ) {
+                                    return SubmitButton(
+                                      isLoading: registerState.isLoading,
+                                      title: 'Submit',
+                                      onPress: _makeOnPressSubmit(
+                                        formValidationState,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

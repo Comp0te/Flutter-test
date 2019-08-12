@@ -137,56 +137,58 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (BuildContext context, AppState appState) {
             final postersList = appState.posters.values.toList();
 
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: GridView.builder(
-                    key: _gridViewKey,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: gridViewPaddingHorizontal,
-                      vertical: gridViewPaddingVertical,
-                    ),
-                    controller: _scrollController,
-                    itemCount: postersList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: gridViewColumnCount,
-                      crossAxisSpacing: gridViewCrossAxisSpacing,
-                      mainAxisSpacing: gridViewMainAxisSpacing,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return postersList[index].images == null ||
-                              postersList[index].images.isEmpty
-                          ? Image.asset(
-                              'assets/placeholder.png',
-                              fit: BoxFit.cover,
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: postersList[index].images[0]?.file,
-                              imageBuilder: (context, imageProvider) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
+            return SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: GridView.builder(
+                      key: _gridViewKey,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: gridViewPaddingHorizontal,
+                        vertical: gridViewPaddingVertical,
+                      ),
+                      controller: _scrollController,
+                      itemCount: postersList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: gridViewColumnCount,
+                        crossAxisSpacing: gridViewCrossAxisSpacing,
+                        mainAxisSpacing: gridViewMainAxisSpacing,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return postersList[index].images == null ||
+                                postersList[index].images.isEmpty
+                            ? Image.asset(
+                                'assets/placeholder.png',
+                                fit: BoxFit.cover,
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: postersList[index].images[0]?.file,
+                                imageBuilder: (context, imageProvider) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              placeholder: (context, url) => Spinner(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            );
-                    },
+                                  );
+                                },
+                                placeholder: (context, url) => Spinner(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              );
+                      },
+                    ),
                   ),
-                ),
-                BlocBuilder(
-                  bloc: _postersFetchBloc,
-                  builder: (BuildContext context, PostersFetchState state) {
-                    return state.isLoadingNextPage ? Spinner() : Container();
-                  },
-                )
-              ],
+                  BlocBuilder(
+                    bloc: _postersFetchBloc,
+                    builder: (BuildContext context, PostersFetchState state) {
+                      return state.isLoadingNextPage ? Spinner() : Container();
+                    },
+                  )
+                ],
+              ),
             );
           },
         ),

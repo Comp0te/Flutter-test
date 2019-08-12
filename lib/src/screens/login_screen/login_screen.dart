@@ -104,95 +104,97 @@ class _LoginScreenState extends State<LoginScreen>
         },
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Center(
-            child: SingleChildScrollView(
-              padding: widget.paddingHorizontalScreen,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  BlocBuilder(
-                    bloc: _formValidationBloc,
-                    builder: (
-                      BuildContext context,
-                      FormValidationState formValidationState,
-                    ) {
-                      return FormBuilder(
-                        key: _fbKey,
-                        autovalidate: formValidationState.isFormAutoValidate,
-                        child: Column(
-                          children: <Widget>[
-                            Flex(
-                              direction: OrientationHelper.isLandscape(context)
-                                  ? Axis.horizontal
-                                  : Axis.vertical,
-                              mainAxisSize:
-                                  OrientationHelper.isLandscape(context)
-                                      ? MainAxisSize.max
-                                      : MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  constraints:
-                                      _getFormFieldConstraints(context),
-                                  margin: widget.marginBottomEmail,
-                                  child: FormFieldEmail(
-                                    controller: _emailController,
-                                    onFiledSubmitted:
-                                        _makeOnNextActionSubmitted(
-                                      _passwordFocusNode,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  constraints:
-                                      _getFormFieldConstraints(context),
-                                  margin: widget.marginBottomPassword,
-                                  child: FormFieldPassword(
-                                    controller: _passwordController,
-                                    focusNode: _passwordFocusNode,
-                                    onFiledSubmitted:
-                                        _makeOnDoneActionSubmitted(
-                                      formValidationState,
-                                    ),
-                                    textInputAction: TextInputAction.done,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 40, top: 20),
-                              child: BlocBuilder(
-                                bloc: _loginBloc,
-                                builder: (
-                                  BuildContext context,
-                                  LoginState loginState,
-                                ) {
-                                  return Opacity(
-                                    opacity: widget.submitOpacity,
-                                    child: SubmitButton(
-                                      isLoading: loginState.isLoading,
-                                      title: 'Submit',
-                                      color: widget.color,
-                                      onPress: _makeOnPressSubmit(
-                                        formValidationState,
+          child: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: widget.paddingHorizontalScreen,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    BlocBuilder(
+                      bloc: _formValidationBloc,
+                      builder: (
+                        BuildContext context,
+                        FormValidationState formValidationState,
+                      ) {
+                        return FormBuilder(
+                          key: _fbKey,
+                          autovalidate: formValidationState.isFormAutoValidate,
+                          child: Column(
+                            children: <Widget>[
+                              Flex(
+                                direction: OrientationHelper.isLandscape(context)
+                                    ? Axis.horizontal
+                                    : Axis.vertical,
+                                mainAxisSize:
+                                    OrientationHelper.isLandscape(context)
+                                        ? MainAxisSize.max
+                                        : MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    constraints:
+                                        _getFormFieldConstraints(context),
+                                    margin: widget.marginBottomEmail,
+                                    child: FormFieldEmail(
+                                      controller: _emailController,
+                                      onFiledSubmitted:
+                                          _makeOnNextActionSubmitted(
+                                        _passwordFocusNode,
                                       ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  Container(
+                                    constraints:
+                                        _getFormFieldConstraints(context),
+                                    margin: widget.marginBottomPassword,
+                                    child: FormFieldPassword(
+                                      controller: _passwordController,
+                                      focusNode: _passwordFocusNode,
+                                      onFiledSubmitted:
+                                          _makeOnDoneActionSubmitted(
+                                        formValidationState,
+                                      ),
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            HeroRegister(
-                              width: widget.heroRegisterWidth,
-                              onTap: _toRegistrationScreen,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(bottom: 40, top: 20),
+                                child: BlocBuilder(
+                                  bloc: _loginBloc,
+                                  builder: (
+                                    BuildContext context,
+                                    LoginState loginState,
+                                  ) {
+                                    return Opacity(
+                                      opacity: widget.submitOpacity,
+                                      child: SubmitButton(
+                                        isLoading: loginState.isLoading,
+                                        title: 'Submit',
+                                        color: widget.color,
+                                        onPress: _makeOnPressSubmit(
+                                          formValidationState,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              HeroRegister(
+                                width: widget.heroRegisterWidth,
+                                onTap: _toRegistrationScreen,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
