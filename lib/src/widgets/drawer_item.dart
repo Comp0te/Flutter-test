@@ -47,9 +47,6 @@ class DrawerItem extends StatelessWidget implements DrawerItemOptions {
               : () {
                   Navigator.pop(context);
                   Navigator.pushReplacementNamed(context, routeName);
-                  _activeIndexBloc.dispatch(SetActiveIndex(
-                    activeIndex: itemIndex,
-                  ));
                 },
         );
       },

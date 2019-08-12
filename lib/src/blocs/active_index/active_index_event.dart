@@ -7,8 +7,8 @@ abstract class ActiveIndexEvent extends Equatable {
 }
 
 class SetActiveIndex extends ActiveIndexEvent {
-  final int activeIndex;
+  final int index;
 
-  SetActiveIndex({this.activeIndex})
-      : super([activeIndex]);
+  SetActiveIndex({this.index})
+      : super([index]);
 }

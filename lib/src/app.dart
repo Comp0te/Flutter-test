@@ -61,14 +61,17 @@ class App extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case MainRouteNames.home:
+              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 0));
               return MainRoutes.homeScreenRoute(context);
               break;
 
             case MainRouteNames.database:
+              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 1));
               return MainRoutes.databaseScreenRoute(context);
               break;
 
             case MainRouteNames.camera:
+              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 2));
               return MainRoutes.cameraScreenRoute(context);
               break;
 
