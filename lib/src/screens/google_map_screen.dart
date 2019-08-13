@@ -18,12 +18,11 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   void initState() {
     super.initState();
-    _mapController.future
+    Future.delayed(Duration(seconds: 1), () => _mapController.future)
         .asStream()
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
-        .listen((latLngBounds) => _streamController.add(latLngBounds))
-        .cancel();
+        .listen((latLngBounds) => _streamController.add(latLngBounds));
   }
 
   @override
