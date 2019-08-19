@@ -36,13 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void loadMorePosters() {
-    _postersFetchBloc.state.take(1).listen((state) {
-      if (state.hasNextPage && !state.isLoadingNextPage) {
-        _postersFetchBloc.dispatch(
-          PostersFetchNextPageRequest(page: state.data.meta.page + 1),
-        );
-      }
-    });
+    final state = _postersFetchBloc.currentState;
+
+    if (state.hasNextPage && !state.isLoadingNextPage) {
+      _postersFetchBloc.dispatch(
+        PostersFetchNextPageRequest(page: state.data.meta.page + 1),
+      );
+    }
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
