@@ -5,7 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_app/src/utils/helpers/helpers.dart';
 import 'package:flutter_app/src/routes/auth.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/servises/snackbar.dart';
+import 'package:flutter_app/src/mixins/snackbar.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, SnackBarMixin {
   final _fbKey = GlobalKey<FormBuilderState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen>
           }
 
           if (state.isFailure) {
-            SnackBarService.showError(
+            showSnackBarError(
               context: context,
               error: state.error,
             );

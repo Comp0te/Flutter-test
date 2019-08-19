@@ -8,7 +8,7 @@ import 'package:flutter_app/src/widgets/widgets.dart';
 
 import 'package:flutter_app/src/utils/validators.dart';
 import 'package:flutter_app/src/utils/helpers/helpers.dart';
-import 'package:flutter_app/src/servises/snackbar.dart';
+import 'package:flutter_app/src/mixins/snackbar.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class RegisterScreen extends StatefulWidget {
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
   final _fbKey = GlobalKey<FormBuilderState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
 
           if (state.isFailure) {
-            SnackBarService.showError(
+            showSnackBarError(
               context: context,
               error: state.error,
             );

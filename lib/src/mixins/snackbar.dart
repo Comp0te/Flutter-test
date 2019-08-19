@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-abstract class SnackBarService {
-  static ScaffoldState showError({
+mixin SnackBarMixin<T extends StatefulWidget> on State<T> {
+  ScaffoldState showSnackBarError({
     @required BuildContext context,
     @required Exception error,
   }) {
