@@ -18,7 +18,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () => _mapController.future)
+    Future.delayed(const Duration(seconds: 1), () => _mapController.future)
         .asStream()
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
