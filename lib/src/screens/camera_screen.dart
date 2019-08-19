@@ -35,17 +35,15 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.inactive) {
-      _cameraBloc.state.take(1).listen((state) {
-        state.cameraController?.dispose();
-      });
+      _cameraBloc.currentState.cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      _cameraBloc.state.take(1).listen((state) {
-        if (state.cameraController != null) {
-          _cameraBloc.dispatch(
-            SelectCamera(cameraDescription: state.cameras[0]),
-          );
-        }
-      });
+      final state = _cameraBloc.currentState;
+
+      if (state.cameraController != null) {
+        _cameraBloc.dispatch(
+          SelectCamera(cameraDescription: state.cameras[0]),
+        );
+      }
     }
   }
 
