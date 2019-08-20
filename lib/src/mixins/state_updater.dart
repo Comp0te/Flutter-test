@@ -1,7 +1,8 @@
+import 'package:flutter_app/src/utils/equatable_class.dart';
 import 'package:meta/meta.dart';
 
-abstract class StateHelper {
-  static Map<String, V> updateEntities<V>({
+mixin StateUpdaterMixin on EquatableClass {
+  Map<String, V> updateEntities<V>({
     @required Map<String, V> stateEntities,
     @required List<V> eventEntitiesList,
   }) {
@@ -20,7 +21,7 @@ abstract class StateHelper {
     return newEntities;
   }
 
-  static Map<String, V> deleteEntities<V>({
+  Map<String, V> deleteEntities<V>({
     @required Map<String, V> stateEntities,
     @required List<String> entitiesIds,
   }) {

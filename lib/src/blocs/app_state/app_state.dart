@@ -1,11 +1,11 @@
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/utils/equatable_class.dart';
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
 
 @immutable
-class AppState extends EquatableClass {
+class AppState extends EquatableClass with StateUpdaterMixin {
   final Map<String, User> users;
   final Map<String, PosterNormalized> posters;
 
@@ -24,11 +24,11 @@ class AppState extends EquatableClass {
     List<PosterNormalized> posters,
   }) {
     return AppState(
-      users: StateHelper.updateEntities<User>(
+      users: updateEntities<User>(
         stateEntities: this.users,
         eventEntitiesList: users,
       ),
-      posters: StateHelper.updateEntities<PosterNormalized>(
+      posters: updateEntities<PosterNormalized>(
         stateEntities: this.posters,
         eventEntitiesList: posters,
       ),
@@ -40,11 +40,11 @@ class AppState extends EquatableClass {
     List<String> postersIds,
   }) {
     return AppState(
-      users: StateHelper.deleteEntities<User>(
+      users: deleteEntities<User>(
         stateEntities: users,
         entitiesIds: usersIds,
       ),
-      posters: StateHelper.deleteEntities<PosterNormalized>(
+      posters: deleteEntities<PosterNormalized>(
         stateEntities: posters,
         entitiesIds: postersIds,
       ),
