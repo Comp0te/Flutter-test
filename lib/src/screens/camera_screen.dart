@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/utils/constants.dart';
 import 'package:flutter_app/src/utils/helpers/helpers.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class CameraScreen extends StatefulWidget {
+class CameraScreen extends StatefulWidget with OrientationMixin {
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -22,13 +23,13 @@ class _CameraScreenState extends State<CameraScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _cameraBloc = BlocProvider.of<CameraBloc>(context);
-    OrientationHelper.setOnlyPortraitUP();
+    widget.setOnlyPortraitUP();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    OrientationHelper.setAllOrientations();
+    widget.setAllOrientations();
     super.dispose();
   }
 

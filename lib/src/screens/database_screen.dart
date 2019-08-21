@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/repositories/repositories.dart';
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
 
-class DatabaseScreen extends StatelessWidget {
+class DatabaseScreen extends StatelessWidget with OrientationMixin {
   @override
   Widget build(BuildContext context) {
     final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
-    final showImageCount = OrientationHelper.isPortrait(context) ? 3 : 5;
+    final showImageCount = isPortrait(context) ? 3 : 5;
 
     Future<List<Widget>> _getImagesFromStore(
       PosterNormalized poster,

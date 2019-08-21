@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/utils/helpers/helpers.dart';
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget with OrientationMixin {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
-    final gridViewColumnCount = OrientationHelper.isPortrait(context) ? 2 : 3;
+    final gridViewColumnCount = widget.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
       drawer: MainDrawer(),

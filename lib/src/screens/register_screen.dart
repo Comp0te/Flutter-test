@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_app/src/widgets/hero_register.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-
 import 'package:flutter_app/src/utils/validators.dart';
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
-import 'package:flutter_app/src/mixins/snackbar.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget with OrientationMixin {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -28,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
   final _password2FocusNode = FocusNode();
 
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
-      OrientationHelper.isLandscape(context)
+      widget.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
           : const BoxConstraints();
 
@@ -113,18 +110,17 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
                         ) {
                           return FormBuilder(
                             key: _fbKey,
-                            autovalidate: formValidationState.isFormAutoValidate,
+                            autovalidate:
+                                formValidationState.isFormAutoValidate,
                             child: Column(
                               children: <Widget>[
                                 Flex(
-                                  direction:
-                                      OrientationHelper.isLandscape(context)
-                                          ? Axis.horizontal
-                                          : Axis.vertical,
-                                  mainAxisSize:
-                                      OrientationHelper.isLandscape(context)
-                                          ? MainAxisSize.max
-                                          : MainAxisSize.min,
+                                  direction: widget.isLandscape(context)
+                                      ? Axis.horizontal
+                                      : Axis.vertical,
+                                  mainAxisSize: widget.isLandscape(context)
+                                      ? MainAxisSize.max
+                                      : MainAxisSize.min,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
@@ -156,14 +152,12 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
                                 Container(
                                   margin: const EdgeInsets.only(bottom: 10),
                                   child: Flex(
-                                    direction:
-                                        OrientationHelper.isLandscape(context)
-                                            ? Axis.horizontal
-                                            : Axis.vertical,
-                                    mainAxisSize:
-                                        OrientationHelper.isLandscape(context)
-                                            ? MainAxisSize.max
-                                            : MainAxisSize.min,
+                                    direction: widget.isLandscape(context)
+                                        ? Axis.horizontal
+                                        : Axis.vertical,
+                                    mainAxisSize: widget.isLandscape(context)
+                                        ? MainAxisSize.max
+                                        : MainAxisSize.min,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[

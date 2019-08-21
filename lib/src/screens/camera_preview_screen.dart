@@ -4,12 +4,12 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/utils/constants.dart';
 
-class CameraPreviewScreen extends StatefulWidget {
+class CameraPreviewScreen extends StatefulWidget with OrientationMixin {
   @override
   _CameraPreviewScreenState createState() => _CameraPreviewScreenState();
 }
@@ -22,13 +22,13 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
     super.initState();
     _cameraBloc = BlocProvider.of<CameraBloc>(context);
     BackButtonInterceptor.add(androidBackHandler);
-    OrientationHelper.setAllOrientations();
+    widget.setAllOrientations();
   }
 
   @override
   void dispose() {
     BackButtonInterceptor.remove(androidBackHandler);
-    OrientationHelper.setOnlyPortraitUP();
+    widget.setOnlyPortraitUP();
     super.dispose();
   }
 

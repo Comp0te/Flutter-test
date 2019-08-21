@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-abstract class OrientationHelper {
-  static bool isLandscape(BuildContext context) {
+mixin OrientationMixin on Widget{
+  bool isLandscape(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.landscape;
   }
 
-  static bool isPortrait(BuildContext context) {
+  bool isPortrait(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 
-  static void setAllOrientations() {
+  void setAllOrientations() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -19,7 +19,7 @@ abstract class OrientationHelper {
     ]);
   }
 
-  static void setOnlyPortraitUP() {
+  void setOnlyPortraitUP() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

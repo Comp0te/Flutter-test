@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
 import 'package:flutter_app/src/routes/auth.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/mixins/snackbar.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget with OrientationMixin {
   final double heroRegisterWidth;
   final double submitOpacity;
   final EdgeInsets marginBottomEmail;
@@ -39,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen>
   final _passwordFocusNode = FocusNode();
 
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
-      OrientationHelper.isLandscape(context)
+      widget.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
           : const BoxConstraints();
 
@@ -124,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen>
                           child: Column(
                             children: <Widget>[
                               Flex(
-                                direction: OrientationHelper.isLandscape(context)
+                                direction: widget.isLandscape(context)
                                     ? Axis.horizontal
                                     : Axis.vertical,
-                                mainAxisSize:
-                                    OrientationHelper.isLandscape(context)
-                                        ? MainAxisSize.max
-                                        : MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: widget.isLandscape(context)
+                                    ? MainAxisSize.max
+                                    : MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
                                     constraints:
