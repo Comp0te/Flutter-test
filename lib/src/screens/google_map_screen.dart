@@ -37,8 +37,6 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final latLngStream = _streamController.stream.asBroadcastStream();
-
     return Scaffold(
       drawer: MainDrawer(),
       body: Stack(
@@ -79,90 +77,43 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
             top: 30,
             left: 15,
             width: MediaQuery.of(context).size.width - 30,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(bottom: 4),
-                  child: StreamBuilder<LatLngBounds>(
-                    stream: latLngStream,
-                    builder: (context, snapshot) {
-                      return Opacity(
-                        opacity: 0.8,
-                        child: snapshot.connectionState ==
-                                ConnectionState.active
-                            ? Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 20,
-                                      color: Colors.grey,
-                                    )
-                                  ],
+            child: Container(
+              child: StreamBuilder<LatLngBounds>(
+                stream: _streamController.stream,
+                builder: (context, snapshot) {
+                  return Opacity(
+                    opacity: 0.8,
+                    child: snapshot.connectionState == ConnectionState.active
+                        ? Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  color: Colors.grey,
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                _latLngBoundsText(
+                                  title: 'North-East',
+                                  data: snapshot.data.northeast,
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    _latLngBoundsText(
-                                      title: 'North-East',
-                                      data: snapshot.data.northeast,
-                                    ),
-                                    _latLngBoundsText(
-                                      title: 'South-West',
-                                      data: snapshot.data.southwest,
-                                    ),
-                                  ],
+                                _latLngBoundsText(
+                                  title: 'South-West',
+                                  data: snapshot.data.southwest,
                                 ),
-                              )
-                            : Container(),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  child: StreamBuilder<double>(
-                    stream: latLngStream
-                        .asyncMap((latLng) => Geolocator().distanceBetween(
-                              latLng.northeast.latitude,
-                              latLng.northeast.longitude,
-                              latLng.southwest.latitude,
-                              latLng.southwest.longitude,
-                            )),
-                    builder: (context, snapshot) {
-                      return Opacity(
-                        opacity: 0.8,
-                        child:
-                            snapshot.connectionState == ConnectionState.active
-                                ? Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 20,
-                                          color: Colors.grey,
-                                        )
-                                      ],
-                                    ),
-                                    child: Text(
-                                      'Distance between northeast'
-                                      'and southwest ${snapshot.data.round()} m',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  )
-                                : Container(),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                              ],
+                            ),
+                          )
+                        : Container(),
+                  );
+                },
+              ),
             ),
           ),
         ],
