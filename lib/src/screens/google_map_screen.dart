@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:flutter_app/src/widgets/widgets.dart';
@@ -50,6 +51,27 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
             onMapCreated: (GoogleMapController controller) {
               _mapController.complete(controller);
             },
+          ),
+          Positioned(
+            bottom: 15,
+            left: 20,
+            child: SizedBox(
+              height: 50,
+              width: 50,
+              child: RaisedButton(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                padding: const EdgeInsets.all(0),
+                child: Icon(
+                  Icons.my_location,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                color: Colors.blue,
+                onPressed: _toMe,
+              ),
+            ),
           ),
           Positioned(
             top: 30,
@@ -113,6 +135,27 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         fontSize: 12,
       ),
     );
+  }
+
+  Future<void> _toMe() async {
+    final controller = await _mapController.future;
+    final position = await Geolocator().getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+      locationPermissionLevel: GeolocationPermission.locationWhenInUse,
+    );
+
+    await controller.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(
+          position.latitude,
+          position.longitude,
+        ),
+        zoom: 17,
+      )),
+    );
+
+    final region = await controller.getVisibleRegion();
+    _streamController.add(region);
   }
 
   Future<void> _toNextPlace() async {
