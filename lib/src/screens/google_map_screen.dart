@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -16,6 +17,7 @@ class GoogleMapScreen extends StatefulWidget {
 class GoogleMapScreenState extends State<GoogleMapScreen> {
   final _mapController = Completer<GoogleMapController>();
   final _activeIndexBloc = ActiveIndexBloc();
+  final _booleanBloc = ActiveIndexBloc();
   final _streamController = StreamController<LatLngBounds>();
 
   @override
@@ -26,6 +28,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
         .listen((latLngBounds) => _streamController.add(latLngBounds));
+    _booleanBloc..dispatch(SetActiveIndex(index: 1));
   }
 
   @override
@@ -58,18 +61,26 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
             child: SizedBox(
               height: 50,
               width: 50,
-              child: RaisedButton(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                padding: const EdgeInsets.all(0),
-                child: Icon(
-                  Icons.my_location,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                color: Colors.blue,
-                onPressed: _toMe,
+              child: BlocBuilder(
+                bloc: _booleanBloc,
+                builder: (_, ActiveIndexState state) {
+                  return state.activeIndex == 1
+                      ? RaisedButton(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          padding: const EdgeInsets.all(0),
+                          child: Icon(
+                            Icons.my_location,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          color: Colors.blue,
+                          onPressed: _toMe,
+                        )
+                      : Spinner();
+                },
               ),
             ),
           ),
@@ -138,6 +149,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   }
 
   Future<void> _toMe() async {
+    _booleanBloc..dispatch(SetActiveIndex(index: 0));
+
     final controller = await _mapController.future;
     final position = await Geolocator().getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
@@ -156,6 +169,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
 
     final region = await controller.getVisibleRegion();
     _streamController.add(region);
+
+    _booleanBloc..dispatch(SetActiveIndex(index: 1));
   }
 
   Future<void> _toNextPlace() async {
