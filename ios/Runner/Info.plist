@@ -31,6 +31,10 @@
 	<string>Can I use the camera please?</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Google map wants read your location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Google map wants read your location</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Google map wants read your location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Can I use the mic please?</string>
 	<key>UIBackgroundModes</key>
