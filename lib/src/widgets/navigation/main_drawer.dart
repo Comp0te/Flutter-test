@@ -47,7 +47,7 @@ class _MainDrawerState extends State<MainDrawer> {
                 ),
               ),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
             ),
           ),
