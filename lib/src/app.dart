@@ -6,7 +6,15 @@ import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/routes/auth.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final mainNavigatorKey = GlobalKey<NavigatorState>();
+  final authNavigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
@@ -26,8 +34,6 @@ class App extends StatelessWidget {
     final _firebaseMessagingBloc = FirebaseMessagingBloc(
       firebaseMessagingRepository: _firebaseMessagingRepository,
     );
-
-    final mainNavigatorKey = GlobalKey<NavigatorState>();
 
     return MultiBlocProvider(
       providers: [
@@ -90,6 +96,7 @@ class App extends StatelessWidget {
 
   Widget _auth(BuildContext context) {
     return MaterialApp(
+      navigatorKey: authNavigatorKey,
       initialRoute: AuthRouteNames.login,
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
