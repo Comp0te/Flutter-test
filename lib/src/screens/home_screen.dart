@@ -88,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisSpacing: gridViewCrossAxisSpacing,
                           mainAxisSpacing: gridViewMainAxisSpacing,
                         ),
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(0, 0, 255, 1)),
+                        decoration: const BoxDecoration(
+                            color: Color.fromRGBO(0, 0, 255, 1)),
                       ),
                     ],
                   );
@@ -199,4 +199,4 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // TODO: Add onRefresh behaviour
-// TODO: Find a solution of double call initState on ios
+// TODO: Test double call initState on ios
