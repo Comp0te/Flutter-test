@@ -26,7 +26,7 @@ abstract class MainRoutes {
   static AppStateBloc _appStateBloc(BuildContext context) =>
       BlocProvider.of<AppStateBloc>(context);
 
-  static Route<AnimatedLoginScreen> homeScreenRoute(BuildContext context) {
+  static Route<HomeScreen> homeScreenRoute(BuildContext context) {
     return PageTransition(
       type: PageTransitionType.fade,
       alignment: Alignment.center,
@@ -44,7 +44,7 @@ abstract class MainRoutes {
     );
   }
 
-  static Route<RegisterScreen> databaseScreenRoute(BuildContext context) {
+  static Route<DatabaseScreen> databaseScreenRoute(BuildContext context) {
     return PageTransition(
       type: PageTransitionType.rightToLeft,
       alignment: Alignment.center,
@@ -60,7 +60,7 @@ abstract class MainRoutes {
     );
   }
 
-  static Route<RegisterScreen> cameraScreenRoute(BuildContext context) {
+  static Route<CameraScreen> cameraScreenRoute(BuildContext context) {
     return PageTransition(
       type: PageTransitionType.fade,
       alignment: Alignment.center,
@@ -75,7 +75,7 @@ abstract class MainRoutes {
     );
   }
 
-  static Route<RegisterScreen> cameraPreviewScreenRoute(
+  static Route<CameraPreviewScreen> cameraPreviewScreenRoute(
     BuildContext context,
     CameraBloc cameraBloc,
   ) {
@@ -89,7 +89,7 @@ abstract class MainRoutes {
     );
   }
 
-  static Route<RegisterScreen> googleMapRoute(BuildContext context) {
+  static Route<GoogleMapScreen> googleMapRoute(BuildContext context) {
     return PageTransition(
       type: PageTransitionType.fade,
       alignment: Alignment.center,
