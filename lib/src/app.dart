@@ -13,13 +13,20 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final mainNavigatorKey = GlobalKey<NavigatorState>();
-  final authNavigatorKey = GlobalKey<NavigatorState>();
+  AppStateBloc _appStateBloc;
+  ActiveIndexBloc _drawerActiveIndexBloc;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocBuilder<AuthEvent, AuthState>(
       bloc: BlocProvider.of<AuthBloc>(context),
-      builder: (BuildContext context, AuthState state) {
+      condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
+      builder: (context, state) {
+        if (state.isAuthenticated) {
+          _appStateBloc = AppStateBloc();
+          _drawerActiveIndexBloc = ActiveIndexBloc();
+        }
+
         return state.isAuthenticated ? _main(context) : _auth(context);
       },
     );
@@ -28,9 +35,6 @@ class _AppState extends State<App> {
   Widget _main(BuildContext context) {
     final _firebaseMessagingRepository =
         RepositoryProvider.of<FirebaseMessagingRepository>(context);
-
-    final _appStateBloc = AppStateBloc();
-    final _drawerActiveIndexBloc = ActiveIndexBloc();
     final _firebaseMessagingBloc = FirebaseMessagingBloc(
       firebaseMessagingRepository: _firebaseMessagingRepository,
     );
@@ -38,27 +42,21 @@ class _AppState extends State<App> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AppStateBloc>(
-          builder: (context) {
-            return _appStateBloc;
-          },
+          builder: (context) => _appStateBloc,
         ),
         BlocProvider<FirebaseMessagingBloc>(
-          builder: (context) {
-            return _firebaseMessagingBloc
-              ..dispatch(
-                RequestNotificationPermissions(),
-              )
-              ..dispatch(
-                ConfigureFirebaseMessaging(
-                  navigatorKey: mainNavigatorKey,
-                ),
-              );
-          },
+          builder: (context) => _firebaseMessagingBloc
+            ..dispatch(
+              RequestNotificationPermissions(),
+            )
+            ..dispatch(
+              ConfigureFirebaseMessaging(
+                navigatorKey: mainNavigatorKey,
+              ),
+            ),
         ),
         BlocProvider<ActiveIndexBloc>(
-          builder: (context) {
-            return _drawerActiveIndexBloc;
-          },
+          builder: (context) => _drawerActiveIndexBloc,
         ),
       ],
       child: MaterialApp(
@@ -96,7 +94,6 @@ class _AppState extends State<App> {
 
   Widget _auth(BuildContext context) {
     return MaterialApp(
-      navigatorKey: authNavigatorKey,
       initialRoute: AuthRouteNames.login,
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
