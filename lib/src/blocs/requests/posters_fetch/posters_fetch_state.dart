@@ -1,18 +1,20 @@
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/utils/equatable_class.dart';
 
 @immutable
-class PostersFetchState extends EquatableClass {
+class PostersFetchState extends EquatableClass
+    implements RequestPaginatedState<PostersFetchResponse> {
+  @override
   final bool isLoadingFirstPage;
+  @override
   final bool isLoadingNextPage;
+  @override
   final PostersFetchResponse data;
+  @override
   final Exception error;
-
-  bool get isSuccess => data != null;
-  bool get isFailure => error != null;
-  bool get hasNextPage => data.meta.page < data.meta.total;
 
   PostersFetchState({
     this.isLoadingFirstPage,
@@ -26,6 +28,13 @@ class PostersFetchState extends EquatableClass {
         isLoadingNextPage: false,
       );
 
+  @override
+  bool get isSuccess => data != null;
+  @override
+  bool get isFailure => error != null;
+  bool get hasNextPage => data.meta.page < data.meta.total;
+
+  @override
   PostersFetchState copyWith({
     bool isLoadingFirstPage,
     bool isLoadingNextPage,

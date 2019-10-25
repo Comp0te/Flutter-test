@@ -1,16 +1,17 @@
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/utils/equatable_class.dart';
 
 @immutable
-class LoginState extends EquatableClass {
+class LoginState extends EquatableClass implements RequestState<AuthResponse> {
+  @override
   final bool isLoading;
+  @override
   final AuthResponse data;
+  @override
   final Exception error;
-
-  bool get isSuccess => data != null;
-  bool get isFailure => error != null;
 
   LoginState({
     @required this.isLoading,
@@ -18,8 +19,14 @@ class LoginState extends EquatableClass {
     this.error,
   }) : super([isLoading, data, error]);
 
+  @override
+  bool get isSuccess => data != null;
+  @override
+  bool get isFailure => error != null;
+
   factory LoginState.init() => LoginState(isLoading: false);
 
+  @override
   LoginState copyWith({
     @required bool isLoading,
     AuthResponse data,
