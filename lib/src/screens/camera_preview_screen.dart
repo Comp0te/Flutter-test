@@ -33,7 +33,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
   }
 
   bool androidBackHandler(bool stopDefaultButtonEvent) {
-    _cameraBloc.dispatch(ResetCameraFiles());
+    _cameraBloc.add(ResetCameraFiles());
     return false;
   }
 
@@ -50,13 +50,13 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
         heroTag: HeroTag.cameraFAB,
         backgroundColor: Colors.green,
         onPressed: () {
-          _cameraBloc.dispatch(ResetCameraFiles());
+          _cameraBloc.add(ResetCameraFiles());
           Navigator.of(context).pop();
         },
       ),
-      body: BlocBuilder(
+      body: BlocBuilder<CameraBloc, CameraState>(
         bloc: _cameraBloc,
-        builder: (context, CameraState state) => Stack(
+        builder: (context, state) => Stack(
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -95,7 +95,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                       size: 40,
                     ),
                     onPressed: () {
-                      _cameraBloc.dispatch(DeleteCameraFile(
+                      _cameraBloc.add(DeleteCameraFile(
                         path: state.photoPath != null
                             ? state.photoPath
                             : state.videoPath,

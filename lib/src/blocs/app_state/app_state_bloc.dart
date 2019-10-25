@@ -10,19 +10,19 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
   @override
   Stream<AppState> mapEventToState(AppStateEvent event) async* {
     if (event is AppStateUpdateUsers) {
-      yield currentState.copyWith(
+      yield state.copyWith(
         users: event.users,
       );
     } else if (event is AppStateDeleteUsers) {
-      yield currentState.delete(
+      yield state.delete(
         usersIds: event.usersIds,
       );
     } else if (event is AppStateUpdatePosters) {
-      yield currentState.copyWith(
+      yield state.copyWith(
         posters: event.posters,
       );
     } else if (event is AppStateDeletePosters) {
-      yield currentState.delete(
+      yield state.delete(
         postersIds: event.postersIds,
       );
     }

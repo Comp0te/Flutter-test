@@ -35,9 +35,9 @@ class DrawerItem extends StatelessWidget implements DrawerItemOptions {
   Widget build(BuildContext context) {
     final _activeIndexBloc = BlocProvider.of<ActiveIndexBloc>(context);
 
-    return BlocBuilder(
+    return BlocBuilder<ActiveIndexBloc, ActiveIndexState>(
       bloc: _activeIndexBloc,
-      builder: (BuildContext context, ActiveIndexState state) {
+      builder: (BuildContext context, state) {
         return ListTile(
           selected: state.activeIndex == itemIndex,
           leading: icon,

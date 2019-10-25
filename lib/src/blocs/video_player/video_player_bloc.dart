@@ -9,10 +9,9 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
   @override
   VideoPlayerState get initialState => VideoPlayerState.init();
 
-  @override
   void dispose() {
-    currentState.videoPlayerController.dispose();
-    super.dispose();
+    state.videoPlayerController.dispose();
+    super.close();
   }
 
   @override
@@ -36,7 +35,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
       await videoPlayerController.initialize();
       await videoPlayerController.setLooping(true);
 
-      yield currentState.copyWith(
+      yield state.copyWith(
         videoPlayerController: videoPlayerController,
         videoPath: event.videoPath,
       );
@@ -47,10 +46,10 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
 
   Stream<VideoPlayerState> _mapPlayVideoToState(PlayVideo event) async* {
     try {
-      await currentState.videoPlayerController.play();
+      await state.videoPlayerController.play();
 
-      yield currentState.copyWith(
-          videoPlayerController: currentState.videoPlayerController);
+      yield state.copyWith(
+          videoPlayerController: state.videoPlayerController);
     } catch (err) {
       print('--- initialize Video Player error --- $err');
     }
@@ -58,10 +57,10 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
 
   Stream<VideoPlayerState> _mapPauseVideoToState(PauseVideo event) async* {
     try {
-      await currentState.videoPlayerController.pause();
+      await state.videoPlayerController.pause();
 
-      yield currentState.copyWith(
-          videoPlayerController: currentState.videoPlayerController);
+      yield state.copyWith(
+          videoPlayerController: state.videoPlayerController);
     } catch (err) {
       print('--- initialize Video Player error --- $err');
     }

@@ -55,9 +55,9 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: BlocBuilder(
+        child: BlocBuilder<AppStateBloc, AppState>(
           bloc: _appStateBloc,
-          builder: (context, AppState state) {
+          builder: (context, state) {
             final posters = state.posters.values.toList();
 
             return state.posters.isEmpty

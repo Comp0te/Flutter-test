@@ -24,7 +24,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
   void initState() {
     super.initState();
     _videoPlayerBloc = VideoPlayerBloc()
-      ..dispatch(InitVideoPlayerWithFile(
+      ..add(InitVideoPlayerWithFile(
         videoPath: widget.videoPath,
       ));
     _animationController = AnimationController(
@@ -43,9 +43,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        BlocBuilder(
+        BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
           bloc: _videoPlayerBloc,
-          builder: (context, VideoPlayerState state) {
+          builder: (context, state) {
             return Center(
               child: state.isInitialized
                   ? AspectRatio(
@@ -60,9 +60,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
         Positioned(
           bottom: 20,
           left: 20,
-          child: BlocBuilder(
+          child: BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
             bloc: _videoPlayerBloc,
-            builder: (context, VideoPlayerState state) {
+            builder: (context, state) {
               return DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.blue,
@@ -88,10 +88,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                   ),
                   onPressed: () {
                     if (state.isPlaying) {
-                      _videoPlayerBloc.dispatch(PauseVideo());
+                      _videoPlayerBloc.add(PauseVideo());
                       _animationController.reverse();
                     } else {
-                      _videoPlayerBloc.dispatch(PlayVideo());
+                      _videoPlayerBloc.add(PlayVideo());
                       _animationController.forward();
                     }
                   },

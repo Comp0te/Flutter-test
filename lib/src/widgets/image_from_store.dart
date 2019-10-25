@@ -19,9 +19,9 @@ class ImageFromStore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: _imageStoreBloc..dispatch(GetImage(url: _url)),
-      builder: (BuildContext context, ImageStoreState state) {
+    return BlocBuilder<ImageStoreBloc, ImageStoreState>(
+      bloc: _imageStoreBloc..add(GetImage(url: _url)),
+      builder: (context, state) {
         if (state.isLoading) {
           return Container(
             decoration: BoxDecoration(

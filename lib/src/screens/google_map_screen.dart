@@ -28,13 +28,13 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
         .listen((latLngBounds) => _streamController.add(latLngBounds));
-    _booleanBloc..dispatch(SetActiveIndex(index: 1));
+    _booleanBloc..add(SetActiveIndex(index: 1));
   }
 
   @override
   void dispose() {
     _streamController?.close();
-    _activeIndexBloc.dispose();
+    _activeIndexBloc.close();
     super.dispose();
   }
 
@@ -61,9 +61,9 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
             child: SizedBox(
               height: 50,
               width: 50,
-              child: BlocBuilder(
+              child: BlocBuilder<ActiveIndexBloc, ActiveIndexState>(
                 bloc: _booleanBloc,
-                builder: (_, ActiveIndexState state) {
+                builder: (_, state) {
                   return state.activeIndex == 1
                       ? RaisedButton(
                           elevation: 10,
@@ -149,7 +149,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   }
 
   Future<void> _toMe() async {
-    _booleanBloc..dispatch(SetActiveIndex(index: 0));
+    _booleanBloc..add(SetActiveIndex(index: 0));
 
     final controller = await _mapController.future;
     final position = await Geolocator().getCurrentPosition(
@@ -170,12 +170,12 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     final region = await controller.getVisibleRegion();
     _streamController.add(region);
 
-    _booleanBloc..dispatch(SetActiveIndex(index: 1));
+    _booleanBloc..add(SetActiveIndex(index: 1));
   }
 
   Future<void> _toNextPlace() async {
     final controller = await _mapController.future;
-    final index = _activeIndexBloc.currentState.activeIndex;
+    final index = _activeIndexBloc.state.activeIndex;
 
     if (index < (googleMapPlaces.length - 1)) {
       await controller.animateCamera(
@@ -184,14 +184,14 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         ),
       );
 
-      _activeIndexBloc..dispatch(SetActiveIndex(index: index + 1));
+      _activeIndexBloc..add(SetActiveIndex(index: index + 1));
     } else {
       await controller.animateCamera(
         CameraUpdate.newCameraPosition(
           googleMapPlaces.elementAt(0).cameraPosition,
         ),
       );
-      _activeIndexBloc..dispatch(SetActiveIndex(index: 0));
+      _activeIndexBloc..add(SetActiveIndex(index: 0));
     }
 
     final region = await controller.getVisibleRegion();

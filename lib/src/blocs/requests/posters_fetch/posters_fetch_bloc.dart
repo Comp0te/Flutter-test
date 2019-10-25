@@ -47,25 +47,25 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
 
   Stream<PostersFetchState> _mapPostersFetchFirstRequestToState(
       PostersFetchFirstPageRequest event) async* {
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoadingFirstPage: true,
     );
 
     try {
       final postersFetchResponse = await _postersRepository.fetchPosters();
 
-      dispatch(
+      add(
         PostersFetchRequestSuccess(postersFetchResponse: postersFetchResponse),
       );
     } on Exception catch (err) {
-      dispatch(PostersFetchRequestFailure(error: err));
+      add(PostersFetchRequestFailure(error: err));
     }
   }
 
   Stream<PostersFetchState> _mapPostersFetchNextRequestToState(
       PostersFetchNextPageRequest event) async* {
-    if (!currentState.isLoadingNextPage) {
-      yield currentState.copyWith(
+    if (!state.isLoadingNextPage) {
+      yield state.copyWith(
         isLoadingNextPage: true,
       );
 
@@ -73,14 +73,14 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
         final postersFetchResponse =
             await _postersRepository.fetchPosters(page: event.page);
 
-        dispatch(
+        add(
           PostersFetchRequestSuccess(
             postersFetchResponse: postersFetchResponse,
             isSuccessFirstRequest: false,
           ),
         );
       } on Exception catch (err) {
-        dispatch(PostersFetchRequestFailure(
+        add(PostersFetchRequestFailure(
           error: err,
           isErrorFirstRequest: false,
         ));
@@ -113,8 +113,8 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
         .toList();
 
     _appStateBloc
-      ..dispatch(AppStateUpdateUsers(users: users))
-      ..dispatch(AppStateUpdatePosters(posters: posters));
+      ..add(AppStateUpdateUsers(users: users))
+      ..add(AppStateUpdatePosters(posters: posters));
 
     await _dbRepository.insertUsers(users);
     await _dbRepository.insertPosters(posters);
@@ -127,7 +127,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       }
     });
 
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoadingFirstPage: event.isSuccessFirstRequest ? false : null,
       isLoadingNextPage: event.isSuccessFirstRequest ? null : false,
       data: event.postersFetchResponse,
@@ -137,7 +137,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   Stream<PostersFetchState> _mapPostersFetchRequestFailureToState(
     PostersFetchRequestFailure event,
   ) async* {
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoadingFirstPage: event.isErrorFirstRequest ? false : null,
       isLoadingNextPage: event.isErrorFirstRequest ? null : false,
       error: event.error,

@@ -18,8 +18,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthEvent, AuthState>(
-      bloc: BlocProvider.of<AuthBloc>(context),
+    return BlocBuilder<AuthBloc, AuthState>(
+      bloc: BlocProvider.of(context),
       condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
       builder: (context, state) {
         if (state.isAuthenticated) {
@@ -46,10 +46,10 @@ class _AppState extends State<App> {
         ),
         BlocProvider<FirebaseMessagingBloc>(
           builder: (context) => _firebaseMessagingBloc
-            ..dispatch(
+            ..add(
               RequestNotificationPermissions(),
             )
-            ..dispatch(
+            ..add(
               ConfigureFirebaseMessaging(
                 navigatorKey: mainNavigatorKey,
               ),
@@ -65,22 +65,22 @@ class _AppState extends State<App> {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case MainRouteNames.home:
-              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 0));
+              _drawerActiveIndexBloc.add(SetActiveIndex(index: 0));
               return MainRoutes.homeScreenRoute(context);
               break;
 
             case MainRouteNames.database:
-              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 1));
+              _drawerActiveIndexBloc.add(SetActiveIndex(index: 1));
               return MainRoutes.databaseScreenRoute(context);
               break;
 
             case MainRouteNames.camera:
-              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 2));
+              _drawerActiveIndexBloc.add(SetActiveIndex(index: 2));
               return MainRoutes.cameraScreenRoute(context);
               break;
 
             case MainRouteNames.googleMap:
-              _drawerActiveIndexBloc.dispatch(SetActiveIndex(index: 3));
+              _drawerActiveIndexBloc.add(SetActiveIndex(index: 3));
               return MainRoutes.googleMapRoute(context);
               break;
 

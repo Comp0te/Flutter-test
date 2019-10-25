@@ -36,12 +36,12 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.inactive) {
-      _cameraBloc.currentState.cameraController?.dispose();
+      _cameraBloc.state.cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      final state = _cameraBloc.currentState;
+      final state = _cameraBloc.state;
 
       if (state.cameraController != null) {
-        _cameraBloc.dispatch(
+        _cameraBloc.add(
           SelectCamera(cameraDescription: state.cameras[0]),
         );
       }
@@ -54,22 +54,22 @@ class _CameraScreenState extends State<CameraScreen>
       drawer: MainDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
-        onLongPressStart: (_) => _cameraBloc.dispatch(StartVideoRecording()),
-        onLongPressUp: () => _cameraBloc.dispatch(StopVideoRecording()),
+        onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
+        onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
         child: FloatingActionButton(
           heroTag: HeroTag.cameraFAB,
           child: Icon(Icons.camera, size: 40),
-          onPressed: () => _cameraBloc.dispatch(TakePicture()),
+          onPressed: () => _cameraBloc.add(TakePicture()),
         ),
       ),
-      body: BlocListener(
+      body: BlocListener<CameraBloc, CameraState>(
         bloc: _cameraBloc,
-        condition: (CameraState prevState, CameraState curState) {
+        condition: (prevState, curState) {
           return (prevState.photoPath != curState.photoPath &&
                   curState.photoPath != null) ||
               (prevState.isVideoRecording && !curState.isVideoRecording);
         },
-        listener: (context, CameraState state) {
+        listener: (context, state) {
           if (state.photoPath != null || state.videoPath != null) {
             Navigator.of(context).push(
               MainRoutes.cameraPreviewScreenRoute(context, _cameraBloc),
@@ -126,9 +126,9 @@ class _CameraScreenState extends State<CameraScreen>
 
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
-    return BlocBuilder(
+    return BlocBuilder<CameraBloc, CameraState>(
       bloc: _cameraBloc,
-      builder: (BuildContext context, CameraState state) {
+      builder: (context, state) {
         return Expanded(
           child: Container(
             child: Center(
@@ -182,9 +182,9 @@ class _CameraScreenState extends State<CameraScreen>
             fontSize: 18,
           ),
         ),
-        BlocBuilder(
+        BlocBuilder<CameraBloc, CameraState>(
           bloc: _cameraBloc,
-          builder: (BuildContext context, CameraState state) {
+          builder: (context, state) {
             return Switch(
               activeColor: Colors.red,
               inactiveThumbColor: Colors.white,
@@ -192,7 +192,7 @@ class _CameraScreenState extends State<CameraScreen>
               inactiveTrackColor: Colors.grey,
               value: state.isAudioEnabled,
               onChanged: (bool value) {
-                _cameraBloc.dispatch(ToggleCameraAudio());
+                _cameraBloc.add(ToggleCameraAudio());
               },
             );
           },
@@ -202,9 +202,9 @@ class _CameraScreenState extends State<CameraScreen>
   }
 
   Widget _cameraTogglesRowWidget() {
-    return BlocBuilder(
+    return BlocBuilder<CameraBloc,CameraState>(
       bloc: _cameraBloc,
-      builder: (BuildContext context, CameraState state) {
+      builder: (context, state) {
         final toggles = state.cameras.map((cameraDescription) {
           return Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -224,7 +224,7 @@ class _CameraScreenState extends State<CameraScreen>
                 onChanged: state.isVideoRecording
                     ? null
                     : (cameraDescription) {
-                        _cameraBloc.dispatch(SelectCamera(
+                        _cameraBloc.add(SelectCamera(
                           cameraDescription: cameraDescription,
                         ));
                       },

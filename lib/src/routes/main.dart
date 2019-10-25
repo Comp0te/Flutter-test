@@ -53,7 +53,7 @@ abstract class MainRoutes {
           return DBBloc(
             appStateBloc: _appStateBloc(context),
             dbRepository: _dbRepository(context),
-          )..dispatch(DBGetNormalizedPosters());
+          )..add(DBGetNormalizedPosters());
         },
         child: DatabaseScreen(),
       ),
@@ -68,7 +68,7 @@ abstract class MainRoutes {
         builder: (context) {
           return CameraBloc(
             cameraRepository: _cameraRepository(context),
-          )..dispatch(InitCamera());
+          )..add(InitCamera());
         },
         child: CameraScreen(),
       ),

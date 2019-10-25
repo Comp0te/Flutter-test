@@ -33,14 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _scrollController = ScrollController();
     _postersFetchBloc = BlocProvider.of<PostersFetchBloc>(context)
-      ..dispatch(PostersFetchFirstPageRequest());
+      ..add(PostersFetchFirstPageRequest());
   }
 
   void loadMorePosters() {
-    final state = _postersFetchBloc.currentState;
+    final state = _postersFetchBloc.state;
 
     if (state.hasNextPage && !state.isLoadingNextPage) {
-      _postersFetchBloc.dispatch(
+      _postersFetchBloc.add(
         PostersFetchNextPageRequest(page: state.data.meta.page + 1),
       );
     }
@@ -66,9 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5),
-          child: BlocBuilder(
+          child: BlocBuilder<AppStateBloc, AppState>(
             bloc: _appStateBloc,
-            builder: (BuildContext context, AppState state) {
+            builder: (context, state) {
               return AnimatedBuilder(
                 animation: _scrollController,
                 builder: (BuildContext context, Widget widget) {
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               size: 30,
             ),
             onPressed: () {
-              BlocProvider.of<AuthBloc>(context).dispatch(
+              BlocProvider.of<AuthBloc>(context).add(
                 LoggedOut(),
               );
             },
@@ -133,9 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
-        child: BlocBuilder(
+        child: BlocBuilder<AppStateBloc, AppState>(
           bloc: _appStateBloc,
-          builder: (BuildContext context, AppState appState) {
+          builder: (context, appState) {
             final postersList = appState.posters.values.toList();
 
             return SafeArea(
@@ -182,9 +182,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                  BlocBuilder(
+                  BlocBuilder<PostersFetchBloc, PostersFetchState>(
                     bloc: _postersFetchBloc,
-                    builder: (BuildContext context, PostersFetchState state) {
+                    builder: (context, state) {
                       return state.isLoadingNextPage ? Spinner() : Container();
                     },
                   )

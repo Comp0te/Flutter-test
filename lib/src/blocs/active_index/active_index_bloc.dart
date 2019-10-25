@@ -9,7 +9,7 @@ class ActiveIndexBloc extends Bloc<ActiveIndexEvent, ActiveIndexState> {
   @override
   Stream<ActiveIndexState> mapEventToState(ActiveIndexEvent event) async* {
     if (event is SetActiveIndex) {
-      yield currentState.copyWith(
+      yield state.copyWith(
         activeIndex: event.index,
       );
     }

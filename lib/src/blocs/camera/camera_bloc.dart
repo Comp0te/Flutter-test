@@ -48,12 +48,12 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       final controller = CameraController(
         backCameraList.isNotEmpty ? backCameraList[0] : cameras[0],
         ResolutionPreset.high,
-        enableAudio: currentState.isAudioEnabled,
+        enableAudio: state.isAudioEnabled,
       );
 
       await controller.initialize();
 
-      yield currentState.copyWith(
+      yield state.copyWith(
         cameraController: controller,
         cameras: cameras,
       );
@@ -65,10 +65,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   Stream<CameraState> _mapToggleCameraAudioToState(
     ToggleCameraAudio event,
   ) async* {
-    yield currentState.copyWith(isAudioEnabled: !currentState.isAudioEnabled);
+    yield state.copyWith(isAudioEnabled: !state.isAudioEnabled);
 
-    dispatch(SelectCamera(
-      cameraDescription: currentState.cameraController.description,
+    add(SelectCamera(
+      cameraDescription: state.cameraController.description,
     ));
   }
 
@@ -76,18 +76,18 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     SelectCamera event,
   ) async* {
     try {
-      if (currentState.cameraController != null) {
-        await currentState.cameraController.dispose();
+      if (state.cameraController != null) {
+        await state.cameraController.dispose();
       }
 
       final newController = CameraController(
         event.cameraDescription,
         ResolutionPreset.high,
-        enableAudio: currentState.isAudioEnabled,
+        enableAudio: state.isAudioEnabled,
       );
       await newController.initialize();
 
-      yield currentState.copyWith(
+      yield state.copyWith(
         cameraController: newController,
       );
     } catch (err) {
@@ -97,20 +97,20 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
   Stream<CameraState> _mapTakePictureToState(TakePicture event) async* {
     final photoPath = await _cameraRepository.takePicture(
-      currentState.cameraController,
+      state.cameraController,
     );
 
-    yield currentState.copyWith(photoPath: photoPath);
+    yield state.copyWith(photoPath: photoPath);
   }
 
   Stream<CameraState> _mapStartVideoRecordingToState(
     StartVideoRecording event,
   ) async* {
     final videoPath = await _cameraRepository.startRecordingVideo(
-      currentState.cameraController,
+      state.cameraController,
     );
 
-    yield currentState.copyWith(
+    yield state.copyWith(
       videoPath: videoPath,
       isVideoRecording: true,
     );
@@ -120,10 +120,10 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     StopVideoRecording event,
   ) async* {
     await _cameraRepository.stopRecordingVideo(
-      currentState.cameraController,
+      state.cameraController,
     );
 
-    yield currentState.copyWith(isVideoRecording: false);
+    yield state.copyWith(isVideoRecording: false);
   }
 
   Stream<CameraState> _mapDeleteCameraFileToState(
@@ -137,12 +137,12 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       print('error --- delete camera file = $e');
     }
 
-    yield currentState.resetCameraFiles();
+    yield state.resetCameraFiles();
   }
 
   Stream<CameraState> _mapResetCameraFilesToState(
     ResetCameraFiles event,
   ) async* {
-    yield currentState.resetCameraFiles();
+    yield state.resetCameraFiles();
   }
 }

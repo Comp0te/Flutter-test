@@ -34,7 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginRequestToState(LoginRequest event) async* {
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoading: true,
     );
 
@@ -44,9 +44,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       ));
 
-      dispatch(LoginRequestSuccess(loginResponse: loginResponse));
+      add(LoginRequestSuccess(loginResponse: loginResponse));
     } on Exception catch (err) {
-      dispatch(LoginRequestFailure(error: err));
+      add(LoginRequestFailure(error: err));
     }
   }
 
@@ -55,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     await secureStorageRepository.saveToken(event.loginResponse.token);
 
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoading: false,
       data: event.loginResponse,
     );
@@ -65,7 +65,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginRequestFailureToState(
     LoginRequestFailure event,
   ) async* {
-    yield currentState.copyWith(
+    yield state.copyWith(
       isLoading: false,
       error: event.error,
     );

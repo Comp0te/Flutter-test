@@ -52,12 +52,12 @@ class _LoginScreenState extends State<LoginScreen>
 
     void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
-        _loginBloc.dispatch(LoginRequest(
+        _loginBloc.add(LoginRequest(
           email: _emailController.text,
           password: _passwordController.text,
         ));
       } else if (!state.isFormAutoValidate) {
-        _formValidationBloc.dispatch(ToggleFormAutoValidation());
+        _formValidationBloc.add(ToggleFormAutoValidation());
       }
     }
 
@@ -82,15 +82,15 @@ class _LoginScreenState extends State<LoginScreen>
         centerTitle: true,
         backgroundColor: widget.color,
       ),
-      body: BlocListener(
+      body: BlocListener<LoginBloc, LoginState>(
         bloc: _loginBloc,
-        condition: (LoginState prev, LoginState cur) {
-          return !prev.isFailure && prev.isFailure != cur.isFailure ||
+        condition: (prev, cur) {
+          return prev.isFailure != cur.isFailure ||
               prev.isSuccess != cur.isSuccess;
         },
-        listener: (BuildContext context, LoginState state) {
+        listener: (context, state) {
           if (state.isSuccess) {
-            BlocProvider.of<AuthBloc>(context).dispatch(LoggedIn());
+            BlocProvider.of<AuthBloc>(context).add(LoggedIn());
           }
 
           if (state.isFailure) {
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen>
               context: context,
               error: state.error,
             );
-            _loginBloc.dispatch(LoginRequestInit());
+            _loginBloc.add(LoginRequestInit());
           }
         },
         child: GestureDetector(
@@ -111,12 +111,9 @@ class _LoginScreenState extends State<LoginScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    BlocBuilder(
+                    BlocBuilder<FormValidationBloc, FormValidationState>(
                       bloc: _formValidationBloc,
-                      builder: (
-                        BuildContext context,
-                        FormValidationState formValidationState,
-                      ) {
+                      builder: (context, formValidationState) {
                         return FormBuilder(
                           key: _fbKey,
                           autovalidate: formValidationState.isFormAutoValidate,
@@ -163,12 +160,9 @@ class _LoginScreenState extends State<LoginScreen>
                               Container(
                                 margin:
                                     const EdgeInsets.only(bottom: 40, top: 20),
-                                child: BlocBuilder(
+                                child: BlocBuilder<LoginBloc, LoginState>(
                                   bloc: _loginBloc,
-                                  builder: (
-                                    BuildContext context,
-                                    LoginState loginState,
-                                  ) {
+                                  builder: (context, loginState) {
                                     return Opacity(
                                       opacity: widget.submitOpacity,
                                       child: SubmitButton(

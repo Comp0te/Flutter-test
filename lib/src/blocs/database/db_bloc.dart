@@ -36,7 +36,7 @@ class DBBloc extends Bloc<DBEvent, DBState> {
       yield DBState.loading();
 
       final posters = await dbRepository.getNormalizedPosters();
-      appStateBloc.dispatch(AppStateUpdatePosters(posters: posters));
+      appStateBloc.add(AppStateUpdatePosters(posters: posters));
 
       yield DBState.loaded();
     }

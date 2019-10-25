@@ -43,7 +43,7 @@ void main() {
       builder: (context) => AuthBloc(
         secureStorageRepository: _secureStorageRepository,
         authRepository: _authRepository,
-      )..dispatch(AppStarted()),
+      )..add(AppStarted()),
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider<SecureStorageRepository>(builder: (context) {

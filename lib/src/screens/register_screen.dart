@@ -35,14 +35,14 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
 
     void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
-        _registerBloc.dispatch(RegisterRequest(
+        _registerBloc.add(RegisterRequest(
           username: _usernameController.text,
           email: _emailController.text,
           password1: _password1Controller.text,
           password2: _password2Controller.text,
         ));
       } else if (!state.isFormAutoValidate) {
-        _formValidationBloc.dispatch(ToggleFormAutoValidation());
+        _formValidationBloc.add(ToggleFormAutoValidation());
       }
     }
 
@@ -66,15 +66,15 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
         title: const Text('Registration'),
         centerTitle: true,
       ),
-      body: BlocListener(
+      body: BlocListener<RegisterBloc, RegisterState>(
         bloc: _registerBloc,
-        condition: (RegisterState prev, RegisterState cur) {
-          return !prev.isFailure && prev.isFailure != cur.isFailure ||
+        condition: (prev, cur) {
+          return prev.isFailure != cur.isFailure ||
               prev.isSuccess != cur.isSuccess;
         },
-        listener: (BuildContext context, RegisterState state) {
+        listener: (context, state) {
           if (state.isSuccess) {
-            BlocProvider.of<AuthBloc>(context).dispatch(LoggedIn());
+            BlocProvider.of<AuthBloc>(context).add(LoggedIn());
           }
 
           if (state.isFailure) {
@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
               error: state.error,
             );
 
-            _registerBloc.dispatch(RegisterRequestInit());
+            _registerBloc.add(RegisterRequestInit());
           }
         },
         child: GestureDetector(
@@ -102,12 +102,10 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 20),
-                      child: BlocBuilder(
+                      child:
+                          BlocBuilder<FormValidationBloc, FormValidationState>(
                         bloc: _formValidationBloc,
-                        builder: (
-                          BuildContext context,
-                          FormValidationState formValidationState,
-                        ) {
+                        builder: (context, formValidationState) {
                           return FormBuilder(
                             key: _fbKey,
                             autovalidate:
@@ -198,12 +196,9 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
                                     ],
                                   ),
                                 ),
-                                BlocBuilder(
+                                BlocBuilder<RegisterBloc, RegisterState>(
                                   bloc: _registerBloc,
-                                  builder: (
-                                    BuildContext context,
-                                    RegisterState registerState,
-                                  ) {
+                                  builder: (context, registerState) {
                                     return SubmitButton(
                                       isLoading: registerState.isLoading,
                                       title: 'Submit',
