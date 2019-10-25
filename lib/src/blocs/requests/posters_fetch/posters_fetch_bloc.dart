@@ -55,7 +55,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
       final postersFetchResponse = await _postersRepository.fetchPosters();
 
       add(
-        PostersFetchRequestSuccess(postersFetchResponse: postersFetchResponse),
+        PostersFetchRequestSuccess(response: postersFetchResponse),
       );
     } on Exception catch (err) {
       add(PostersFetchRequestFailure(error: err));
@@ -75,7 +75,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
 
         add(
           PostersFetchRequestSuccess(
-            postersFetchResponse: postersFetchResponse,
+            response: postersFetchResponse,
             isSuccessFirstRequest: false,
           ),
         );
@@ -91,11 +91,11 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
   Stream<PostersFetchState> _mapPostersFetchRequestSuccessToState(
     PostersFetchRequestSuccess event,
   ) async* {
-    final users = event.postersFetchResponse.data
+    final users = event.response.data
         .map((posterResponse) => posterResponse.owner)
         .toList();
 
-    final posters = event.postersFetchResponse.data
+    final posters = event.response.data
         .map((posterResponse) => PosterNormalized(
               id: posterResponse.id,
               ownerId: posterResponse.owner.id,
@@ -130,7 +130,7 @@ class PostersFetchBloc extends Bloc<PostersFetchEvent, PostersFetchState> {
     yield state.copyWith(
       isLoadingFirstPage: event.isSuccessFirstRequest ? false : null,
       isLoadingNextPage: event.isSuccessFirstRequest ? null : false,
-      data: event.postersFetchResponse,
+      data: event.response,
     );
   }
 

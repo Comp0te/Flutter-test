@@ -39,12 +39,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     try {
-      final loginResponse = await authRepository.login(LoginInput(
+      final response = await authRepository.login(LoginInput(
         email: event.email,
         password: event.password,
       ));
 
-      add(LoginRequestSuccess(loginResponse: loginResponse));
+      add(LoginRequestSuccess(response: response));
     } on Exception catch (err) {
       add(LoginRequestFailure(error: err));
     }
@@ -53,13 +53,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginRequestSuccessToState(
     LoginRequestSuccess event,
   ) async* {
-    await secureStorageRepository.saveToken(event.loginResponse.token);
+    await secureStorageRepository.saveToken(event.response.token);
 
     yield state.copyWith(
       isLoading: false,
-      data: event.loginResponse,
+      data: event.response,
     );
-    authRepository.addAuthHeader(event.loginResponse.token);
+    authRepository.addAuthHeader(event.response.token);
   }
 
   Stream<LoginState> _mapLoginRequestFailureToState(

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
 
 @immutable
@@ -8,7 +9,7 @@ abstract class LoginEvent extends Equatable {
   LoginEvent([List props = const []]) : super(props);
 }
 
-class LoginRequestInit extends LoginEvent {}
+class LoginRequestInit extends LoginEvent implements RequestInit {}
 
 class LoginRequest extends LoginEvent {
   final String email;
@@ -18,16 +19,17 @@ class LoginRequest extends LoginEvent {
       : super([email, password]);
 }
 
-class LoginRequestSuccess extends LoginEvent {
-  final AuthResponse loginResponse;
+class LoginRequestSuccess extends LoginEvent
+    implements RequestSuccess<AuthResponse> {
+  @override
+  final AuthResponse response;
 
-  LoginRequestSuccess({@required this.loginResponse})
-      : super([loginResponse]);
+  LoginRequestSuccess({@required this.response}) : super([response]);
 }
 
-class LoginRequestFailure extends LoginEvent {
+class LoginRequestFailure extends LoginEvent implements RequestFailure {
+  @override
   final Exception error;
 
-  LoginRequestFailure({@required this.error})
-      : super([error]);
+  LoginRequestFailure({@required this.error}) : super([error]);
 }

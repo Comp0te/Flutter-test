@@ -46,7 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password2: event.password2,
       ));
 
-      add(RegisterRequestSuccess(registerResponse: registerResponse));
+      add(RegisterRequestSuccess(response: registerResponse));
     } on Exception catch (err) {
       add(RegisterRequestFailure(error: err));
     }
@@ -55,13 +55,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> _mapRegisterRequestSuccessToState(
     RegisterRequestSuccess event,
   ) async* {
-    await secureStorageRepository.saveToken(event.registerResponse.token);
+    await secureStorageRepository.saveToken(event.response.token);
 
     yield state.copyWith(
       isLoading: false,
-      data: event.registerResponse,
+      data: event.response,
     );
-    authRepository.addAuthHeader(event.registerResponse.token);
+    authRepository.addAuthHeader(event.response.token);
   }
 
   Stream<RegisterState> _mapRegisterRequestFailureToState(
