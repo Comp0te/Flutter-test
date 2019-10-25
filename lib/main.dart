@@ -15,7 +15,7 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final dio = DioInstance().dio;
   final _secureStorageRepository = SecureStorageRepository(
-    storage: SecureStorageProvider(secureStorage: FlutterSecureStorage()),
+    storage: SecureStorageProvider(secureStorage: const FlutterSecureStorage()),
   );
   final _authRepository = AuthRepository(
     authApiProvider: AuthApiProvider(dio: dio),
