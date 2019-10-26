@@ -6,8 +6,7 @@ import 'package:flutter_app/src/utils/equatable_class.dart';
 class FormValidationState extends EquatableClass {
   final bool isFormAutoValidate;
 
-  FormValidationState({@required this.isFormAutoValidate})
-      : super([isFormAutoValidate]);
+  FormValidationState({@required this.isFormAutoValidate});
 
   factory FormValidationState.init() =>
       FormValidationState(isFormAutoValidate: false);
@@ -15,4 +14,7 @@ class FormValidationState extends EquatableClass {
   FormValidationState copyWith({@required bool isFormAutoValidate}) {
     return FormValidationState(isFormAutoValidate: isFormAutoValidate);
   }
+
+  @override
+  List<Object> get props => [isFormAutoValidate];
 }

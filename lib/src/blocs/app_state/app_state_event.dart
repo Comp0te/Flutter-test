@@ -5,36 +5,47 @@ import 'package:flutter_app/src/models/model.dart';
 
 @immutable
 abstract class AppStateEvent extends Equatable {
-  AppStateEvent([List props = const []]) : super(props);
+  const AppStateEvent();
 }
 
-class AppStateInit extends AppStateEvent {}
+class AppStateInit extends AppStateEvent {
+  @override
+  List<Object> get props => [];
+}
 
 class AppStateUpdateUsers extends AppStateEvent {
   final List<User> users;
 
-  AppStateUpdateUsers({this.users})
-      : super([users]);
+  AppStateUpdateUsers({this.users});
+
+  @override
+  List<Object> get props => [users];
 }
 
 class AppStateDeleteUsers extends AppStateEvent {
   final List<String> usersIds;
 
-  AppStateDeleteUsers({this.usersIds})
-      : super([usersIds]);
+  AppStateDeleteUsers({this.usersIds});
+
+  @override
+  List<Object> get props => [usersIds];
 }
 
 class AppStateUpdatePosters extends AppStateEvent {
   final List<PosterNormalized> posters;
 
-  AppStateUpdatePosters({this.posters})
-      : super([posters]);
+  AppStateUpdatePosters({this.posters});
+
+  @override
+  List<Object> get props => [posters];
 }
 
 class AppStateDeletePosters extends AppStateEvent {
   final List<String> postersIds;
 
-  AppStateDeletePosters({this.postersIds})
-      : super([postersIds]);
+  AppStateDeletePosters({this.postersIds});
+
+  @override
+  List<Object> get props => [postersIds];
 }
 

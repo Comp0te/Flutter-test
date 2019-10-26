@@ -28,7 +28,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
         .listen((latLngBounds) => _streamController.add(latLngBounds));
-    _booleanBloc..add(SetActiveIndex(index: 1));
+    _booleanBloc..add(SetActiveIndex(1));
   }
 
   @override
@@ -149,7 +149,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   }
 
   Future<void> _toMe() async {
-    _booleanBloc..add(SetActiveIndex(index: 0));
+    _booleanBloc..add(SetActiveIndex(0));
 
     final controller = await _mapController.future;
     final position = await Geolocator().getCurrentPosition(
@@ -170,7 +170,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     final region = await controller.getVisibleRegion();
     _streamController.add(region);
 
-    _booleanBloc..add(SetActiveIndex(index: 1));
+    _booleanBloc..add(SetActiveIndex(1));
   }
 
   Future<void> _toNextPlace() async {
@@ -184,14 +184,14 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         ),
       );
 
-      _activeIndexBloc..add(SetActiveIndex(index: index + 1));
+      _activeIndexBloc..add(SetActiveIndex(index + 1));
     } else {
       await controller.animateCamera(
         CameraUpdate.newCameraPosition(
           googleMapPlaces.elementAt(0).cameraPosition,
         ),
       );
-      _activeIndexBloc..add(SetActiveIndex(index: 0));
+      _activeIndexBloc..add(SetActiveIndex(0));
     }
 
     final region = await controller.getVisibleRegion();

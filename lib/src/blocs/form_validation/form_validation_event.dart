@@ -3,8 +3,11 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class FormValidationEvent extends Equatable {
-  FormValidationEvent([List props = const []]) : super(props);
+  const FormValidationEvent();
 }
 
-class ToggleFormAutoValidation extends FormValidationEvent {}
+class ToggleFormAutoValidation extends FormValidationEvent {
+  @override
+  List<Object> get props => [];
+}
 

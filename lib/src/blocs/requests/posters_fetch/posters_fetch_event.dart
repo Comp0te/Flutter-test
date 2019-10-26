@@ -6,20 +6,28 @@ import 'package:flutter_app/src/models/model.dart';
 
 @immutable
 abstract class PostersFetchEvent extends Equatable {
-  PostersFetchEvent([List props = const []]) : super(props);
+  const PostersFetchEvent();
 }
 
 class PostersFetchRequestInit extends PostersFetchEvent implements RequestInit {
+  @override
+  List<Object> get props => [];
 }
 
-class PostersFetchFirstPageRequest extends PostersFetchEvent {}
+class PostersFetchFirstPageRequest extends PostersFetchEvent {
+  @override
+  List<Object> get props => [];
+}
 
 class PostersFetchNextPageRequest extends PostersFetchEvent {
   final int page;
 
   PostersFetchNextPageRequest({
     this.page = 1,
-  }) : super([page]);
+  });
+
+  @override
+  List<Object> get props => [page];
 }
 
 class PostersFetchRequestSuccess extends PostersFetchEvent
@@ -31,7 +39,10 @@ class PostersFetchRequestSuccess extends PostersFetchEvent
   PostersFetchRequestSuccess({
     @required this.response,
     this.isSuccessFirstRequest = true,
-  }) : super([response, isSuccessFirstRequest]);
+  });
+
+  @override
+  List<Object> get props => [response, isSuccessFirstRequest];
 }
 
 class PostersFetchRequestFailure extends PostersFetchEvent
@@ -43,5 +54,8 @@ class PostersFetchRequestFailure extends PostersFetchEvent
   PostersFetchRequestFailure({
     @required this.error,
     this.isErrorFirstRequest = true,
-  }) : super([error, isErrorFirstRequest]);
+  });
+
+  @override
+  List<Object> get props => [error, isErrorFirstRequest];
 }

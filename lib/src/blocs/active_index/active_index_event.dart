@@ -3,12 +3,14 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class ActiveIndexEvent extends Equatable {
-  ActiveIndexEvent([List props = const []]) : super(props);
+  const ActiveIndexEvent();
 }
 
 class SetActiveIndex extends ActiveIndexEvent {
   final int index;
 
-  SetActiveIndex({this.index})
-      : super([index]);
+  SetActiveIndex(this.index);
+
+  @override
+  List<Object> get props => [index];
 }

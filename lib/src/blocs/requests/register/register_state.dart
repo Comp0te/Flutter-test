@@ -18,7 +18,7 @@ class RegisterState extends EquatableClass
     @required this.isLoading,
     this.data,
     this.error,
-  }) : super([isLoading, data, error]);
+  });
 
   @override
   bool get isSuccess => data != null;
@@ -39,5 +39,8 @@ class RegisterState extends EquatableClass
       error: error ?? this.error,
     );
   }
+
+  @override
+  List<Object> get props => [isLoading, data, error];
 
 }

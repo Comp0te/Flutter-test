@@ -11,7 +11,7 @@ class ImageStoreState extends EquatableClass {
   ImageStoreState({
     this.isLoading,
     this.image,
-  }) : super([isLoading, image]);
+  });
 
   factory ImageStoreState.init() => ImageStoreState(
         isLoading: false,
@@ -25,4 +25,7 @@ class ImageStoreState extends EquatableClass {
         isLoading: false,
         image: image,
       );
+
+  @override
+  List<Object> get props => [isLoading, image];
 }

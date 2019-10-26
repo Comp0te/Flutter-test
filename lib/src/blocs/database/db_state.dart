@@ -8,7 +8,7 @@ class DBState extends EquatableClass {
 
   DBState({
     @required this.isDbLoading,
-  }) : super([isDbLoading]);
+  });
 
   factory DBState.init() => DBState(
         isDbLoading: false,
@@ -21,4 +21,7 @@ class DBState extends EquatableClass {
   factory DBState.loaded() => DBState(
         isDbLoading: false,
       );
+
+  @override
+  List<Object> get props => [isDbLoading];
 }

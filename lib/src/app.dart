@@ -65,22 +65,22 @@ class _AppState extends State<App> {
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case MainRouteNames.home:
-              _drawerActiveIndexBloc.add(SetActiveIndex(index: 0));
+              _drawerActiveIndexBloc.add(SetActiveIndex(0));
               return MainRoutes.homeScreenRoute(context);
               break;
 
             case MainRouteNames.database:
-              _drawerActiveIndexBloc.add(SetActiveIndex(index: 1));
+              _drawerActiveIndexBloc.add(SetActiveIndex(1));
               return MainRoutes.databaseScreenRoute(context);
               break;
 
             case MainRouteNames.camera:
-              _drawerActiveIndexBloc.add(SetActiveIndex(index: 2));
+              _drawerActiveIndexBloc.add(SetActiveIndex(2));
               return MainRoutes.cameraScreenRoute(context);
               break;
 
             case MainRouteNames.googleMap:
-              _drawerActiveIndexBloc.add(SetActiveIndex(index: 3));
+              _drawerActiveIndexBloc.add(SetActiveIndex(3));
               return MainRoutes.googleMapRoute(context);
               break;
 

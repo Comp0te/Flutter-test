@@ -21,7 +21,7 @@ class PostersFetchState extends EquatableClass
     this.isLoadingNextPage,
     this.data,
     this.error,
-  }) : super([isLoadingFirstPage, isLoadingNextPage, data, error]);
+  });
 
   factory PostersFetchState.init() => PostersFetchState(
         isLoadingFirstPage: false,
@@ -48,4 +48,8 @@ class PostersFetchState extends EquatableClass
       error: error ?? this.error,
     );
   }
+
+  @override
+  List<Object> get props =>
+      [isLoadingFirstPage, isLoadingNextPage, data, error];
 }

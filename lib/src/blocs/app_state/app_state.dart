@@ -12,7 +12,7 @@ class AppState extends EquatableClass with StateUpdaterMixin {
   AppState({
     @required this.users,
     @required this.posters,
-  }) : super([users, posters]);
+  });
 
   factory AppState.init() => AppState(
         users: {},
@@ -57,4 +57,7 @@ class AppState extends EquatableClass with StateUpdaterMixin {
         '======= AppState posters = $posters\n'
         '';
   }
+
+  @override
+  List<Object> get props => [users, posters];
 }

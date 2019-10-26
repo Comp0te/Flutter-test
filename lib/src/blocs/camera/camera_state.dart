@@ -21,14 +21,7 @@ class CameraState extends EquatableClass {
     this.isVideoRecording,
     this.photoPath,
     this.videoPath,
-  }) : super([
-          cameras,
-          cameraController,
-          isAudioEnabled,
-          isVideoRecording,
-          photoPath,
-          videoPath,
-        ]);
+  });
 
   factory CameraState.init() => CameraState(
         cameras: [],
@@ -64,4 +57,14 @@ class CameraState extends EquatableClass {
       videoPath: null,
     );
   }
+
+  @override
+  List<Object> get props => [
+    cameras,
+    cameraController,
+    isAudioEnabled,
+    isVideoRecording,
+    photoPath,
+    videoPath,
+  ];
 }

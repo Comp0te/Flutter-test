@@ -15,10 +15,7 @@ class VideoPlayerState extends EquatableClass {
   VideoPlayerState({
     this.videoPlayerController,
     this.videoPath,
-  }) : super([
-          videoPlayerController,
-          videoPath,
-        ]);
+  });
 
   factory VideoPlayerState.init() => VideoPlayerState();
 
@@ -32,4 +29,7 @@ class VideoPlayerState extends EquatableClass {
       videoPath: videoPath ?? this.videoPath,
     );
   }
+
+  @override
+  List<Object> get props => [videoPlayerController, videoPath];
 }

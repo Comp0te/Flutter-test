@@ -17,7 +17,7 @@ class LoginState extends EquatableClass implements RequestState<AuthResponse> {
     @required this.isLoading,
     this.data,
     this.error,
-  }) : super([isLoading, data, error]);
+  });
 
   @override
   bool get isSuccess => data != null;
@@ -38,4 +38,7 @@ class LoginState extends EquatableClass implements RequestState<AuthResponse> {
       error: error ?? this.error,
     );
   }
+
+  @override
+  List<Object> get props => [isLoading, data, error];
 }

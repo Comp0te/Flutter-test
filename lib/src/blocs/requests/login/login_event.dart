@@ -6,17 +6,22 @@ import 'package:flutter_app/src/models/model.dart';
 
 @immutable
 abstract class LoginEvent extends Equatable {
-  LoginEvent([List props = const []]) : super(props);
+  const LoginEvent();
 }
 
-class LoginRequestInit extends LoginEvent implements RequestInit {}
+class LoginRequestInit extends LoginEvent implements RequestInit {
+  @override
+  List<Object> get props => [];
+}
 
 class LoginRequest extends LoginEvent {
   final String email;
   final String password;
 
-  LoginRequest({@required this.email, @required this.password})
-      : super([email, password]);
+  LoginRequest({@required this.email, @required this.password});
+
+  @override
+  List<Object> get props => [email, password];
 }
 
 class LoginRequestSuccess extends LoginEvent
@@ -24,12 +29,18 @@ class LoginRequestSuccess extends LoginEvent
   @override
   final AuthResponse response;
 
-  LoginRequestSuccess({@required this.response}) : super([response]);
+  LoginRequestSuccess({@required this.response});
+
+  @override
+  List<Object> get props => [response];
 }
 
 class LoginRequestFailure extends LoginEvent implements RequestFailure {
   @override
   final Exception error;
 
-  LoginRequestFailure({@required this.error}) : super([error]);
+  LoginRequestFailure({@required this.error});
+
+  @override
+  List<Object> get props => [error];
 }

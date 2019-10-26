@@ -6,8 +6,7 @@ import 'package:flutter_app/src/utils/equatable_class.dart';
 class ActiveIndexState extends EquatableClass {
   final int activeIndex;
 
-  ActiveIndexState({@required this.activeIndex})
-      : super([activeIndex]);
+  ActiveIndexState({@required this.activeIndex});
 
   factory ActiveIndexState.init() =>
       ActiveIndexState(activeIndex: 0);
@@ -15,4 +14,7 @@ class ActiveIndexState extends EquatableClass {
   ActiveIndexState copyWith({@required int activeIndex}) {
     return ActiveIndexState(activeIndex: activeIndex);
   }
+
+  @override
+  List<Object> get props => [activeIndex];
 }

@@ -6,10 +6,13 @@ import 'package:flutter_app/src/models/model.dart';
 
 @immutable
 abstract class RegisterEvent extends Equatable {
-  RegisterEvent([List props = const []]) : super(props);
+  const RegisterEvent();
 }
 
-class RegisterRequestInit extends RegisterEvent implements RequestInit {}
+class RegisterRequestInit extends RegisterEvent implements RequestInit {
+  @override
+  List<Object> get props => [];
+}
 
 class RegisterRequest extends RegisterEvent {
   final String username;
@@ -22,7 +25,10 @@ class RegisterRequest extends RegisterEvent {
     @required this.email,
     @required this.password1,
     @required this.password2,
-  }) : super([username, email, password1, password2]);
+  });
+
+  @override
+  List<Object> get props => [username, email, password1, password2];
 }
 
 class RegisterRequestSuccess extends RegisterEvent
@@ -30,12 +36,18 @@ class RegisterRequestSuccess extends RegisterEvent
   @override
   final AuthResponse response;
 
-  RegisterRequestSuccess({@required this.response}) : super([response]);
+  RegisterRequestSuccess({@required this.response});
+
+  @override
+  List<Object> get props => [response];
 }
 
 class RegisterRequestFailure extends RegisterEvent implements RequestFailure {
   @override
   final Exception error;
 
-  RegisterRequestFailure({@required this.error}) : super([error]);
+  RegisterRequestFailure({@required this.error});
+
+  @override
+  List<Object> get props => [error];
 }
