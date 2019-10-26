@@ -43,7 +43,7 @@ dependencies:
   back_button_interceptor: ^4.1.1
   firebase_messaging: ^5.1.6
   google_maps_flutter: ^0.5.21+8
-  geolocator: ^5.1.3
+  geolocator: ^5.1.4+2
 
 
 dev_dependencies:
