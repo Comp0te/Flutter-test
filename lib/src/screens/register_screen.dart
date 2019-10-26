@@ -13,7 +13,7 @@ class RegisterScreen extends StatefulWidget with OrientationMixin {
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _fbKey = GlobalKey<FormBuilderState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -66,26 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SnackBarMixin {
         title: const Text('Registration'),
         centerTitle: true,
       ),
-      body: BlocListener<RegisterBloc, RegisterState>(
-        bloc: _registerBloc,
-        condition: (prev, cur) {
-          return prev.isFailure != cur.isFailure ||
-              prev.isSuccess != cur.isSuccess;
-        },
-        listener: (context, state) {
-          if (state.isSuccess) {
-            BlocProvider.of<AuthBloc>(context).add(LoggedIn());
-          }
-
-          if (state.isFailure) {
-            showSnackBarError(
-              context: context,
-              error: state.error,
-            );
-
-            _registerBloc.add(RegisterRequestInit());
-          }
-        },
+      body: AuthBlocListener<RegisterBloc, RegisterState>(
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();

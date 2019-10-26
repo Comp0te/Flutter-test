@@ -30,7 +30,7 @@ class LoginScreen extends StatefulWidget with OrientationMixin {
 }
 
 class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin, SnackBarMixin {
+    with TickerProviderStateMixin {
   final _fbKey = GlobalKey<FormBuilderState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -82,25 +82,7 @@ class _LoginScreenState extends State<LoginScreen>
         centerTitle: true,
         backgroundColor: widget.color,
       ),
-      body: BlocListener<LoginBloc, LoginState>(
-        bloc: _loginBloc,
-        condition: (prev, cur) {
-          return prev.isFailure != cur.isFailure ||
-              prev.isSuccess != cur.isSuccess;
-        },
-        listener: (context, state) {
-          if (state.isSuccess) {
-            BlocProvider.of<AuthBloc>(context).add(LoggedIn());
-          }
-
-          if (state.isFailure) {
-            showSnackBarError(
-              context: context,
-              error: state.error,
-            );
-            _loginBloc.add(LoginRequestInit());
-          }
-        },
+      body: AuthBlocListener<LoginBloc, LoginState>(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
