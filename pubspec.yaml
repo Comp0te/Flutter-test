@@ -41,7 +41,7 @@ dependencies:
   camera: ^0.5.6+2
   video_player: ^0.10.2+5
   back_button_interceptor: ^4.1.1
-  firebase_messaging: ^5.1.2
+  firebase_messaging: ^5.1.6
   google_maps_flutter: ^0.5.20+2
   geolocator: ^5.1.3
 
