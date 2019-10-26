@@ -145,4 +145,4 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
   ) async* {
     yield state.resetCameraFiles();
   }
-}
+} // TODO add all new features
