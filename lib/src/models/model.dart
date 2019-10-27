@@ -4,3 +4,4 @@ export './user/user.dart';
 
 export './isolates.dart';
 export './google_map.dart';
+export './drawer_item.dart';
