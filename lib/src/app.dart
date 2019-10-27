@@ -13,19 +13,13 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final mainNavigatorKey = GlobalKey<NavigatorState>();
-  AppStateBloc _appStateBloc;
-  ActiveIndexBloc _drawerActiveIndexBloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
-      bloc: BlocProvider.of(context),
+      bloc: BlocProvider.of<AuthBloc>(context),
       condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
       builder: (context, state) {
-        if (state.isAuthenticated) {
-          _initializeBlocs(context);
-        }
-
         return state.isAuthenticated ? _main(context) : _auth(context);
       },
     );
@@ -37,12 +31,10 @@ class _AppState extends State<App> {
     final _firebaseMessagingBloc = FirebaseMessagingBloc(
       firebaseMessagingRepository: _firebaseMessagingRepository,
     );
+    final _mainDrawerBloc = BlocProvider.of<MainDrawerBloc>(context);
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppStateBloc>(
-          builder: (context) => _appStateBloc,
-        ),
         BlocProvider<FirebaseMessagingBloc>(
           builder: (context) => _firebaseMessagingBloc
             ..add(
@@ -54,32 +46,27 @@ class _AppState extends State<App> {
               ),
             ),
         ),
-        BlocProvider<ActiveIndexBloc>(
-          builder: (context) => _drawerActiveIndexBloc,
-        ),
       ],
       child: MaterialApp(
         navigatorKey: mainNavigatorKey,
         initialRoute: MainRouteNames.home,
         onGenerateRoute: (RouteSettings settings) {
+          _mainDrawerBloc.add(SetMainDrawerRoute(routeName: settings.name));
+
           switch (settings.name) {
             case MainRouteNames.home:
-              _drawerActiveIndexBloc.add(SetActiveIndex(0));
               return MainRoutes.homeScreenRoute(context);
               break;
 
             case MainRouteNames.database:
-              _drawerActiveIndexBloc.add(SetActiveIndex(1));
               return MainRoutes.databaseScreenRoute(context);
               break;
 
             case MainRouteNames.camera:
-              _drawerActiveIndexBloc.add(SetActiveIndex(2));
               return MainRoutes.cameraScreenRoute(context);
               break;
 
             case MainRouteNames.googleMap:
-              _drawerActiveIndexBloc.add(SetActiveIndex(3));
               return MainRoutes.googleMapRoute(context);
               break;
 
@@ -109,14 +96,5 @@ class _AppState extends State<App> {
         }
       },
     );
-  }
-
-  void _initializeBlocs(BuildContext context) {
-    _appStateBloc = AppStateBloc(
-      dbRepository: RepositoryProvider.of<DBRepository>(context),
-      imageStoreRepository:
-      RepositoryProvider.of<ImageStoreRepository>(context),
-    );
-    _drawerActiveIndexBloc = ActiveIndexBloc();
   }
 }

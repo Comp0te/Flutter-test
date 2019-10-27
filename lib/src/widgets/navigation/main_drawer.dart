@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/routes/main.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -9,29 +10,6 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
-  final _drawerItemOptions = <DrawerItemOptions>[
-    DrawerItemOptions(
-      title: 'Home',
-      icon: Icon(Icons.home),
-      routeName: MainRouteNames.home,
-    ),
-    DrawerItemOptions(
-      title: 'Database',
-      icon: Icon(Icons.storage),
-      routeName: MainRouteNames.database,
-    ),
-    DrawerItemOptions(
-      title: 'Camera',
-      icon: Icon(Icons.camera),
-      routeName: MainRouteNames.camera,
-    ),
-    DrawerItemOptions(
-      title: 'Google maps',
-      icon: Icon(Icons.map),
-      routeName: MainRouteNames.googleMap,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -53,16 +31,21 @@ class _MainDrawerState extends State<MainDrawer> {
           ),
           Expanded(
             flex: 1,
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: _drawerItemOptions.length,
-              itemBuilder: (BuildContext context, int index) {
-                return DrawerItem(
-                  itemIndex: index,
-                  title: _drawerItemOptions[index].title,
-                  routeName: _drawerItemOptions[index].routeName,
-                  icon: _drawerItemOptions[index].icon,
-                );
+            child: BlocBuilder<MainDrawerBloc, MainDrawerState>(
+              bloc: BlocProvider.of(context),
+              builder: (context, state) {
+                return ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: state.drawerItemOptions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return DrawerItem(
+                    selected: state.activeDrawerIndex == index,
+                    title: state.drawerItemOptions[index].title,
+                    routeName: state.drawerItemOptions[index].routeName,
+                    icon: state.drawerItemOptions[index].icon,
+                  );
+                },
+              );
               },
             ),
           ),

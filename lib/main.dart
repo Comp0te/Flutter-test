@@ -39,11 +39,24 @@ void main() {
   );
 
   runApp(
-    BlocProvider(
-      builder: (context) => AuthBloc(
-        secureStorageRepository: _secureStorageRepository,
-        authRepository: _authRepository,
-      )..add(AppStarted()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          builder: (context) => AuthBloc(
+            secureStorageRepository: _secureStorageRepository,
+            authRepository: _authRepository,
+          )..add(AppStarted()),
+        ),
+        BlocProvider<AppStateBloc>(
+          builder: (context) => AppStateBloc(
+            dbRepository: _dbRepository,
+            imageStoreRepository: _imageStoreRepository,
+          ),
+        ),
+        BlocProvider<MainDrawerBloc>(
+          builder: (context) => MainDrawerBloc(),
+        ),
+      ],
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider<SecureStorageRepository>(builder: (context) {
