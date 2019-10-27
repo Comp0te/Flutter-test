@@ -66,36 +66,38 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5),
-          child: BlocBuilder<AppStateBloc, AppState>(
-            bloc: _appStateBloc,
-            builder: (context, state) {
-              return AnimatedBuilder(
-                animation: _scrollController,
-                builder: (BuildContext context, Widget widget) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 5,
-                        width: ScrollHelper.calcGridViewScrolledWidth(
-                          context: context,
-                          state: state,
-                          gridViewKey: _gridViewKey,
-                          scrollOffset: scrollOffset,
-                          columnCount: gridViewColumnCount,
-                          paddingHorizontal: gridViewPaddingHorizontal,
-                          paddingVertical: gridViewPaddingVertical,
-                          crossAxisSpacing: gridViewCrossAxisSpacing,
-                          mainAxisSpacing: gridViewMainAxisSpacing,
+          child: PosterFetchBlocListener(
+            child: BlocBuilder<AppStateBloc, AppState>(
+              bloc: _appStateBloc,
+              builder: (context, state) {
+                return AnimatedBuilder(
+                  animation: _scrollController,
+                  builder: (BuildContext context, Widget widget) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 5,
+                          width: ScrollHelper.calcGridViewScrolledWidth(
+                            context: context,
+                            state: state,
+                            gridViewKey: _gridViewKey,
+                            scrollOffset: scrollOffset,
+                            columnCount: gridViewColumnCount,
+                            paddingHorizontal: gridViewPaddingHorizontal,
+                            paddingVertical: gridViewPaddingVertical,
+                            crossAxisSpacing: gridViewCrossAxisSpacing,
+                            mainAxisSpacing: gridViewMainAxisSpacing,
+                          ),
+                          decoration: const BoxDecoration(
+                              color: Color.fromRGBO(0, 0, 255, 1)),
                         ),
-                        decoration: const BoxDecoration(
-                            color: Color.fromRGBO(0, 0, 255, 1)),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
         title: const Text('Home'),

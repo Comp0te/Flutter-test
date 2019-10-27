@@ -9,11 +9,6 @@ abstract class PostersFetchEvent extends Equatable {
   const PostersFetchEvent();
 }
 
-class PostersFetchRequestInit extends PostersFetchEvent implements RequestInit {
-  @override
-  List<Object> get props => [];
-}
-
 class PostersFetchFirstPageRequest extends PostersFetchEvent {
   @override
   List<Object> get props => [];

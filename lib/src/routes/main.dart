@@ -18,8 +18,6 @@ abstract class MainRoutes {
       RepositoryProvider.of<PostersRepository>(context);
   static DBRepository _dbRepository(BuildContext context) =>
       RepositoryProvider.of<DBRepository>(context);
-  static ImageStoreRepository _imageStoreRepository(BuildContext context) =>
-      RepositoryProvider.of<ImageStoreRepository>(context);
   static CameraRepository _cameraRepository(BuildContext context) =>
       RepositoryProvider.of<CameraRepository>(context);
 
@@ -33,10 +31,7 @@ abstract class MainRoutes {
       child: BlocProvider<PostersFetchBloc>(
         builder: (context) {
           return PostersFetchBloc(
-            appStateBloc: _appStateBloc(context),
             postersRepository: _postersRepository(context),
-            dbRepository: _dbRepository(context),
-            imageStoreRepository: _imageStoreRepository(context),
           );
         },
         child: HomeScreen(),

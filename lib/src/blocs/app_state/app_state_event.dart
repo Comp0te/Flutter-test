@@ -49,3 +49,12 @@ class AppStateDeletePosters extends AppStateEvent {
   List<Object> get props => [postersIds];
 }
 
+class AppStateSavePostersResponse extends AppStateEvent {
+  final PostersFetchResponse postersResponse;
+
+  AppStateSavePostersResponse({this.postersResponse});
+
+  @override
+  List<Object> get props => [postersResponse];
+}
+

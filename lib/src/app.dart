@@ -23,8 +23,7 @@ class _AppState extends State<App> {
       condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
       builder: (context, state) {
         if (state.isAuthenticated) {
-          _appStateBloc = AppStateBloc();
-          _drawerActiveIndexBloc = ActiveIndexBloc();
+          _initializeBlocs(context);
         }
 
         return state.isAuthenticated ? _main(context) : _auth(context);
@@ -110,5 +109,14 @@ class _AppState extends State<App> {
         }
       },
     );
+  }
+
+  void _initializeBlocs(BuildContext context) {
+    _appStateBloc = AppStateBloc(
+      dbRepository: RepositoryProvider.of<DBRepository>(context),
+      imageStoreRepository:
+      RepositoryProvider.of<ImageStoreRepository>(context),
+    );
+    _drawerActiveIndexBloc = ActiveIndexBloc();
   }
 }

@@ -23,10 +23,12 @@ class PostersFetchState extends EquatableClass
     this.error,
   });
 
-  factory PostersFetchState.init() => PostersFetchState(
-        isLoadingFirstPage: false,
-        isLoadingNextPage: false,
-      );
+  factory PostersFetchState.init({bool isLoadingFirstPage = false}) {
+    return PostersFetchState(
+      isLoadingFirstPage: isLoadingFirstPage,
+      isLoadingNextPage: false,
+    );
+  }
 
   @override
   bool get isSuccess => data != null;
