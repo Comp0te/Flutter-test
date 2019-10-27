@@ -22,9 +22,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-    if (event is RegisterRequestInit) {
-      yield RegisterState.init();
-    } else if (event is RegisterRequest) {
+    if (event is RegisterRequest) {
       yield* _mapRegisterRequestToState(event);
     } else if (event is RegisterRequestSuccess) {
       yield* _mapRegisterRequestSuccessToState(event);
@@ -33,10 +31,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     }
   }
 
-  Stream<RegisterState> _mapRegisterRequestToState(RegisterRequest event) async* {
-    yield state.copyWith(
-      isLoading: true,
-    );
+  Stream<RegisterState> _mapRegisterRequestToState(
+      RegisterRequest event) async* {
+    yield RegisterState.init(isLoading: true);
 
     try {
       final registerResponse = await authRepository.register(RegisterInput(

@@ -25,7 +25,8 @@ class RegisterState extends EquatableClass
   @override
   bool get isFailure => error != null;
 
-  factory RegisterState.init() => RegisterState(isLoading: false);
+  factory RegisterState.init({bool isLoading = false}) =>
+      RegisterState(isLoading: isLoading);
 
   @override
   RegisterState copyWith({
@@ -42,5 +43,4 @@ class RegisterState extends EquatableClass
 
   @override
   List<Object> get props => [isLoading, data, error];
-
 }

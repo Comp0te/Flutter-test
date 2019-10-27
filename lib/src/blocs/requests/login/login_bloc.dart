@@ -22,9 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginRequestInit) {
-      yield LoginState.init();
-    } else if (event is LoginRequest) {
+    if (event is LoginRequest) {
       yield* _mapLoginRequestToState(event);
     } else if (event is LoginRequestSuccess) {
       yield* _mapLoginRequestSuccessToState(event);
@@ -34,9 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginRequestToState(LoginRequest event) async* {
-    yield state.copyWith(
-      isLoading: true,
-    );
+    yield LoginState.init(isLoading: true);
 
     try {
       final response = await authRepository.login(LoginInput(

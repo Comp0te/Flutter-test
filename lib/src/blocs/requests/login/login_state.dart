@@ -24,7 +24,8 @@ class LoginState extends EquatableClass implements RequestState<AuthResponse> {
   @override
   bool get isFailure => error != null;
 
-  factory LoginState.init() => LoginState(isLoading: false);
+  factory LoginState.init({bool isLoading = false}) =>
+      LoginState(isLoading: isLoading);
 
   @override
   LoginState copyWith({

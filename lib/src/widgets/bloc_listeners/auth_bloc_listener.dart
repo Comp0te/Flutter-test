@@ -23,8 +23,7 @@ class AuthBlocListener<B extends Bloc<dynamic, S>, S extends RequestState>
     return BlocListener<B, S>(
       bloc: _bloc,
       condition: (prev, cur) {
-        return prev.isFailure != cur.isFailure ||
-            prev.isSuccess != cur.isSuccess;
+        return prev.isLoading && !cur.isLoading;
       },
       listener: (context, state) {
         if (state.isSuccess) {
@@ -36,21 +35,9 @@ class AuthBlocListener<B extends Bloc<dynamic, S>, S extends RequestState>
             context: context,
             error: state.error,
           );
-
-          initializeBlocState(_bloc);
         }
       },
       child: child,
     );
-  }
-
-  void initializeBlocState(B bloc) {
-    if (bloc is LoginBloc) {
-      bloc.add(LoginRequestInit());
-    }
-
-    if (bloc is RegisterBloc) {
-      bloc.add(RegisterRequestInit());
-    }
   }
 }

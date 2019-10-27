@@ -9,11 +9,6 @@ abstract class RegisterEvent extends Equatable {
   const RegisterEvent();
 }
 
-class RegisterRequestInit extends RegisterEvent implements RequestInit {
-  @override
-  List<Object> get props => [];
-}
-
 class RegisterRequest extends RegisterEvent {
   final String username;
   final String email;
