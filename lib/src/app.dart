@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/routes/routes.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
-import 'package:flutter_app/src/routes/main.dart';
-import 'package:flutter_app/src/routes/auth.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 
 class App extends StatefulWidget {
   @override

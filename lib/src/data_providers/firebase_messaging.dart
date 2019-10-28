@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/routes/main.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:meta/meta.dart';
 
 @immutable

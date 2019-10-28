@@ -3,7 +3,7 @@ import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-import 'package:flutter_app/src/routes/auth.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 

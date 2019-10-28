@@ -5,11 +5,6 @@ import 'package:flutter_app/src/screens/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
-abstract class AuthRouteNames {
-  static const login = '/';
-  static const register = '/register';
-}
-
 abstract class AuthRoutes {
   static SecureStorageRepository _secureStorageRepository(
           BuildContext context) =>

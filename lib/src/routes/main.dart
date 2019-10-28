@@ -5,14 +5,6 @@ import 'package:flutter_app/src/screens/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
-abstract class MainRouteNames {
-  static const home = '/';
-  static const database = '/database';
-  static const camera = '/camera';
-  static const cameraPreview = '/camera/preview';
-  static const googleMap = '/googleMap';
-}
-
 abstract class MainRoutes {
   static PostersRepository _postersRepository(BuildContext context) =>
       RepositoryProvider.of<PostersRepository>(context);
