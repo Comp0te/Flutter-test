@@ -201,4 +201,3 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // TODO: Add onRefresh behaviour
-// TODO: Test double call initState on ios
