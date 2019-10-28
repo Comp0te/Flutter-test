@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:flutter_app/src/database/tables.dart';
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 
 class DBHelper {
   static Database _db;

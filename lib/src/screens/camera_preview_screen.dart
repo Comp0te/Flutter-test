@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 
 class CameraPreviewScreen extends StatefulWidget with OrientationMixin {
   @override

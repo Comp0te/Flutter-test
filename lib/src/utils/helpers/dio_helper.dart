@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 
 class DioInstance {
   static BaseOptions options = BaseOptions(

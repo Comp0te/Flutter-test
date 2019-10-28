@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-
-import 'package:flutter_app/src/utils/constants.dart';
-import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
+
+import 'package:flutter_app/src/constants/constants.dart';
+import 'package:flutter_app/src/models/model.dart';
 
 @immutable
 class AuthApiProvider {

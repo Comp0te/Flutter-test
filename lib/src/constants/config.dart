@@ -9,8 +9,3 @@ abstract class DbConfig {
   static final dbName = 'postres.db';
   static final dbVersion = 1;
 }
-
-abstract class HeroTag {
-  static final cameraIconButton = 'cameraIconButton';
-  static final cameraFAB = 'cameraFAB';
-}

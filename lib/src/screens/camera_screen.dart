@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/routes/main.dart';
-import 'package:flutter_app/src/utils/constants.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/utils/helpers/helpers.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -58,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen>
         onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
         child: FloatingActionButton(
           heroTag: HeroTag.cameraFAB,
-          child: Icon(Icons.camera, size: 40),
+          child: const Icon(Icons.camera, size: 40),
           onPressed: () => _cameraBloc.add(TakePicture()),
         ),
       ),
