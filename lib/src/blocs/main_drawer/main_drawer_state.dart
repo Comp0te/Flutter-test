@@ -11,28 +11,7 @@ class MainDrawerState extends EquatableClass {
 
   MainDrawerState({
     @required this.activeDrawerIndex,
-    this.drawerItemOptions = const [
-      DrawerItemOptions(
-        title: 'Home',
-        icon: Icon(Icons.home),
-        routeName: MainRouteNames.home,
-      ),
-      DrawerItemOptions(
-        title: 'Database',
-        icon: Icon(Icons.storage),
-        routeName: MainRouteNames.database,
-      ),
-      DrawerItemOptions(
-        title: 'Camera',
-        icon: Icon(Icons.camera),
-        routeName: MainRouteNames.camera,
-      ),
-      DrawerItemOptions(
-        title: 'Google maps',
-        icon: Icon(Icons.map),
-        routeName: MainRouteNames.googleMap,
-      ),
-    ],
+    this.drawerItemOptions = mainDrawerItemOptions
   });
 
   factory MainDrawerState.init() => MainDrawerState(activeDrawerIndex: 0);
