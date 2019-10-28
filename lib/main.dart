@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
-import 'src/utils/helpers/helpers.dart';
-import 'src/repositories/repositories.dart';
-import 'src/data_providers/data_providers.dart';
 import 'src/blocs/blocs.dart';
+import 'src/data_providers/data_providers.dart';
 import 'src/database/database.dart';
+import 'src/helpers/helpers.dart';
+import 'src/repositories/repositories.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-
 import 'package:flutter_app/src/constants/constants.dart';
 
 class DioInstance {

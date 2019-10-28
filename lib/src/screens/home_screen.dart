@@ -1,12 +1,12 @@
 import 'dart:math' as math;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:flutter_app/src/utils/helpers/helpers.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
+import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/blocs/blocs.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget with OrientationMixin {
   @override

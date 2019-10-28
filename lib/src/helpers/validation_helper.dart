@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class Validators {
+abstract class ValidationHelper {
   static FormFieldValidator makeConfirmPasswordValidator({
     @required TextEditingController passwordController,
   }) {

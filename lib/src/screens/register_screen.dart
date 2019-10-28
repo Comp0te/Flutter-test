@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-
+import 'package:flutter_app/src/blocs/blocs.dart';
+import 'package:flutter_app/src/helpers/validation_helper.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_app/src/utils/validators.dart';
-import 'package:flutter_app/src/blocs/blocs.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class RegisterScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -160,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           label: 'Confirm Password',
                                           controller: _password2Controller,
                                           validatorsList: [
-                                            Validators
+                                            ValidationHelper
                                                 .makeConfirmPasswordValidator(
                                               passwordController:
                                                   _password1Controller,
