@@ -1,5 +1,6 @@
-import 'package:flutter_app/src/utils/equatable_class.dart';
 import 'package:meta/meta.dart';
+
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 
 mixin StateUpdaterMixin on EquatableClass {
   Map<String, V> updateEntities<V>({

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:flutter_app/src/utils/equatable_class.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:video_player/video_player.dart';
 
 @immutable

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/utils/equatable_class.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 
 @immutable
 class MainDrawerState extends EquatableClass {

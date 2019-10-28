@@ -2,7 +2,6 @@ import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/utils/equatable_class.dart';
 
 @immutable
 class RegisterState extends EquatableClass

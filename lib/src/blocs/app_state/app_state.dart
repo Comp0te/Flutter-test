@@ -2,7 +2,7 @@ import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/utils/equatable_class.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 
 @immutable
 class AppState extends EquatableClass with StateUpdaterMixin {
