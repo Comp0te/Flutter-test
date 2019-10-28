@@ -29,15 +29,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (hasToken) {
         yield state.copyWith(isAuthenticated: true);
       }
-    }
+    } else if (event is LoggedIn) {
+      await secureStorageRepository.saveToken(event.authResponse.token);
+      authRepository.addAuthHeader(event.authResponse.token);
 
-    if (event is LoggedIn) {
       yield state.copyWith(isAuthenticated: true);
-    }
-
-    if (event is LoggedOut) {
-      yield state.copyWith(isAuthenticated: false);
+    } else if (event is LoggedOut) {
       await secureStorageRepository.deleteToken();
+
+      yield state.copyWith(isAuthenticated: false);
     }
   }
 }

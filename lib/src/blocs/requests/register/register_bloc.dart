@@ -8,14 +8,11 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final SecureStorageRepository secureStorageRepository;
   final AuthRepository authRepository;
 
   RegisterBloc({
-    @required this.secureStorageRepository,
     @required this.authRepository,
-  })  : assert(secureStorageRepository != null),
-        assert(authRepository != null);
+  })  : assert(authRepository != null);
 
   @override
   RegisterState get initialState => RegisterState.init();
@@ -52,13 +49,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> _mapRegisterRequestSuccessToState(
     RegisterRequestSuccess event,
   ) async* {
-    await secureStorageRepository.saveToken(event.response.token);
-
     yield state.copyWith(
       isLoading: false,
       data: event.response,
     );
-    authRepository.addAuthHeader(event.response.token);
   }
 
   Stream<RegisterState> _mapRegisterRequestFailureToState(

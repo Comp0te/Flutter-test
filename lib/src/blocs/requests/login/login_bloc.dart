@@ -8,14 +8,11 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final SecureStorageRepository secureStorageRepository;
   final AuthRepository authRepository;
 
   LoginBloc({
-    @required this.secureStorageRepository,
     @required this.authRepository,
-  })  : assert(secureStorageRepository != null),
-        assert(authRepository != null);
+  })  : assert(authRepository != null);
 
   @override
   LoginState get initialState => LoginState.init();
@@ -49,13 +46,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginRequestSuccessToState(
     LoginRequestSuccess event,
   ) async* {
-    await secureStorageRepository.saveToken(event.response.token);
-
     yield state.copyWith(
       isLoading: false,
       data: event.response,
     );
-    authRepository.addAuthHeader(event.response.token);
   }
 
   Stream<LoginState> _mapLoginRequestFailureToState(
