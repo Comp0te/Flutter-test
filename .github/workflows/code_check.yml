@@ -1,0 +1,30 @@
+name: Сode check
+
+on: [pull_request, push]
+
+jobs:
+  code_check:
+    name: Code check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: copy repository
+        uses: actions/checkout@v1
+        with:
+          ref: dev
+      #       - name: Set up JAVA
+      #         uses: actions/setup-java@v1
+      #         with:
+      #           java-version: '12.x'
+      - name: set up Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: flutter pub get
+        run: flutter pub get
+#      - name: run tests
+#        run: flutter test
+      - name: run lint
+        run: flutter analyze
+      - name: format code
+        run: flutter format .
