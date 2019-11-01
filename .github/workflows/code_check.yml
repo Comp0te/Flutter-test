@@ -1,6 +1,12 @@
 name: Сode check
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request
+
 
 jobs:
   code_check:
