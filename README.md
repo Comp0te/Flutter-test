@@ -1,6 +1,6 @@
 # flutter_app
 
-![](https://github.com/Comp0te/Flutter-test/workflows/.github/workflows/Сode%20check.yml/badge.svg?branch=dev)
+![](https://github.com/Comp0te/Flutter-test/workflows/Сode%20check.yml/badge.svg?branch=dev)
 
 A new Flutter application.
 
