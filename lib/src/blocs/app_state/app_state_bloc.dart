@@ -45,8 +45,8 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
   }
 
   Stream<AppState> _mapPostersResponseToState(
-      AppStateSavePostersResponse event,
-      ) async* {
+    AppStateSavePostersResponse event,
+  ) async* {
     final users = event.postersResponse.data
         .map((posterResponse) => posterResponse.owner)
         .toList();
@@ -79,9 +79,6 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
       }
     });
 
-    yield state.copyWith(
-        posters: posters,
-        users: users
-    );
+    yield state.copyWith(posters: posters, users: users);
   }
 }

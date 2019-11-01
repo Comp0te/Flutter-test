@@ -57,4 +57,3 @@ class AppStateSavePostersResponse extends AppStateEvent {
   @override
   List<Object> get props => [postersResponse];
 }
-

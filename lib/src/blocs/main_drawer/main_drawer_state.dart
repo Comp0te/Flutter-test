@@ -9,10 +9,9 @@ class MainDrawerState extends EquatableClass {
   final int activeDrawerIndex;
   final List<DrawerItemOptions> drawerItemOptions;
 
-  MainDrawerState({
-    @required this.activeDrawerIndex,
-    this.drawerItemOptions = mainDrawerItemOptions
-  });
+  MainDrawerState(
+      {@required this.activeDrawerIndex,
+      this.drawerItemOptions = mainDrawerItemOptions});
 
   factory MainDrawerState.init() => MainDrawerState(activeDrawerIndex: 0);
 

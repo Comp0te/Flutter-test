@@ -12,7 +12,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   RegisterBloc({
     @required this.authRepository,
-  })  : assert(authRepository != null);
+  }) : assert(authRepository != null);
 
   @override
   RegisterState get initialState => RegisterState.init();

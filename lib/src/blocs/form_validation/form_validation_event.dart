@@ -10,4 +10,3 @@ class ToggleFormAutoValidation extends FormValidationEvent {
   @override
   List<Object> get props => [];
 }
-

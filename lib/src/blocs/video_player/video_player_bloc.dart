@@ -48,8 +48,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     try {
       await state.videoPlayerController.play();
 
-      yield state.copyWith(
-          videoPlayerController: state.videoPlayerController);
+      yield state.copyWith(videoPlayerController: state.videoPlayerController);
     } catch (err) {
       print('--- initialize Video Player error --- $err');
     }
@@ -59,8 +58,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
     try {
       await state.videoPlayerController.pause();
 
-      yield state.copyWith(
-          videoPlayerController: state.videoPlayerController);
+      yield state.copyWith(videoPlayerController: state.videoPlayerController);
     } catch (err) {
       print('--- initialize Video Player error --- $err');
     }
