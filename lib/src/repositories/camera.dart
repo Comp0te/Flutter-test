@@ -30,6 +30,6 @@ class CameraRepository {
   }
 
   Future<void> deleteFile({@required String path}) async {
-     return _cameraProvider.deleteFile(path: path);
+    return _cameraProvider.deleteFile(path: path);
   }
 }

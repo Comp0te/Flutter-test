@@ -201,7 +201,7 @@ class _CameraScreenState extends State<CameraScreen>
   }
 
   Widget _cameraTogglesRowWidget() {
-    return BlocBuilder<CameraBloc,CameraState>(
+    return BlocBuilder<CameraBloc, CameraState>(
       bloc: _cameraBloc,
       builder: (context, state) {
         final toggles = state.cameras.map((cameraDescription) {

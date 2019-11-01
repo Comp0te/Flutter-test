@@ -35,17 +35,17 @@ class _MainDrawerState extends State<MainDrawer> {
               bloc: BlocProvider.of(context),
               builder: (context, state) {
                 return ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: state.drawerItemOptions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return DrawerItem(
-                    selected: state.activeDrawerIndex == index,
-                    title: state.drawerItemOptions[index].title,
-                    routeName: state.drawerItemOptions[index].routeName,
-                    icon: state.drawerItemOptions[index].icon,
-                  );
-                },
-              );
+                  padding: EdgeInsets.zero,
+                  itemCount: state.drawerItemOptions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return DrawerItem(
+                      selected: state.activeDrawerIndex == index,
+                      title: state.drawerItemOptions[index].title,
+                      routeName: state.drawerItemOptions[index].routeName,
+                      icon: state.drawerItemOptions[index].icon,
+                    );
+                  },
+                );
               },
             ),
           ),

@@ -12,7 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc({
     @required this.authRepository,
-  })  : assert(authRepository != null);
+  }) : assert(authRepository != null);
 
   @override
   LoginState get initialState => LoginState.init();

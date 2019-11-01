@@ -60,11 +60,11 @@ class CameraState extends EquatableClass {
 
   @override
   List<Object> get props => [
-    cameras,
-    cameraController,
-    isAudioEnabled,
-    isVideoRecording,
-    photoPath,
-    videoPath,
-  ];
+        cameras,
+        cameraController,
+        isAudioEnabled,
+        isVideoRecording,
+        photoPath,
+        videoPath,
+      ];
 }

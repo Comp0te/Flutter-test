@@ -16,8 +16,7 @@ mixin StateUpdaterMixin on EquatableClass {
       key: (entity) => entity.id.toString(),
       value: (entity) => entity as V,
     );
-    final newEntities = Map.of(stateEntities)
-      ..addAll(eventEntitiesMap);
+    final newEntities = Map.of(stateEntities)..addAll(eventEntitiesMap);
 
     return newEntities;
   }

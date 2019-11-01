@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-mixin OrientationMixin on Widget{
+mixin OrientationMixin on Widget {
   bool isLandscape(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.landscape;
   }

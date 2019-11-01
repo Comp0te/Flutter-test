@@ -1,0 +1,30 @@
+name: Сode check
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+
+
+jobs:
+  code_check:
+    name: Code check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Copy repository
+        uses: actions/checkout@v1
+      - name: Set up Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - name: Flutter pub get
+        run: flutter pub get
+#      - name: run tests
+#        run: flutter test
+      - name: Run lint
+        run: flutter analyze
+      - name: Format code
+        run: flutter format --set-exit-if-changed .
