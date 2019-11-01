@@ -1,4 +1,4 @@
-name: Сode check
+name: 'Code check'
 
 on:
   push:
