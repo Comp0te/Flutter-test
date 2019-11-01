@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Copy repository
         uses: actions/checkout@v1
-        with:
-          ref: dev
+#        with:
+#          ref: dev
       - name: Set up Flutter environment
         uses: subosito/flutter-action@v1
         with:
