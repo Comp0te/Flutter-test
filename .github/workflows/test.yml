@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@Feature_github-actions
+      - uses: actions/checkout@v1
+        with:
+          ref: Feature_github-actions
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
