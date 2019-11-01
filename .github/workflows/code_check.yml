@@ -8,23 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: copy repository
+      - name: Copy repository
         uses: actions/checkout@v1
         with:
           ref: dev
-      #       - name: Set up JAVA
-      #         uses: actions/setup-java@v1
-      #         with:
-      #           java-version: '12.x'
-      - name: set up Flutter environment
+      - name: Set up Flutter environment
         uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - name: flutter pub get
+      - name: Flutter pub get
         run: flutter pub get
 #      - name: run tests
 #        run: flutter test
-      - name: run lint
+      - name: Run lint
         run: flutter analyze
-      - name: format code
+      - name: Format code
         run: flutter format .
