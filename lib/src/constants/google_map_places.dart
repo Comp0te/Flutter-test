@@ -43,8 +43,7 @@ final googleMapPlaces = <GoogleMapPlace>{
         title: coordinates.keys.toList()[1],
         snippet: 'Your advertisement could be here',
       ),
-      icon:
-      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
     ),
   ),
   GoogleMapPlace(

@@ -66,14 +66,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
-                    child: state.photoPath != null
-                        ? Image.file(
-                            File(state.photoPath),
-                            fit: BoxFit.contain,
-                          )
-                        : CustomVideoPlayer(
-                            videoPath: state.videoPath,
-                          ),
+                    child: makePreview(state),
                   ),
                 ),
               ],
@@ -94,11 +87,18 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                       size: 40,
                     ),
                     onPressed: () {
-                      _cameraBloc.add(DeleteCameraFile(
-                        path: state.photoPath != null
-                            ? state.photoPath
-                            : state.videoPath,
-                      ));
+                      if (state.photoPath != null) {
+                        _cameraBloc.add(DeleteCameraFile(
+                          path: state.photoPath,
+                        ));
+                      }
+
+                      if (state.videoPath != null) {
+                        _cameraBloc.add(DeleteCameraFile(
+                          path: state.videoPath,
+                        ));
+                      }
+
                       Navigator.of(context).pop();
                     },
                   ),
@@ -109,5 +109,22 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
         ),
       ),
     );
+  }
+
+  Widget makePreview(CameraState state) {
+    if (state.photoPath != null) {
+      return Image.file(
+        File(state.photoPath),
+        fit: BoxFit.contain,
+      );
+    }
+
+    if (state.videoPath != null) {
+      return CustomVideoPlayer(
+        videoPath: state.videoPath,
+      );
+    }
+
+    return Container();
   }
 }
