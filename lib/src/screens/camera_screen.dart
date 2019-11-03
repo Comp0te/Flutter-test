@@ -21,7 +21,7 @@ class _CameraScreenState extends State<CameraScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _cameraBloc = BlocProvider.of<CameraBloc>(context);
+    _cameraBloc = BlocProvider.of<CameraBloc>(context)..add(InitCamera());
     widget.setOnlyPortraitUP();
   }
 

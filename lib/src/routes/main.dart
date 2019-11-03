@@ -56,7 +56,7 @@ abstract class MainRoutes {
         builder: (context) {
           return CameraBloc(
             cameraRepository: _cameraRepository(context),
-          )..add(InitCamera());
+          );
         },
         child: CameraScreen(),
       ),
