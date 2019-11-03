@@ -45,7 +45,7 @@ void main() {
           builder: (context) => AuthBloc(
             secureStorageRepository: _secureStorageRepository,
             authRepository: _authRepository,
-          )..add(AppStarted()),
+          ),
         ),
         BlocProvider<AppStateBloc>(
           builder: (context) => AppStateBloc(

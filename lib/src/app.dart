@@ -15,6 +15,12 @@ class _AppState extends State<App> {
   final mainNavigatorKey = GlobalKey<NavigatorState>();
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthBloc>(context)..add(AppStarted());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
