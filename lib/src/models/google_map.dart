@@ -7,7 +7,7 @@ class GoogleMapPlace {
   final CameraPosition cameraPosition;
   final Marker marker;
 
-  GoogleMapPlace({
+  const GoogleMapPlace({
     @required this.title,
     @required this.latLng,
     @required this.cameraPosition,
