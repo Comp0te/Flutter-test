@@ -1,12 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
-import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CameraScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -61,19 +61,7 @@ class _CameraScreenState extends State<CameraScreen>
           onPressed: () => _cameraBloc.add(TakePicture()),
         ),
       ),
-      body: BlocListener<CameraBloc, CameraState>(
-        condition: (prevState, curState) {
-          return (prevState.photoPath != curState.photoPath &&
-                  curState.photoPath != null) ||
-              (prevState.isVideoRecording && !curState.isVideoRecording);
-        },
-        listener: (context, state) {
-          if (state.photoPath != null || state.videoPath != null) {
-            Navigator.of(context).push(
-              MainRoutes.cameraPreviewScreenRoute(context, _cameraBloc),
-            );
-          }
-        },
+      body: CameraBlocListener(
         child: Stack(
           children: <Widget>[
             Column(children: <Widget>[
