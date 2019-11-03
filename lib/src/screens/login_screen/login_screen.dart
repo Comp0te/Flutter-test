@@ -44,15 +44,13 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    final _loginBloc = BlocProvider.of<LoginBloc>(context);
-
     void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
     void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
-        _loginBloc.add(LoginRequest(
+        BlocProvider.of<LoginBloc>(context).add(LoginRequest(
           email: _emailController.text,
           password: _passwordController.text,
         ));
@@ -143,7 +141,6 @@ class _LoginScreenState extends State<LoginScreen>
                                 margin:
                                     const EdgeInsets.only(bottom: 40, top: 20),
                                 child: BlocBuilder<LoginBloc, LoginState>(
-                                  bloc: _loginBloc,
                                   builder: (context, loginState) {
                                     return Opacity(
                                       opacity: widget.submitOpacity,

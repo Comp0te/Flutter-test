@@ -62,7 +62,6 @@ class _CameraScreenState extends State<CameraScreen>
         ),
       ),
       body: BlocListener<CameraBloc, CameraState>(
-        bloc: _cameraBloc,
         condition: (prevState, curState) {
           return (prevState.photoPath != curState.photoPath &&
                   curState.photoPath != null) ||
@@ -126,7 +125,6 @@ class _CameraScreenState extends State<CameraScreen>
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
     return BlocBuilder<CameraBloc, CameraState>(
-      bloc: _cameraBloc,
       builder: (context, state) {
         return Expanded(
           child: Container(

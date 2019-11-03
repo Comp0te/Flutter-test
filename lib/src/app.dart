@@ -17,7 +17,6 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
-      bloc: BlocProvider.of<AuthBloc>(context),
       condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
       builder: (context, state) {
         return state.isAuthenticated ? _main(context) : _auth(context);

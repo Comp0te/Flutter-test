@@ -10,7 +10,6 @@ import 'package:flutter_app/src/widgets/widgets.dart';
 class DatabaseScreen extends StatelessWidget with OrientationMixin {
   @override
   Widget build(BuildContext context) {
-    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
     final showImageCount = isPortrait(context) ? 3 : 5;
@@ -56,7 +55,6 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
       ),
       body: SafeArea(
         child: BlocBuilder<AppStateBloc, AppState>(
-          bloc: _appStateBloc,
           builder: (context, state) {
             final posters = state.posters.values.toList();
 

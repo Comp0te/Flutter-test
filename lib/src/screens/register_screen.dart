@@ -30,11 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _registerBloc = BlocProvider.of<RegisterBloc>(context);
-
     void _submitForm(FormValidationState state) {
       if (_fbKey.currentState.validate()) {
-        _registerBloc.add(RegisterRequest(
+        BlocProvider.of<RegisterBloc>(context).add(RegisterRequest(
           username: _usernameController.text,
           email: _emailController.text,
           password1: _password1Controller.text,
@@ -177,7 +175,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                 ),
                                 BlocBuilder<RegisterBloc, RegisterState>(
-                                  bloc: _registerBloc,
                                   builder: (context, registerState) {
                                     return SubmitButton(
                                       isLoading: registerState.isLoading,

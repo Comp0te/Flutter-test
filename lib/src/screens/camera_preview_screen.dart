@@ -55,7 +55,6 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
         },
       ),
       body: BlocBuilder<CameraBloc, CameraState>(
-        bloc: _cameraBloc,
         builder: (context, state) => Stack(
           children: <Widget>[
             Column(
