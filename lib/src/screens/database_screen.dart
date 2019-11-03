@@ -48,7 +48,7 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
     }
 
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       appBar: AppBar(
         title: const Text('Database posters'),
         centerTitle: true,
@@ -59,7 +59,7 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
             final posters = state.posters.values.toList();
 
             return state.posters.isEmpty
-                ? Spinner()
+                ? const Spinner()
                 : ListView.separated(
                     itemBuilder: (context, int index) => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +96,7 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
                               );
                             }
 
-                            return Spinner();
+                            return const Spinner();
                           },
                         ),
                       ],

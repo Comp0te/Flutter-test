@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final gridViewColumnCount = widget.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       appBar: AppBar(
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5),
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   );
                                 },
-                                placeholder: (context, url) => Spinner(),
+                                placeholder: (context, url) => const Spinner(),
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                               );
@@ -183,7 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   BlocBuilder<PostersFetchBloc, PostersFetchState>(
                     builder: (context, state) {
-                      return state.isLoadingNextPage ? Spinner() : Container();
+                      return state.isLoadingNextPage
+                          ? const Spinner()
+                          : Container();
                     },
                   )
                 ],

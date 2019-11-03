@@ -50,7 +50,7 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
         onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
@@ -122,7 +122,7 @@ class _CameraScreenState extends State<CameraScreen>
                       aspectRatio: state.cameraController.value.aspectRatio,
                       child: CameraPreview(state.cameraController),
                     )
-                  : Spinner(),
+                  : const Spinner(),
             ),
             decoration: BoxDecoration(
               color: Colors.white,

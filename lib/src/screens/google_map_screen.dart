@@ -41,7 +41,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -79,7 +79,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
                           color: Colors.blue,
                           onPressed: _toMe,
                         )
-                      : Spinner();
+                      : const Spinner();
                 },
               ),
             ),

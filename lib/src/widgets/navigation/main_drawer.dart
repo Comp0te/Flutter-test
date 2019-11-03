@@ -5,6 +5,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
 class MainDrawer extends StatefulWidget {
+  const MainDrawer();
+
   @override
   _MainDrawerState createState() => _MainDrawerState();
 }
