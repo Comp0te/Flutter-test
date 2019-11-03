@@ -25,7 +25,7 @@ class DioInstance {
       return _dio;
     }
 
-    configureProxy();
+    if (Platform.isIOS) configureProxy();
 
     return _dio;
   }
