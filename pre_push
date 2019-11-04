@@ -8,8 +8,7 @@ if [[ $? -ne 0 ]]; then
         exit 1
 fi
 
-flutter test
-
+#flutter test
 
 #if [[ $? -ne 0 ]]; then
 #        echo "--- tests failed"
