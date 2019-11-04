@@ -22,14 +22,8 @@ class AppBlocListener extends StatelessWidget {
       listener: (context, state) {
         if (state.isAuthenticated) {
           BlocProvider.of<FirebaseMessagingBloc>(context)
-            ..add(
-              RequestNotificationPermissions(),
-            )
-            ..add(
-              ConfigureFirebaseMessaging(
-                navigatorKey: mainNavigatorKey,
-              ),
-            );
+            ..add(RequestNotificationPermissions())
+            ..add(ConfigureFirebaseMessaging(navigatorKey: mainNavigatorKey));
         }
       },
       child: child,

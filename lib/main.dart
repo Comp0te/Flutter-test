@@ -32,7 +32,7 @@ void main() {
   final _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
   );
-  final _firebaseMessaging = FirebaseMessagingRepository(
+  final _firebaseMessagingRepository = FirebaseMessagingRepository(
     firebaseMessagingProvider: FirebaseMessagingProvider(
       firebaseMessaging: FirebaseMessaging(),
     ),
@@ -56,6 +56,11 @@ void main() {
         BlocProvider<MainDrawerBloc>(
           builder: (context) => MainDrawerBloc(),
         ),
+        BlocProvider<FirebaseMessagingBloc>(
+          builder: (context) => FirebaseMessagingBloc(
+            firebaseMessagingRepository: _firebaseMessagingRepository,
+          ),
+        ),
       ],
       child: MultiRepositoryProvider(
         providers: [
@@ -78,7 +83,7 @@ void main() {
             return _cameraRepository;
           }),
           RepositoryProvider<FirebaseMessagingRepository>(builder: (context) {
-            return _firebaseMessaging;
+            return _firebaseMessagingRepository;
           }),
         ],
         child: App(),
