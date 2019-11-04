@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   })  : assert(secureStorageRepository != null),
         assert(authRepository != null);
 
+// test
   @override
   AuthState get initialState => AuthState.init();
 
