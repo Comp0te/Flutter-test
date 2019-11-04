@@ -25,7 +25,7 @@ class DioInstance {
       return _dio;
     }
 
-    configureProxy();
+//    configureProxy();
 
     return _dio;
   }

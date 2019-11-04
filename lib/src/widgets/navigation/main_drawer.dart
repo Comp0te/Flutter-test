@@ -5,6 +5,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
 class MainDrawer extends StatefulWidget {
+  const MainDrawer();
+
   @override
   _MainDrawerState createState() => _MainDrawerState();
 }
@@ -31,8 +33,7 @@ class _MainDrawerState extends State<MainDrawer> {
           ),
           Expanded(
             flex: 1,
-            child: BlocBuilder<MainDrawerBloc, MainDrawerState>(
-              bloc: BlocProvider.of(context),
+            child: BlocBuilder<NavigationBloc, NavigationState>(
               builder: (context, state) {
                 return ListView.builder(
                   padding: EdgeInsets.zero,

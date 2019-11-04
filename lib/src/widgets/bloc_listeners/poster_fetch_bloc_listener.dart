@@ -15,20 +15,16 @@ class PosterFetchBlocListener extends StatelessWidget with SnackBarMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _posterFetchBloc = BlocProvider.of<PostersFetchBloc>(context);
-    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
-
     return BlocListener<PostersFetchBloc, PostersFetchState>(
-      bloc: _posterFetchBloc,
       condition: (prev, cur) {
         return (prev.isLoadingFirstPage && !cur.isLoadingFirstPage) ||
             (prev.isLoadingNextPage && !cur.isLoadingNextPage);
       },
       listener: (context, state) {
         if (state.isSuccess) {
-          _appStateBloc.add(AppStateSavePostersResponse(
-            postersResponse: state.data,
-          ));
+          BlocProvider.of<AppStateBloc>(context).add(
+            AppStateSavePostersResponse(postersResponse: state.data),
+          );
         }
 
         if (state.isFailure) {

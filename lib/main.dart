@@ -32,7 +32,7 @@ void main() {
   final _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
   );
-  final _firebaseMessaging = FirebaseMessagingRepository(
+  final _firebaseMessagingRepository = FirebaseMessagingRepository(
     firebaseMessagingProvider: FirebaseMessagingProvider(
       firebaseMessaging: FirebaseMessaging(),
     ),
@@ -45,7 +45,7 @@ void main() {
           builder: (context) => AuthBloc(
             secureStorageRepository: _secureStorageRepository,
             authRepository: _authRepository,
-          )..add(AppStarted()),
+          ),
         ),
         BlocProvider<AppStateBloc>(
           builder: (context) => AppStateBloc(
@@ -53,8 +53,13 @@ void main() {
             imageStoreRepository: _imageStoreRepository,
           ),
         ),
-        BlocProvider<MainDrawerBloc>(
-          builder: (context) => MainDrawerBloc(),
+        BlocProvider<NavigationBloc>(
+          builder: (context) => NavigationBloc(),
+        ),
+        BlocProvider<FirebaseMessagingBloc>(
+          builder: (context) => FirebaseMessagingBloc(
+            firebaseMessagingRepository: _firebaseMessagingRepository,
+          ),
         ),
       ],
       child: MultiRepositoryProvider(
@@ -78,7 +83,7 @@ void main() {
             return _cameraRepository;
           }),
           RepositoryProvider<FirebaseMessagingRepository>(builder: (context) {
-            return _firebaseMessaging;
+            return _firebaseMessagingRepository;
           }),
         ],
         child: App(),

@@ -58,17 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final gridViewColumnCount = widget.isPortrait(context) ? 2 : 3;
 
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       appBar: AppBar(
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5),
           child: PosterFetchBlocListener(
             child: BlocBuilder<AppStateBloc, AppState>(
-              bloc: _appStateBloc,
               builder: (context, state) {
                 return AnimatedBuilder(
                   animation: _scrollController,
@@ -136,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: BlocBuilder<AppStateBloc, AppState>(
-          bloc: _appStateBloc,
           builder: (context, appState) {
             final postersList = appState.posters.values.toList();
 
@@ -177,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   );
                                 },
-                                placeholder: (context, url) => Spinner(),
+                                placeholder: (context, url) => const Spinner(),
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                               );
@@ -185,9 +182,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   BlocBuilder<PostersFetchBloc, PostersFetchState>(
-                    bloc: _postersFetchBloc,
                     builder: (context, state) {
-                      return state.isLoadingNextPage ? Spinner() : Container();
+                      return state.isLoadingNextPage
+                          ? const Spinner()
+                          : Container();
                     },
                   )
                 ],

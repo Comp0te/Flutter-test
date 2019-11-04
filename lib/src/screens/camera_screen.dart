@@ -1,12 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
-import 'package:flutter_app/src/routes/main.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CameraScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -21,7 +21,7 @@ class _CameraScreenState extends State<CameraScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _cameraBloc = BlocProvider.of<CameraBloc>(context);
+    _cameraBloc = BlocProvider.of<CameraBloc>(context)..add(InitCamera());
     widget.setOnlyPortraitUP();
   }
 
@@ -50,7 +50,7 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
         onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
@@ -61,20 +61,7 @@ class _CameraScreenState extends State<CameraScreen>
           onPressed: () => _cameraBloc.add(TakePicture()),
         ),
       ),
-      body: BlocListener<CameraBloc, CameraState>(
-        bloc: _cameraBloc,
-        condition: (prevState, curState) {
-          return (prevState.photoPath != curState.photoPath &&
-                  curState.photoPath != null) ||
-              (prevState.isVideoRecording && !curState.isVideoRecording);
-        },
-        listener: (context, state) {
-          if (state.photoPath != null || state.videoPath != null) {
-            Navigator.of(context).push(
-              MainRoutes.cameraPreviewScreenRoute(context, _cameraBloc),
-            );
-          }
-        },
+      body: CameraBlocListener(
         child: Stack(
           children: <Widget>[
             Column(children: <Widget>[
@@ -126,7 +113,6 @@ class _CameraScreenState extends State<CameraScreen>
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget() {
     return BlocBuilder<CameraBloc, CameraState>(
-      bloc: _cameraBloc,
       builder: (context, state) {
         return Expanded(
           child: Container(
@@ -136,7 +122,7 @@ class _CameraScreenState extends State<CameraScreen>
                       aspectRatio: state.cameraController.value.aspectRatio,
                       child: CameraPreview(state.cameraController),
                     )
-                  : Spinner(),
+                  : const Spinner(),
             ),
             decoration: BoxDecoration(
               color: Colors.white,

@@ -11,7 +11,7 @@ class DrawerItem extends StatelessWidget implements DrawerItemOptions {
   final String routeName;
   final bool selected;
 
-  DrawerItem({
+  const DrawerItem({
     @required this.title,
     @required this.routeName,
     this.selected = false,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
+
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/screens/screens.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:page_transition/page_transition.dart';
 
 abstract class MainRoutes {
   static PostersRepository _postersRepository(BuildContext context) =>
@@ -40,7 +41,7 @@ abstract class MainRoutes {
           return DBBloc(
             appStateBloc: _appStateBloc(context),
             dbRepository: _dbRepository(context),
-          )..add(DBGetNormalizedPosters());
+          );
         },
         child: DatabaseScreen(),
       ),
@@ -55,7 +56,7 @@ abstract class MainRoutes {
         builder: (context) {
           return CameraBloc(
             cameraRepository: _cameraRepository(context),
-          )..add(InitCamera());
+          );
         },
         child: CameraScreen(),
       ),

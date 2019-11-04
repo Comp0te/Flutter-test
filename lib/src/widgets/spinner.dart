@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Spinner extends StatelessWidget {
+  const Spinner();
+
   @override
   Widget build(BuildContext context) {
     return Center(

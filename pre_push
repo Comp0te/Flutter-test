@@ -1,0 +1,19 @@
+#!/bin/sh
+# executed from `.git/hooks/`
+
+flutter analyze
+
+if [[ $? -ne 0 ]]; then
+        echo "--- analyze failed"
+        exit 1
+fi
+
+#flutter test
+
+#if [[ $? -ne 0 ]]; then
+#        echo "--- tests failed"
+#        exit 1
+#fi
+
+echo "git push is successful"
+exit 0

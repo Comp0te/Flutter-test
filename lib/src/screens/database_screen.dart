@@ -7,13 +7,23 @@ import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class DatabaseScreen extends StatelessWidget with OrientationMixin {
+class DatabaseScreen extends StatefulWidget with OrientationMixin {
+  @override
+  _DatabaseScreenState createState() => _DatabaseScreenState();
+}
+
+class _DatabaseScreenState extends State<DatabaseScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<DBBloc>(context).add(DBGetNormalizedPosters());
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _appStateBloc = BlocProvider.of<AppStateBloc>(context);
     final _imageStoreRepository =
         RepositoryProvider.of<ImageStoreRepository>(context);
-    final showImageCount = isPortrait(context) ? 3 : 5;
+    final showImageCount = widget.isPortrait(context) ? 3 : 5;
 
     Future<List<Widget>> _getImagesFromStore(
       PosterNormalized poster,
@@ -49,19 +59,18 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
     }
 
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       appBar: AppBar(
         title: const Text('Database posters'),
         centerTitle: true,
       ),
       body: SafeArea(
         child: BlocBuilder<AppStateBloc, AppState>(
-          bloc: _appStateBloc,
           builder: (context, state) {
             final posters = state.posters.values.toList();
 
             return state.posters.isEmpty
-                ? Spinner()
+                ? const Spinner()
                 : ListView.separated(
                     itemBuilder: (context, int index) => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +107,7 @@ class DatabaseScreen extends StatelessWidget with OrientationMixin {
                               );
                             }
 
-                            return Spinner();
+                            return const Spinner();
                           },
                         ),
                       ],

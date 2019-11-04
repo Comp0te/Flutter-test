@@ -19,11 +19,9 @@ class AuthBlocListener<B extends Bloc<dynamic, S>, S extends RequestState>
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = BlocProvider.of<B>(context);
     final _authBloc = BlocProvider.of<AuthBloc>(context);
 
     return BlocListener<B, S>(
-      bloc: _bloc,
       condition: (prev, cur) {
         return prev.isLoading && !cur.isLoading;
       },

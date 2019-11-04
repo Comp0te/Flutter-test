@@ -29,7 +29,7 @@ class ImageFromStore extends StatelessWidget {
               width: 1,
               color: Colors.blue,
             )),
-            child: Spinner(),
+            child: const Spinner(),
           );
         } else if (state.image == null) {
           return Image.asset(

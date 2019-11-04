@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class MainDrawerEvent extends Equatable {
-  const MainDrawerEvent();
+abstract class NavigationEvent extends Equatable {
+  const NavigationEvent();
 }
 
-class SetMainDrawerRoute extends MainDrawerEvent {
+class SetMainDrawerRoute extends NavigationEvent {
   final String routeName;
 
   SetMainDrawerRoute({this.routeName});

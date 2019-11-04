@@ -53,7 +53,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                           state.videoPlayerController.value.aspectRatio,
                       child: VideoPlayer(state.videoPlayerController),
                     )
-                  : Spinner(),
+                  : const Spinner(),
             );
           },
         ),
