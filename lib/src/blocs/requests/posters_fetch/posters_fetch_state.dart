@@ -30,6 +30,12 @@ class PostersFetchState extends EquatableClass
   }
 
   @override
+  bool get isLoading => isLoadingFirstPage || isLoadingNextPage;
+
+  @override
+  bool get isRefreshing => isLoadingFirstPage;
+
+  @override
   bool get isSuccess => data != null;
   @override
   bool get isFailure => error != null;

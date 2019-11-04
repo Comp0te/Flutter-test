@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 abstract class RequestInit {}
 
 abstract class RequestSuccess<T> {
@@ -19,42 +17,28 @@ abstract class RequestState<T> {
   final T data;
   final Exception error;
 
+  bool get isRefreshing;
   bool get isSuccess => data != null;
   bool get isFailure => error != null;
 
   RequestState({this.isLoading, this.data, this.error});
 
-  RequestState<T> copyWith({
-    @required bool isLoading,
-    T data,
-    Exception error,
-  }) {
+  RequestState<T> copyWith() {
     return this;
   }
 }
 
-abstract class RequestPaginatedState<T> {
+abstract class RequestPaginatedState<T> extends RequestState<T> {
   final bool isLoadingFirstPage;
   final bool isLoadingNextPage;
-  final T data;
-  final Exception error;
 
   RequestPaginatedState(
     this.isLoadingFirstPage,
     this.isLoadingNextPage,
-    this.data,
-    this.error,
-  );
-
-  bool get isSuccess => data != null;
-  bool get isFailure => error != null;
-
-  RequestPaginatedState<T> copyWith({
-    bool isLoadingFirstPage,
-    bool isLoadingNextPage,
     T data,
-    Exception error,
-  }) {
-    return this;
-  }
+    Exception error,) : super(
+    data: data,
+    error: error,
+    isLoading: isLoadingFirstPage || isLoadingNextPage,
+  );
 }
