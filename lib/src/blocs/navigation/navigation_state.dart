@@ -5,21 +5,22 @@ import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 
 @immutable
-class MainDrawerState extends EquatableClass {
+class NavigationState extends EquatableClass {
   final int activeDrawerIndex;
   final List<DrawerItemOptions> drawerItemOptions;
 
-  MainDrawerState(
-      {@required this.activeDrawerIndex,
-      this.drawerItemOptions = mainDrawerItemOptions});
+  NavigationState({
+    @required this.activeDrawerIndex,
+    this.drawerItemOptions = mainDrawerItemOptions,
+  });
 
-  factory MainDrawerState.init() => MainDrawerState(activeDrawerIndex: 0);
+  factory NavigationState.init() => NavigationState(activeDrawerIndex: 0);
 
-  MainDrawerState copyWith({
+  NavigationState copyWith({
     @required int activeDrawerIndex,
     List<DrawerItemOptions> drawerItemOptions,
   }) {
-    return MainDrawerState(
+    return NavigationState(
       activeDrawerIndex: activeDrawerIndex,
       drawerItemOptions: drawerItemOptions ?? this.drawerItemOptions,
     );

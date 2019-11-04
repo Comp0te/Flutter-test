@@ -9,7 +9,7 @@ export 'active_index/bloc.dart';
 export 'camera/bloc.dart';
 export 'video_player/bloc.dart';
 export 'firebase_messaging/bloc.dart';
-export 'main_drawer/bloc.dart';
+export 'navigation/bloc.dart';
 
 export 'requests/login/bloc.dart';
 export 'requests/register/bloc.dart';

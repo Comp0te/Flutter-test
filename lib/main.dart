@@ -53,8 +53,8 @@ void main() {
             imageStoreRepository: _imageStoreRepository,
           ),
         ),
-        BlocProvider<MainDrawerBloc>(
-          builder: (context) => MainDrawerBloc(),
+        BlocProvider<NavigationBloc>(
+          builder: (context) => NavigationBloc(),
         ),
         BlocProvider<FirebaseMessagingBloc>(
           builder: (context) => FirebaseMessagingBloc(

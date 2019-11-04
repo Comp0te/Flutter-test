@@ -38,7 +38,7 @@ class _AppState extends State<App> {
       navigatorKey: mainNavigatorKey,
       initialRoute: MainRouteNames.home,
       onGenerateRoute: (RouteSettings settings) {
-        BlocProvider.of<MainDrawerBloc>(context).add(SetMainDrawerRoute(
+        BlocProvider.of<NavigationBloc>(context).add(SetMainDrawerRoute(
           routeName: settings.name,
         ));
 

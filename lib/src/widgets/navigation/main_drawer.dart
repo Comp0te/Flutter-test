@@ -33,7 +33,7 @@ class _MainDrawerState extends State<MainDrawer> {
           ),
           Expanded(
             flex: 1,
-            child: BlocBuilder<MainDrawerBloc, MainDrawerState>(
+            child: BlocBuilder<NavigationBloc, NavigationState>(
               builder: (context, state) {
                 return ListView.builder(
                   padding: EdgeInsets.zero,
