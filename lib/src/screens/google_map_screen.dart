@@ -16,8 +16,8 @@ class GoogleMapScreen extends StatefulWidget {
 
 class GoogleMapScreenState extends State<GoogleMapScreen> {
   final _mapController = Completer<GoogleMapController>();
-  final _activeIndexBloc = ActiveIndexBloc();
-  final _booleanBloc = ActiveIndexBloc();
+  final _activeIndexBloc = IntValueBloc();
+  final _loadedBloc = BoolValueBloc();
   final _streamController = StreamController<LatLngBounds>();
 
   @override
@@ -28,7 +28,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         .take(1)
         .asyncMap((controller) => controller.getVisibleRegion())
         .listen((latLngBounds) => _streamController.add(latLngBounds));
-    _booleanBloc..add(SetActiveIndex(1));
+    _loadedBloc..add(const SetBoolValue(true));
   }
 
   @override
@@ -61,10 +61,10 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
             child: SizedBox(
               height: 50,
               width: 50,
-              child: BlocBuilder<ActiveIndexBloc, ActiveIndexState>(
-                bloc: _booleanBloc,
-                builder: (_, state) {
-                  return state.activeIndex == 1
+              child: BlocBuilder<BoolValueBloc, bool>(
+                bloc: _loadedBloc,
+                builder: (_, loaded) {
+                  return loaded
                       ? RaisedButton(
                           elevation: 10,
                           shape: RoundedRectangleBorder(
@@ -149,7 +149,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
   }
 
   Future<void> _toMe() async {
-    _booleanBloc..add(SetActiveIndex(0));
+    _loadedBloc..add(const SetBoolValue(false));
 
     final controller = await _mapController.future;
     final position = await Geolocator().getCurrentPosition(
@@ -170,12 +170,12 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     final region = await controller.getVisibleRegion();
     _streamController.add(region);
 
-    _booleanBloc..add(SetActiveIndex(1));
+    _loadedBloc..add(const SetBoolValue(true));
   }
 
   Future<void> _toNextPlace() async {
     final controller = await _mapController.future;
-    final index = _activeIndexBloc.state.activeIndex;
+    final index = _activeIndexBloc.state;
 
     if (index < (googleMapPlaces.length - 1)) {
       await controller.animateCamera(
@@ -184,14 +184,14 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         ),
       );
 
-      _activeIndexBloc..add(SetActiveIndex(index + 1));
+      _activeIndexBloc..add(SetIntValue(index + 1));
     } else {
       await controller.animateCamera(
         CameraUpdate.newCameraPosition(
           googleMapPlaces.elementAt(0).cameraPosition,
         ),
       );
-      _activeIndexBloc..add(SetActiveIndex(0));
+      _activeIndexBloc..add(const SetIntValue(0));
     }
 
     final region = await controller.getVisibleRegion();

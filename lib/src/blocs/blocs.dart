@@ -10,7 +10,7 @@ export 'firebase_messaging/bloc.dart';
 export 'navigation/bloc.dart';
 
 export 'common/bool_value/bloc.dart';
-export 'common/active_index/bloc.dart';
+export 'common/int_value/bloc.dart';
 
 export 'requests/login/bloc.dart';
 export 'requests/register/bloc.dart';
