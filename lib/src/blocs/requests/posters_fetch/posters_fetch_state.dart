@@ -33,7 +33,9 @@ class PostersFetchState extends EquatableClass
   bool get isSuccess => data != null;
   @override
   bool get isFailure => error != null;
-  bool get hasNextPage => data.meta.page < data.meta.total;
+
+  bool get hasNextPage =>
+      data?.meta != null ? data.meta.page < data.meta.total : false;
 
   @override
   PostersFetchState copyWith({
