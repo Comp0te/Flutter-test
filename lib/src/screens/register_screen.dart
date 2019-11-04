@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
-  final _formValidationBloc = FormValidationBloc();
+  final _validationEnabledBloc = BoolValueBloc();
   final _emailFocusNode = FocusNode();
   final _password1FocusNode = FocusNode();
   final _password2FocusNode = FocusNode();
@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _submitForm(FormValidationState state) {
+    void _submitForm(bool validationEnabled) {
       if (_fbKey.currentState.validate()) {
         BlocProvider.of<RegisterBloc>(context).add(RegisterRequest(
           username: _usernameController.text,
@@ -38,22 +38,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
           password1: _password1Controller.text,
           password2: _password2Controller.text,
         ));
-      } else if (!state.isFormAutoValidate) {
-        _formValidationBloc.add(ToggleFormAutoValidation());
+      } else if (!validationEnabled) {
+        _validationEnabledBloc.add(ToggleBoolValue());
       }
     }
 
-    VoidCallback _makeOnPressSubmit(FormValidationState state) {
-      return () => _submitForm(state);
+    VoidCallback _makeOnPressSubmit(bool validationEnabled) {
+      return () => _submitForm(validationEnabled);
     }
 
     ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
       return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
     }
 
-    ValueChanged<String> _makeOnDoneActionSubmitted(FormValidationState state) {
+    ValueChanged<String> _makeOnDoneActionSubmitted(bool validationEnabled) {
       return (_) {
-        _submitForm(state);
+        _submitForm(validationEnabled);
         FocusScope.of(context).unfocus();
       };
     }
@@ -80,14 +80,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 20),
-                      child:
-                          BlocBuilder<FormValidationBloc, FormValidationState>(
-                        bloc: _formValidationBloc,
-                        builder: (context, formValidationState) {
+                      child: BlocBuilder<BoolValueBloc, bool>(
+                        bloc: _validationEnabledBloc,
+                        builder: (context, validationEnabled) {
                           return FormBuilder(
                             key: _fbKey,
-                            autovalidate:
-                                formValidationState.isFormAutoValidate,
+                            autovalidate: validationEnabled,
                             child: Column(
                               children: <Widget>[
                                 Flex(
@@ -166,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           focusNode: _password2FocusNode,
                                           onFiledSubmitted:
                                               _makeOnDoneActionSubmitted(
-                                            formValidationState,
+                                            validationEnabled,
                                           ),
                                           textInputAction: TextInputAction.done,
                                         ),
@@ -180,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       isLoading: registerState.isLoading,
                                       title: 'Submit',
                                       onPress: _makeOnPressSubmit(
-                                        formValidationState,
+                                        validationEnabled,
                                       ),
                                     );
                                   },

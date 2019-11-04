@@ -9,7 +9,7 @@ export 'video_player/bloc.dart';
 export 'firebase_messaging/bloc.dart';
 export 'navigation/bloc.dart';
 
-export 'common/form_validation/bloc.dart';
+export 'common/bool_value/bloc.dart';
 export 'common/active_index/bloc.dart';
 
 export 'requests/login/bloc.dart';

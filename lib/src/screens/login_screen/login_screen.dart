@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen>
   final _fbKey = GlobalKey<FormBuilderState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formValidationBloc = FormValidationBloc();
+  final _validationEnabledBloc = BoolValueBloc();
   final _passwordFocusNode = FocusNode();
 
   BoxConstraints _getFormFieldConstraints(BuildContext context) =>
@@ -48,28 +48,28 @@ class _LoginScreenState extends State<LoginScreen>
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
-    void _submitForm(FormValidationState state) {
+    void _submitForm(bool validationEnabled) {
       if (_fbKey.currentState.validate()) {
         BlocProvider.of<LoginBloc>(context).add(LoginRequest(
           email: _emailController.text,
           password: _passwordController.text,
         ));
-      } else if (!state.isFormAutoValidate) {
-        _formValidationBloc.add(ToggleFormAutoValidation());
+      } else if (!validationEnabled) {
+        _validationEnabledBloc.add(ToggleBoolValue());
       }
     }
 
-    VoidCallback _makeOnPressSubmit(FormValidationState state) {
-      return () => _submitForm(state);
+    VoidCallback _makeOnPressSubmit(bool validationEnabled) {
+      return () => _submitForm(validationEnabled);
     }
 
     ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
       return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
     }
 
-    ValueChanged<String> _makeOnDoneActionSubmitted(FormValidationState state) {
+    ValueChanged<String> _makeOnDoneActionSubmitted(bool validationEnabled) {
       return (_) {
-        _submitForm(state);
+        _submitForm(validationEnabled);
         FocusScope.of(context).unfocus();
       };
     }
@@ -91,12 +91,12 @@ class _LoginScreenState extends State<LoginScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    BlocBuilder<FormValidationBloc, FormValidationState>(
-                      bloc: _formValidationBloc,
-                      builder: (context, formValidationState) {
+                    BlocBuilder<BoolValueBloc, bool>(
+                      bloc: _validationEnabledBloc,
+                      builder: (context, validationEnabled) {
                         return FormBuilder(
                           key: _fbKey,
-                          autovalidate: formValidationState.isFormAutoValidate,
+                          autovalidate: validationEnabled,
                           child: Column(
                             children: <Widget>[
                               Flex(
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       focusNode: _passwordFocusNode,
                                       onFiledSubmitted:
                                           _makeOnDoneActionSubmitted(
-                                        formValidationState,
+                                        validationEnabled,
                                       ),
                                       textInputAction: TextInputAction.done,
                                     ),
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen>
                                         title: 'Submit',
                                         color: widget.color,
                                         onPress: _makeOnPressSubmit(
-                                          formValidationState,
+                                          validationEnabled,
                                         ),
                                       ),
                                     );
