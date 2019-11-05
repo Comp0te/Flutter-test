@@ -138,6 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, appState) {
             final postersList = appState.posters.values.toList();
 
+            if (postersList.isEmpty) return const Spinner();
+
             return SafeArea(
               child: Column(
                 children: <Widget>[
@@ -207,5 +209,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// TODO: Add onRefresh behaviour
