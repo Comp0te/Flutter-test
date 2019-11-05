@@ -36,9 +36,10 @@ abstract class RequestPaginatedState<T> extends RequestState<T> {
     this.isLoadingFirstPage,
     this.isLoadingNextPage,
     T data,
-      Exception error,) : super(
-    data: data,
-    error: error,
-    isLoading: isLoadingFirstPage || isLoadingNextPage,
-  );
+    Exception error,
+  ) : super(
+          data: data,
+          error: error,
+          isLoading: isLoadingFirstPage || isLoadingNextPage,
+        );
 }

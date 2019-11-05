@@ -167,28 +167,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         itemBuilder: (BuildContext context, int index) {
                           return postersList[index].images == null ||
-                              postersList[index].images.isEmpty
+                                  postersList[index].images.isEmpty
                               ? Image.asset(
-                            'assets/placeholder.png',
-                            fit: BoxFit.cover,
-                          )
+                                  'assets/placeholder.png',
+                                  fit: BoxFit.cover,
+                                )
                               : CachedNetworkImage(
-                            imageUrl: postersList[index].images[0]?.file,
-                            imageBuilder: (context, imageProvider) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                            placeholder: (context, url) =>
-                            const Spinner(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          );
+                                  imageUrl: postersList[index].images[0]?.file,
+                                  imageBuilder: (context, imageProvider) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  placeholder: (context, url) =>
+                                      const Spinner(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                );
                         },
                       ),
                     ),
