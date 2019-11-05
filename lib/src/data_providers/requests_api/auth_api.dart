@@ -31,4 +31,13 @@ class AuthApiProvider {
 
     return AuthResponse.fromJson(response.data);
   }
+
+  Future<Token> verifyToken(Token data) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      Url.tokenVerify,
+      data: data.toJson(),
+    );
+
+    return Token.fromJson(response.data);
+  }
 }

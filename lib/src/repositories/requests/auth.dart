@@ -22,4 +22,8 @@ class AuthRepository {
   Future<AuthResponse> register(RegisterInput data) async {
     return await authApiProvider.register(data);
   }
+
+  Future<Token> verifyToken(Token data) async {
+    return await authApiProvider.verifyToken(data);
+  }
 }
