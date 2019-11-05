@@ -1,0 +1,11 @@
+#!/bin/sh
+# executed from `.git/hooks/pre-commit`
+
+declare -a files="$(\
+    git diff --cached --name-only --diff-filter=ACMR -z -- '*.dart' | \
+    xargs -0 flutter format\
+)"
+
+echo "All '*.dart' files formatted"
+
+exit 0
