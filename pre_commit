@@ -2,11 +2,14 @@
 # execute from `.git/hooks/pre-commit`
 # Make executable with `chmod +x`
 
-declare -a files="$(\
-    git diff --cached --name-only --diff-filter=ACMR -z -- '*.dart' | \
-    xargs -0 flutter format\
+declare -a filesToFormat="$(\
+    git diff --cached --name-only --diff-filter=ACMR -z -- '*.dart'\
+    | xargs -0 flutter format -n \
 )"
 
-echo "All '*.dart' files formatted"
+flutter format "$filesToFormat"
+git add "$filesToFormat"
+
+echo " --- $filesToFormat: files formatted"
 
 exit 0
