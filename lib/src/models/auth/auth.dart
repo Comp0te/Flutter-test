@@ -19,15 +19,26 @@ class LoginInput {
 }
 
 @JsonSerializable()
-class AuthResponse {
-  String token;
-  User user;
+class Token {
+  final String token;
 
-  AuthResponse(this.token, this.user);
+  const Token(this.token);
+
+  factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TokenToJson(this);
+}
+
+@JsonSerializable()
+class AuthResponse extends Token {
+  final User user;
+
+  const AuthResponse(String token, this.user) : super(token);
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) =>
       _$AuthResponseFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$AuthResponseToJson(this);
 }
 
