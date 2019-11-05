@@ -19,6 +19,8 @@ class LoginState extends EquatableClass implements RequestState<AuthResponse> {
   });
 
   @override
+  bool get isRefreshing => isLoading;
+  @override
   bool get isSuccess => data != null;
   @override
   bool get isFailure => error != null;

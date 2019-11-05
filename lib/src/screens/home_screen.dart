@@ -2,11 +2,12 @@ import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -137,48 +138,59 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, appState) {
             final postersList = appState.posters.values.toList();
 
+            if (postersList.isEmpty) return const Spinner();
+
             return SafeArea(
               child: Column(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: GridView.builder(
-                      key: _gridViewKey,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: gridViewPaddingHorizontal,
-                        vertical: gridViewPaddingVertical,
-                      ),
-                      controller: _scrollController,
-                      itemCount: postersList.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: gridViewColumnCount,
-                        crossAxisSpacing: gridViewCrossAxisSpacing,
-                        mainAxisSpacing: gridViewMainAxisSpacing,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return postersList[index].images == null ||
-                                postersList[index].images.isEmpty
-                            ? Image.asset(
-                                'assets/placeholder.png',
-                                fit: BoxFit.cover,
-                              )
-                            : CachedNetworkImage(
-                                imageUrl: postersList[index].images[0]?.file,
-                                imageBuilder: (context, imageProvider) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                placeholder: (context, url) => const Spinner(),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              );
+                    child: RefreshRequestBlocListener<PostersFetchBloc,
+                        PostersFetchState>(
+                      onRefresh: () {
+                        BlocProvider.of<PostersFetchBloc>(context).add(
+                          PostersFetchFirstPageRequest(),
+                        );
                       },
+                      child: GridView.builder(
+                        key: _gridViewKey,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: gridViewPaddingHorizontal,
+                          vertical: gridViewPaddingVertical,
+                        ),
+                        controller: _scrollController,
+                        itemCount: postersList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: gridViewColumnCount,
+                          crossAxisSpacing: gridViewCrossAxisSpacing,
+                          mainAxisSpacing: gridViewMainAxisSpacing,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return postersList[index].images == null ||
+                                  postersList[index].images.isEmpty
+                              ? Image.asset(
+                                  'assets/placeholder.png',
+                                  fit: BoxFit.cover,
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: postersList[index].images[0]?.file,
+                                  imageBuilder: (context, imageProvider) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  placeholder: (context, url) =>
+                                      const Spinner(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                );
+                        },
+                      ),
                     ),
                   ),
                   BlocBuilder<PostersFetchBloc, PostersFetchState>(
@@ -197,5 +209,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// TODO: Add onRefresh behaviour
