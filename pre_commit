@@ -1,5 +1,6 @@
 #!/bin/sh
-# executed from `.git/hooks/pre-commit`
+# execute from `.git/hooks/pre-commit`
+# Make executable with `chmod +x`
 
 declare -a files="$(\
     git diff --cached --name-only --diff-filter=ACMR -z -- '*.dart' | \

@@ -1,5 +1,6 @@
 #!/bin/sh
-# executed from `.git/hooks/`
+# execute from `.git/hooks/pre-push`
+# Make executable with `chmod +x`
 
 flutter format --set-exit-if-changed .
 
