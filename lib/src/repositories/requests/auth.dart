@@ -33,4 +33,8 @@ class AuthRepository {
   Future<Token> verifyToken(Token data) async {
     return await authApiProvider.verifyToken(data);
   }
+
+  Future<void> logout() async {
+    return await authApiProvider.logout();
+  }
 }

@@ -64,6 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapLoggedOutToState(LoggedOut event) async* {
     await secureStorageRepository.deleteToken();
+    await authRepository.logout();
 
     yield AuthState.init();
   }

@@ -6,6 +6,8 @@ abstract class Url {
   static final register = 'registration/';
   static final tokenVerify = 'token-verify/';
   static final tokenRefresh = 'token-refresh/';
+  static final logout = 'logout/';
+
   static final posters = 'posters/';
 }
 

@@ -53,4 +53,10 @@ class AuthApiProvider {
 
     return Token.fromJson(response.data);
   }
+
+  Future<void> logout() async {
+    await _dio.post<Map<String, dynamic>>(
+      Url.logout,
+    );
+  }
 }
