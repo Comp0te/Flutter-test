@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/adapter.dart';
@@ -5,6 +6,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_app/src/constants/constants.dart';
+
+Object _parseAndDecode(String response) {
+  return jsonDecode(response);
+}
+
+Future<Object> parseJson(String text) {
+  return compute(_parseAndDecode, text);
+}
 
 class DioInstance {
   static BaseOptions options = BaseOptions(
@@ -14,7 +23,12 @@ class DioInstance {
     responseType: ResponseType.json,
   );
 
-  final Dio _dio = Dio(options);
+  final Dio _dio;
+
+  DioInstance() : _dio = Dio(options) {
+    (_dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
+  }
+
 //    ..interceptors.add(LogInterceptor(
 //      requestBody: true,
 //      responseBody: true,
