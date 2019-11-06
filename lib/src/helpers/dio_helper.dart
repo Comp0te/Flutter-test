@@ -56,6 +56,8 @@ class DioInstance {
 
         if (token != null) {
           options.headers[authorizationKey] = getAuthorizationValue(token);
+        } else {
+          options.headers.removeWhere((key, _) => key == authorizationKey);
         }
 
         return options;
