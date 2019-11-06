@@ -5,6 +5,7 @@ abstract class Url {
   static final login = 'login/';
   static final register = 'registration/';
   static final tokenVerify = 'token-verify/';
+  static final tokenRefresh = 'token-refresh/';
   static final posters = 'posters/';
 }
 
