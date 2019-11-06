@@ -19,7 +19,7 @@ abstract class MainRoutes {
 
   static Route<HomeScreen> homeScreenRoute(BuildContext context) {
     return PageTransition(
-      type: PageTransitionType.fade,
+      type: PageTransitionType.size,
       alignment: Alignment.center,
       child: BlocProvider<PostersFetchBloc>(
         builder: (context) {
