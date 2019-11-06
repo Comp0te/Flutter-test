@@ -35,11 +35,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield state.copyWith(processing: true);
 
     authRepository.addTokenInterceptor(
-      secureStorageRepository: secureStorageRepository,
-      onLogout: () {
-        add(LoggedOut());
-      }
-    );
+        secureStorageRepository: secureStorageRepository,
+        onLogout: () {
+          add(LoggedOut());
+        });
 
     final token = await secureStorageRepository.getToken();
 
