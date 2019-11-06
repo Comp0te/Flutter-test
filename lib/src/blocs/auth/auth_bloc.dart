@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
+import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/auth/bloc.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
@@ -20,25 +21,45 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthState get initialState => AuthState.init();
 
   @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is AppStarted) {
-      final token = await secureStorageRepository.getToken();
-
-      if (token != null) {
-        yield state.copyWith(isAuthenticated: true);
-        authRepository.addAuthHeader(token);
-      }
+      yield* _mapAppStartedToState(event);
     } else if (event is LoggedIn) {
-      await secureStorageRepository.saveToken(event.authResponse.token);
-      authRepository.addAuthHeader(event.authResponse.token);
-
-      yield state.copyWith(isAuthenticated: true);
+      yield* _mapLoggedInToState(event);
     } else if (event is LoggedOut) {
-      await secureStorageRepository.deleteToken();
-
-      yield state.copyWith(isAuthenticated: false);
+      yield* _mapLoggedOutToState(event);
     }
+  }
+
+  Stream<AuthState> _mapAppStartedToState(AppStarted event) async* {
+    yield state.copyWith(processing: true);
+
+    final token = await secureStorageRepository.getToken();
+
+    if (token != null) {
+      try {
+        final tokenResponse = await authRepository.verifyToken(Token(token));
+
+        authRepository.addAuthHeader(tokenResponse.token);
+        yield state.copyWith(isAuthenticated: true, processing: false);
+      } on Exception catch (_) {
+        add(LoggedOut());
+      }
+    } else {
+      yield AuthState.init();
+    }
+  }
+
+  Stream<AuthState> _mapLoggedInToState(LoggedIn event) async* {
+    await secureStorageRepository.saveToken(event.authResponse.token);
+    authRepository.addAuthHeader(event.authResponse.token);
+
+    yield state.copyWith(isAuthenticated: true);
+  }
+
+  Stream<AuthState> _mapLoggedOutToState(LoggedOut event) async* {
+    await secureStorageRepository.deleteToken();
+
+    yield AuthState.init();
   }
 }
