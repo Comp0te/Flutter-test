@@ -34,13 +34,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapAppStartedToState(AppStarted event) async* {
     yield state.copyWith(processing: true);
 
+    authRepository.addTokenInterceptor(
+      secureStorageRepository: secureStorageRepository,
+      onLogout: () {
+        add(LoggedOut());
+      }
+    );
+
     final token = await secureStorageRepository.getToken();
 
     if (token != null) {
       try {
-        final tokenResponse = await authRepository.verifyToken(Token(token));
+        await authRepository.verifyToken(Token(token));
 
-        authRepository.addAuthHeader(tokenResponse.token);
         yield state.copyWith(isAuthenticated: true, processing: false);
       } on Exception catch (_) {
         add(LoggedOut());
@@ -52,7 +58,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapLoggedInToState(LoggedIn event) async* {
     await secureStorageRepository.saveToken(event.authResponse.token);
-    authRepository.addAuthHeader(event.authResponse.token);
 
     yield state.copyWith(isAuthenticated: true);
   }
