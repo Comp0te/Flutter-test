@@ -5,6 +5,7 @@ class SubmitButton extends StatelessWidget {
   final String title;
   final bool isLoading;
   final Color color;
+  final EdgeInsets margin;
 
   const SubmitButton({
     Key key,
@@ -12,27 +13,46 @@ class SubmitButton extends StatelessWidget {
     @required this.title,
     @required this.isLoading,
     this.color = Colors.blue,
+    this.margin = const EdgeInsets.only(bottom: 25),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
-      child: isLoading
-          ? Container(
-              width: 30,
-              child: const CircularProgressIndicator(strokeWidth: 2),
-            )
-          : Container(
-              width: 120,
-              child: RaisedButton(
-                textColor: Colors.white,
-                onPressed: onPress,
-                elevation: 5,
-                color: color,
-                child: Text(title),
-              ),
-            ),
+      margin: margin,
+      child: RaisedButton(
+        textColor: Colors.white,
+        onPressed: onPress,
+        elevation: 5,
+        color: color,
+        padding: const EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          constraints: const BoxConstraints(
+            minWidth: 200,
+            minHeight: 45,
+          ),
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: isLoading
+              ? Container(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    backgroundColor: Colors.white,
+                  ),
+                )
+              : Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+        ),
+      ),
     );
   }
 }
