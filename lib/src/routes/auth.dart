@@ -14,12 +14,19 @@ abstract class AuthRoutes {
     return PageTransition(
       type: PageTransitionType.size,
       alignment: Alignment.center,
-      child: BlocProvider(
-        builder: (context) {
-          return LoginBloc(
-            authRepository: _authRepository(context),
-          );
-        },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<LoginBloc>(
+            builder: (context) => LoginBloc(
+              authRepository: _authRepository(context),
+            ),
+          ),
+          BlocProvider<GoogleLoginBloc>(
+            builder: (context) => GoogleLoginBloc(
+              authRepository: _authRepository(context),
+            ),
+          ),
+        ],
         child: AnimatedLoginScreen(),
       ),
     );

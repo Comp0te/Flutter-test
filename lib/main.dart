@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'src/app.dart';
 import 'src/blocs/blocs.dart';
@@ -18,7 +19,10 @@ void main() {
     storage: SecureStorageProvider(secureStorage: const FlutterSecureStorage()),
   );
   final _authRepository = AuthRepository(
-    authApiProvider: AuthApiProvider(dio: dio),
+    authApiProvider: AuthApiProvider(
+      dio: dio,
+      googleSignIn: GoogleSignIn(),
+    ),
   );
   final _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
