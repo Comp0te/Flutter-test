@@ -13,5 +13,6 @@ export 'common/bool_value/bloc.dart';
 export 'common/int_value/bloc.dart';
 
 export 'requests/login/bloc.dart';
+export 'requests/google_login/bloc.dart';
 export 'requests/register/bloc.dart';
 export 'requests/posters_fetch/bloc.dart';
