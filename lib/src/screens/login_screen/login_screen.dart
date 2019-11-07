@@ -20,7 +20,7 @@ class LoginScreen extends StatefulWidget with OrientationMixin {
     this.heroRegisterWidth = 150,
     this.submitOpacity = 1,
     this.marginBottomEmail = const EdgeInsets.only(bottom: 0),
-    this.marginBottomPassword = const EdgeInsets.only(bottom: 0),
+    this.marginBottomPassword = const EdgeInsets.only(bottom: 20),
     this.paddingHorizontalScreen = const EdgeInsets.symmetric(horizontal: 30),
     this.color = Colors.blue,
   }) : super(key: key);
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen>
   final _validationEnabledBloc = BoolValueBloc();
   final _passwordFocusNode = FocusNode();
 
-  BoxConstraints _getFormFieldConstraints(BuildContext context) =>
+  BoxConstraints _getBoxConstraints(BuildContext context) =>
       widget.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
           : const BoxConstraints();
@@ -114,8 +114,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
+                                    constraints: _getBoxConstraints(context),
                                     margin: widget.marginBottomEmail,
                                     child: FormFieldEmail(
                                       controller: _emailController,
@@ -126,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                   ),
                                   Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
+                                    constraints: _getBoxConstraints(context),
                                     margin: widget.marginBottomPassword,
                                     child: FormFieldPassword(
                                       controller: _passwordController,
@@ -141,42 +139,51 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 40, top: 20),
-                                child: BlocBuilder<LoginBloc, LoginState>(
-                                  builder: (context, loginState) {
-                                    return Opacity(
-                                      opacity: widget.submitOpacity,
-                                      child: SubmitButton(
-                                        isLoading: loginState.isLoading,
-                                        title: 'Submit',
-                                        color: widget.color,
-                                        onPress: _makeOnPressSubmit(
-                                          validationEnabled,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 40, top: 20),
-                                child: BlocBuilder<GoogleLoginBloc,
-                                    GoogleLoginState>(
-                                  builder: (context, googleLoginState) {
-                                    return Opacity(
-                                      opacity: widget.submitOpacity,
-                                      child: SubmitButton(
-                                        isLoading: googleLoginState.isLoading,
-                                        title: 'Sign in with Google',
-                                        color: widget.color,
-                                        onPress: _onPressGoogleLogin,
-                                      ),
-                                    );
-                                  },
-                                ),
+                              Flex(
+                                direction: widget.isPortrait(context)
+                                    ? Axis.vertical
+                                    : Axis.horizontal,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<LoginBloc, LoginState>(
+                                      builder: (context, loginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading: loginState.isLoading,
+                                            title: 'Sign in with email',
+                                            color: widget.color,
+                                            onPress: _makeOnPressSubmit(
+                                              validationEnabled,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<GoogleLoginBloc,
+                                        GoogleLoginState>(
+                                      builder: (context, googleLoginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading:
+                                                googleLoginState.isLoading,
+                                            title: 'Sign in with Google',
+                                            color: widget.color,
+                                            onPress: _onPressGoogleLogin,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                               HeroRegister(
                                 width: widget.heroRegisterWidth,

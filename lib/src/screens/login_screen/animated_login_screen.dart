@@ -65,7 +65,7 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
     );
     _marginPassword = Tween<EdgeInsets>(
       begin: const EdgeInsets.only(bottom: 40),
-      end: const EdgeInsets.only(bottom: 0),
+      end: const EdgeInsets.only(bottom: 20),
     ).animate(
       CurvedAnimation(
         parent: _animationController,
