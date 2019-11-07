@@ -35,7 +35,6 @@ class FacebookLoginBloc extends Bloc<FacebookLoginEvent, FacebookLoginState> {
       final response = await authRepository.facebookLogin();
 
       if (response != null) {
-        print('${response}');
         add(FacebookLoginRequestSuccess(response: response));
       } else {
         yield FacebookLoginState.init();
