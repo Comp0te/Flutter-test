@@ -26,6 +26,11 @@ abstract class AuthRoutes {
               authRepository: _authRepository(context),
             ),
           ),
+          BlocProvider<FacebookLoginBloc>(
+            builder: (context) => FacebookLoginBloc(
+              authRepository: _authRepository(context),
+            ),
+          ),
         ],
         child: AnimatedLoginScreen(),
       ),
