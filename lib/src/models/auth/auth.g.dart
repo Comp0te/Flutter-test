@@ -29,6 +29,17 @@ Map<String, dynamic> _$TokenToJson(Token instance) => <String, dynamic>{
       'token': instance.token,
     };
 
+GoogleAccessToken _$GoogleAccessTokenFromJson(Map<String, dynamic> json) {
+  return GoogleAccessToken(
+    json['access_token'] as String,
+  );
+}
+
+Map<String, dynamic> _$GoogleAccessTokenToJson(GoogleAccessToken instance) =>
+    <String, dynamic>{
+      'access_token': instance.accessToken,
+    };
+
 AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) {
   return AuthResponse(
     json['token'] as String,
