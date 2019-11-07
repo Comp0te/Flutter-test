@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/helpers/helpers.dart';
@@ -9,8 +10,15 @@ import 'package:flutter_app/src/models/model.dart';
 @immutable
 class AuthApiProvider {
   final Dio _dio;
+  final GoogleSignIn _googleSignIn;
 
-  AuthApiProvider({@required Dio dio}) : _dio = dio;
+  AuthApiProvider({
+    @required Dio dio,
+    @required GoogleSignIn googleSignIn,
+  })  : assert(dio != null),
+        assert(googleSignIn != null),
+        _dio = dio,
+        _googleSignIn = googleSignIn;
 
   void addHeaders(Iterable<MapEntry<String, String>> headers) {
     _dio.options.headers.addEntries(headers);
@@ -31,6 +39,24 @@ class AuthApiProvider {
     final response = await _dio.post<Map<String, dynamic>>(
       Url.login,
       data: data.toJson(),
+    );
+
+    return AuthResponse.fromJson(response.data);
+  }
+
+  Future<GoogleAccessToken> getGoogleAccessToken() async {
+    final googleUser = await _googleSignIn.signIn();
+    final googleAuth = await googleUser.authentication;
+
+    return GoogleAccessToken(googleAuth.accessToken);
+  }
+
+  Future<AuthResponse> googleLogin() async {
+    final googleAccessToken = await getGoogleAccessToken();
+
+    final response = await _dio.post<Map<String, dynamic>>(
+      Url.loginGoogle,
+      data: googleAccessToken.toJson(),
     );
 
     return AuthResponse.fromJson(response.data);
@@ -58,5 +84,11 @@ class AuthApiProvider {
     await _dio.post<Map<String, dynamic>>(
       Url.logout,
     );
+  }
+
+  Future<void> googleLogout() async {
+    final signedId = await _googleSignIn.isSignedIn();
+
+    if (signedId) await _googleSignIn.disconnect();
   }
 }

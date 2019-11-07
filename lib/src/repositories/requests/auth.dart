@@ -26,6 +26,10 @@ class AuthRepository {
     return await authApiProvider.login(data);
   }
 
+  Future<AuthResponse> googleLogin() async {
+    return await authApiProvider.googleLogin();
+  }
+
   Future<AuthResponse> register(RegisterInput data) async {
     return await authApiProvider.register(data);
   }
@@ -35,6 +39,7 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    return await authApiProvider.logout();
+    await authApiProvider.logout();
+    await authApiProvider.googleLogout();
   }
 }
