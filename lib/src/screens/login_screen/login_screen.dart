@@ -67,6 +67,11 @@ class _LoginScreenState extends State<LoginScreen>
       BlocProvider.of<GoogleLoginBloc>(context).add(const GoogleLoginRequest());
     }
 
+    void _onPressFacebookLogin() {
+      BlocProvider.of<FacebookLoginBloc>(context)
+          .add(const FacebookLoginRequest());
+    }
+
     ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
       return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
     }
@@ -178,6 +183,24 @@ class _LoginScreenState extends State<LoginScreen>
                                             title: 'Sign in with Google',
                                             color: widget.color,
                                             onPress: _onPressGoogleLogin,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<FacebookLoginBloc,
+                                        FacebookLoginState>(
+                                      builder: (context, facebookLoginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading:
+                                                facebookLoginState.isLoading,
+                                            title: 'Sign in with Facebook',
+                                            color: widget.color,
+                                            onPress: _onPressFacebookLogin,
                                           ),
                                         );
                                       },
