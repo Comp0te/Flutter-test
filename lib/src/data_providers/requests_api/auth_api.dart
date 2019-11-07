@@ -52,7 +52,7 @@ class AuthApiProvider {
   Future<AccessToken> getGoogleAccessToken() async {
     final googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser.authentication;
-    print('google tokent ----- ${googleAuth.accessToken}');
+
     return AccessToken(googleAuth.accessToken);
   }
 
@@ -61,11 +61,9 @@ class AuthApiProvider {
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        print('---${result.accessToken.token}---');
         return AccessToken(result.accessToken.token);
 
       case FacebookLoginStatus.cancelledByUser:
-        print(' ------cancelledByUser');
         return null;
 
       case FacebookLoginStatus.error:
@@ -93,7 +91,7 @@ class AuthApiProvider {
         Url.loginFacebook,
         data: facebookAccessToken.toJson(),
       );
-      print(' --------------------------, ${response.data}');
+
       return AuthResponse.fromJson(response.data);
     } else {
       return null;
