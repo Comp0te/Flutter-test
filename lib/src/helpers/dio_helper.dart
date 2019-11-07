@@ -22,6 +22,7 @@ class DioInstance {
 
   DioInstance() : _dio = Dio(options) {
     (_dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
+//    _dio.interceptors.add(LogInterceptor());
   }
 
   Dio get dio {
@@ -72,7 +73,8 @@ class DioInstance {
           final options = error.response.request;
           // If the token has been updated, repeat directly.
 
-          if (tokenHeader != options.headers[authorizationKey]) {
+          if (token != null &&
+              tokenHeader != options.headers[authorizationKey]) {
             options.headers[authorizationKey] = tokenHeader;
             //repeat
             return dio.request(options.path, options: options);
