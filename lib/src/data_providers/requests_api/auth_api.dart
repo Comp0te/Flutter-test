@@ -52,14 +52,27 @@ class AuthApiProvider {
   Future<AccessToken> getGoogleAccessToken() async {
     final googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser.authentication;
-
+    print('google tokent ----- ${googleAuth.accessToken}');
     return AccessToken(googleAuth.accessToken);
   }
 
   Future<AccessToken> getFacebookAccessToken() async {
     final result = await _facebookLogin.logIn(['email']);
 
-    return AccessToken(result.accessToken.token);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        print('---${result.accessToken.token}---');
+        return AccessToken(result.accessToken.token);
+
+      case FacebookLoginStatus.cancelledByUser:
+        print(' ------cancelledByUser');
+        return null;
+
+      case FacebookLoginStatus.error:
+        throw result.errorMessage;
+    }
+
+    return null;
   }
 
   Future<AuthResponse> googleLogin() async {
@@ -75,13 +88,16 @@ class AuthApiProvider {
 
   Future<AuthResponse> facebookLogin() async {
     final facebookAccessToken = await getFacebookAccessToken();
-
-    final response = await _dio.post<Map<String, dynamic>>(
-      Url.loginFacebook,
-      data: facebookAccessToken.toJson(),
-    );
-
-    return AuthResponse.fromJson(response.data);
+    if (facebookAccessToken != null) {
+      final response = await _dio.post<Map<String, dynamic>>(
+        Url.loginFacebook,
+        data: facebookAccessToken.toJson(),
+      );
+      print(' --------------------------, ${response.data}');
+      return AuthResponse.fromJson(response.data);
+    } else {
+      return null;
+    }
   }
 
   Future<AuthResponse> register(RegisterInput data) async {
@@ -109,8 +125,14 @@ class AuthApiProvider {
   }
 
   Future<void> googleLogout() async {
-    final signedId = await _googleSignIn.isSignedIn();
+    final signedIn = await _googleSignIn.isSignedIn();
 
-    if (signedId) await _googleSignIn.disconnect();
+    if (signedIn) await _googleSignIn.disconnect();
+  }
+
+  Future<void> facebookLogout() async {
+    final loggedIn = await _facebookLogin.isLoggedIn;
+
+    if (loggedIn) await _facebookLogin.logOut();
   }
 }

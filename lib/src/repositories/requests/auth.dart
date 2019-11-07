@@ -43,7 +43,10 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    await authApiProvider.logout();
-    await authApiProvider.googleLogout();
+    await Future.wait([
+      authApiProvider.logout(),
+      authApiProvider.facebookLogout(),
+      authApiProvider.googleLogout(),
+    ]);
   }
 }
