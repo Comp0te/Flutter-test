@@ -4,6 +4,7 @@ abstract class Url {
   static final base = 'http://light-it-04.tk/api/';
   static final login = 'login/';
   static final loginGoogle = 'rest-auth/google/';
+  static final loginFacebook = 'rest-auth/facebook/';
   static final register = 'registration/';
   static final tokenVerify = 'token-verify/';
   static final tokenRefresh = 'token-refresh/';

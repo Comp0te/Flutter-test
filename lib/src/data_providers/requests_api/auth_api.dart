@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -11,14 +12,18 @@ import 'package:flutter_app/src/models/model.dart';
 class AuthApiProvider {
   final Dio _dio;
   final GoogleSignIn _googleSignIn;
+  final FacebookLogin _facebookLogin;
 
   AuthApiProvider({
     @required Dio dio,
     @required GoogleSignIn googleSignIn,
+    @required FacebookLogin facebookLogin,
   })  : assert(dio != null),
         assert(googleSignIn != null),
+        assert(facebookLogin != null),
         _dio = dio,
-        _googleSignIn = googleSignIn;
+        _googleSignIn = googleSignIn,
+        _facebookLogin = facebookLogin;
 
   void addHeaders(Iterable<MapEntry<String, String>> headers) {
     _dio.options.headers.addEntries(headers);
@@ -44,11 +49,17 @@ class AuthApiProvider {
     return AuthResponse.fromJson(response.data);
   }
 
-  Future<GoogleAccessToken> getGoogleAccessToken() async {
+  Future<AccessToken> getGoogleAccessToken() async {
     final googleUser = await _googleSignIn.signIn();
     final googleAuth = await googleUser.authentication;
 
-    return GoogleAccessToken(googleAuth.accessToken);
+    return AccessToken(googleAuth.accessToken);
+  }
+
+  Future<AccessToken> getFacebookAccessToken() async {
+    final result = await _facebookLogin.logIn(['email']);
+
+    return AccessToken(result.accessToken.token);
   }
 
   Future<AuthResponse> googleLogin() async {
@@ -57,6 +68,17 @@ class AuthApiProvider {
     final response = await _dio.post<Map<String, dynamic>>(
       Url.loginGoogle,
       data: googleAccessToken.toJson(),
+    );
+
+    return AuthResponse.fromJson(response.data);
+  }
+
+  Future<AuthResponse> facebookLogin() async {
+    final facebookAccessToken = await getFacebookAccessToken();
+
+    final response = await _dio.post<Map<String, dynamic>>(
+      Url.loginFacebook,
+      data: facebookAccessToken.toJson(),
     );
 
     return AuthResponse.fromJson(response.data);

@@ -30,6 +30,10 @@ class AuthRepository {
     return await authApiProvider.googleLogin();
   }
 
+  Future<AuthResponse> facebookLogin() async {
+    return await authApiProvider.facebookLogin();
+  }
+
   Future<AuthResponse> register(RegisterInput data) async {
     return await authApiProvider.register(data);
   }

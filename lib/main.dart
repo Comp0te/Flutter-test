@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -22,6 +23,7 @@ void main() {
     authApiProvider: AuthApiProvider(
       dio: dio,
       googleSignIn: GoogleSignIn(),
+      facebookLogin: FacebookLogin(),
     ),
   );
   final _postersRepository = PostersRepository(
