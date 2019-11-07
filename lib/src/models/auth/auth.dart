@@ -30,16 +30,16 @@ class Token {
 }
 
 @JsonSerializable()
-class GoogleAccessToken {
+class AccessToken {
   @JsonKey(name: 'access_token')
   final String accessToken;
 
-  const GoogleAccessToken(this.accessToken);
+  const AccessToken(this.accessToken);
 
-  factory GoogleAccessToken.fromJson(Map<String, dynamic> json) =>
-      _$GoogleAccessTokenFromJson(json);
+  factory AccessToken.fromJson(Map<String, dynamic> json) =>
+      _$AccessTokenFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GoogleAccessTokenToJson(this);
+  Map<String, dynamic> toJson() => _$AccessTokenToJson(this);
 }
 
 @JsonSerializable()
