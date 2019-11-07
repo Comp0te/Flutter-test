@@ -16,7 +16,9 @@ class AuthMultiLoginBlocListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthBlocListener<LoginBloc, LoginState>(
       child: AuthBlocListener<GoogleLoginBloc, GoogleLoginState>(
-        child: child,
+        child: AuthBlocListener<FacebookLoginBloc, FacebookLoginState>(
+          child: child,
+        ),
       ),
     );
   }
