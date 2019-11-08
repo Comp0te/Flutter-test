@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/adapter.dart';
@@ -5,20 +6,24 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_app/src/constants/constants.dart';
+import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/repositories/repositories.dart';
+
+Object _parseAndDecode(String response) {
+  return jsonDecode(response);
+}
+
+Future<Object> parseJson(String text) {
+  return compute(_parseAndDecode, text);
+}
 
 class DioInstance {
-  static BaseOptions options = BaseOptions(
-    baseUrl: Url.base,
-    connectTimeout: 5000,
-    receiveTimeout: 3000,
-    responseType: ResponseType.json,
-  );
+  final Dio _dio;
 
-  final Dio _dio = Dio(options);
-//    ..interceptors.add(LogInterceptor(
-//      requestBody: true,
-//      responseBody: true,
-//    ));
+  DioInstance() : _dio = Dio(options) {
+    (_dio.transformer as DefaultTransformer).jsonDecodeCallback = parseJson;
+//    _dio.interceptors.add(LogInterceptor());
+  }
 
   Dio get dio {
     if (kReleaseMode) {
@@ -28,6 +33,89 @@ class DioInstance {
 //    configureProxy();
 
     return _dio;
+  }
+
+  static const authorizationKey = 'Authorization';
+  static String getAuthorizationValue(String token) => 'JWT $token';
+  static BaseOptions options = BaseOptions(
+    baseUrl: Url.base,
+    connectTimeout: 5000,
+    receiveTimeout: 3000,
+    responseType: ResponseType.json,
+  );
+
+  static InterceptorsWrapper getTokenInterceptor({
+    @required Dio dio,
+    @required SecureStorageRepository secureStorageRepository,
+    @required VoidCallback onLogout,
+  }) {
+    final _tokenDio = Dio(options);
+
+    return InterceptorsWrapper(
+      onRequest: (RequestOptions options) async {
+        final token = await secureStorageRepository.getToken();
+
+        if (token != null) {
+          options.headers[authorizationKey] = getAuthorizationValue(token);
+        } else {
+          options.headers.removeWhere((key, _) => key == authorizationKey);
+        }
+
+        return options;
+      },
+      onError: (DioError error) async {
+        final statusCode = error.response?.statusCode;
+
+        // Assume 401 stands for token expired
+        if (statusCode == 401 || statusCode == 400) {
+          final token = await secureStorageRepository.getToken();
+          final tokenHeader = getAuthorizationValue(token);
+          final options = error.response.request;
+          // If the token has been updated, repeat directly.
+
+          if (token != null &&
+              tokenHeader != options.headers[authorizationKey]) {
+            options.headers[authorizationKey] = tokenHeader;
+            //repeat
+            return dio.request(options.path, options: options);
+          }
+
+          // update token and repeat
+          // Lock to block the incoming request until the token updated
+          try {
+            dio.lock();
+            dio.interceptors.responseLock.lock();
+            dio.interceptors.errorLock.lock();
+
+            final refreshTokenResponse =
+                await _tokenDio.post<Map<String, dynamic>>(
+              Url.tokenRefresh,
+              data: Token(token).toJson(),
+            );
+
+            final refreshedToken =
+                Token.fromJson(refreshTokenResponse.data).token;
+
+            options.headers[authorizationKey] =
+                getAuthorizationValue(refreshedToken);
+
+            await secureStorageRepository.saveToken(token);
+
+            return dio.request(options.path, options: options);
+          } on Exception catch (_) {
+            onLogout();
+          } finally {
+            dio.unlock();
+            dio.interceptors.responseLock.unlock();
+            dio.interceptors.errorLock.unlock();
+          }
+
+          return error;
+        }
+
+        return error;
+      },
+    );
   }
 
   void configureProxy() {
@@ -45,5 +133,20 @@ class DioInstance {
         return Platform.isAndroid;
       };
     };
+  }
+}
+
+String dioErrorHandler(DioError error) {
+  switch (error.type) {
+    case DioErrorType.CONNECT_TIMEOUT:
+    case DioErrorType.RECEIVE_TIMEOUT:
+    case DioErrorType.SEND_TIMEOUT:
+      return 'Check your internet connection';
+    case DioErrorType.CANCEL:
+      return 'Request canceled';
+    case DioErrorType.RESPONSE:
+    case DioErrorType.DEFAULT:
+    default:
+      return error.response?.statusMessage ?? error.message;
   }
 }

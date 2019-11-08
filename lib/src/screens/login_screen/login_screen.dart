@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -20,7 +20,7 @@ class LoginScreen extends StatefulWidget with OrientationMixin {
     this.heroRegisterWidth = 150,
     this.submitOpacity = 1,
     this.marginBottomEmail = const EdgeInsets.only(bottom: 0),
-    this.marginBottomPassword = const EdgeInsets.only(bottom: 0),
+    this.marginBottomPassword = const EdgeInsets.only(bottom: 20),
     this.paddingHorizontalScreen = const EdgeInsets.symmetric(horizontal: 30),
     this.color = Colors.blue,
   }) : super(key: key);
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen>
   final _validationEnabledBloc = BoolValueBloc();
   final _passwordFocusNode = FocusNode();
 
-  BoxConstraints _getFormFieldConstraints(BuildContext context) =>
+  BoxConstraints _getBoxConstraints(BuildContext context) =>
       widget.isLandscape(context)
           ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
           : const BoxConstraints();
@@ -63,6 +63,15 @@ class _LoginScreenState extends State<LoginScreen>
       return () => _submitForm(validationEnabled);
     }
 
+    void _onPressGoogleLogin() {
+      BlocProvider.of<GoogleLoginBloc>(context).add(const GoogleLoginRequest());
+    }
+
+    void _onPressFacebookLogin() {
+      BlocProvider.of<FacebookLoginBloc>(context)
+          .add(const FacebookLoginRequest());
+    }
+
     ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
       return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
     }
@@ -80,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
         centerTitle: true,
         backgroundColor: widget.color,
       ),
-      body: AuthBlocListener<LoginBloc, LoginState>(
+      body: AuthMultiLoginBlocListener(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
@@ -110,8 +119,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
+                                    constraints: _getBoxConstraints(context),
                                     margin: widget.marginBottomEmail,
                                     child: FormFieldEmail(
                                       controller: _emailController,
@@ -122,8 +130,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                   ),
                                   Container(
-                                    constraints:
-                                        _getFormFieldConstraints(context),
+                                    constraints: _getBoxConstraints(context),
                                     margin: widget.marginBottomPassword,
                                     child: FormFieldPassword(
                                       controller: _passwordController,
@@ -137,24 +144,69 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 40, top: 20),
-                                child: BlocBuilder<LoginBloc, LoginState>(
-                                  builder: (context, loginState) {
-                                    return Opacity(
-                                      opacity: widget.submitOpacity,
-                                      child: SubmitButton(
-                                        isLoading: loginState.isLoading,
-                                        title: 'Submit',
-                                        color: widget.color,
-                                        onPress: _makeOnPressSubmit(
-                                          validationEnabled,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                              Flex(
+                                direction: widget.isPortrait(context)
+                                    ? Axis.vertical
+                                    : Axis.horizontal,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<LoginBloc, LoginState>(
+                                      builder: (context, loginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading: loginState.isLoading,
+                                            title: 'Sign in with email',
+                                            color: widget.color,
+                                            onPress: _makeOnPressSubmit(
+                                              validationEnabled,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<GoogleLoginBloc,
+                                        GoogleLoginState>(
+                                      builder: (context, googleLoginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading:
+                                                googleLoginState.isLoading,
+                                            title: 'Sign in with Google',
+                                            color: widget.color,
+                                            onPress: _onPressGoogleLogin,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    constraints: _getBoxConstraints(context),
+                                    child: BlocBuilder<FacebookLoginBloc,
+                                        FacebookLoginState>(
+                                      builder: (context, facebookLoginState) {
+                                        return Opacity(
+                                          opacity: widget.submitOpacity,
+                                          child: SubmitButton(
+                                            isLoading:
+                                                facebookLoginState.isLoading,
+                                            title: 'Sign in with Facebook',
+                                            color: widget.color,
+                                            onPress: _onPressFacebookLogin,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                               HeroRegister(
                                 width: widget.heroRegisterWidth,

@@ -19,6 +19,27 @@ Map<String, dynamic> _$LoginInputToJson(LoginInput instance) =>
       'password': instance.password,
     };
 
+Token _$TokenFromJson(Map<String, dynamic> json) {
+  return Token(
+    json['token'] as String,
+  );
+}
+
+Map<String, dynamic> _$TokenToJson(Token instance) => <String, dynamic>{
+      'token': instance.token,
+    };
+
+AccessToken _$AccessTokenFromJson(Map<String, dynamic> json) {
+  return AccessToken(
+    json['access_token'] as String,
+  );
+}
+
+Map<String, dynamic> _$AccessTokenToJson(AccessToken instance) =>
+    <String, dynamic>{
+      'access_token': instance.accessToken,
+    };
+
 AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) {
   return AuthResponse(
     json['token'] as String,

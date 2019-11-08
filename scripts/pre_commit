@@ -1,0 +1,18 @@
+#!/bin/sh
+# add ( "./scripts/pre_commit" ) to `.git/hooks/pre-commit`
+# Make executable with `chmod +x`
+
+declare -a filesToFormat="$(\
+    git diff --cached --name-only --diff-filter=ACMR -z -- '*.dart'\
+    | xargs -0 -r  flutter format -n \
+)"
+
+if [[ -z "$filesToFormat" ]]; then
+    echo "--- Pre-commit hook did not format anything ---"
+else
+    flutter format "$filesToFormat"
+    git add "$filesToFormat"
+    echo "--- Pre-commit hook formatted the following files: $filesToFormat"
+fi
+
+exit 0
