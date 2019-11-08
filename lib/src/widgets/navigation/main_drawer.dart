@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
@@ -20,7 +21,7 @@ class _MainDrawerState extends State<MainDrawer> {
           DrawerHeader(
             child: Center(
               child: Text(
-                'Main Menu',
+                S.of(context).mainMenu,
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.white,

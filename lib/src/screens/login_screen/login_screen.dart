@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(S.of(context).loginGreetings),
         centerTitle: true,
         backgroundColor: widget.color,
       ),
@@ -133,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     constraints: _getBoxConstraints(context),
                                     margin: widget.marginBottomPassword,
                                     child: FormFieldPassword(
+                                      label: S.of(context).password,
                                       controller: _passwordController,
                                       focusNode: _passwordFocusNode,
                                       onFiledSubmitted:
@@ -160,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           opacity: widget.submitOpacity,
                                           child: SubmitButton(
                                             isLoading: loginState.isLoading,
-                                            title: 'Sign in with email',
+                                            title: S.of(context).loginEmail,
                                             color: widget.color,
                                             onPress: _makeOnPressSubmit(
                                               validationEnabled,
@@ -180,7 +182,9 @@ class _LoginScreenState extends State<LoginScreen>
                                           child: SubmitButton(
                                             isLoading:
                                                 googleLoginState.isLoading,
-                                            title: 'Sign in with Google',
+                                            title: S
+                                                .of(context)
+                                                .loginWith('Google'),
                                             color: widget.color,
                                             onPress: _onPressGoogleLogin,
                                           ),
@@ -198,7 +202,9 @@ class _LoginScreenState extends State<LoginScreen>
                                           child: SubmitButton(
                                             isLoading:
                                                 facebookLoginState.isLoading,
-                                            title: 'Sign in with Facebook',
+                                            title: S
+                                                .of(context)
+                                                .loginWith('Facebook'),
                                             color: widget.color,
                                             onPress: _onPressFacebookLogin,
                                           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/models/model.dart';
@@ -61,7 +62,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     return Scaffold(
       drawer: const MainDrawer(),
       appBar: AppBar(
-        title: const Text('Database posters'),
+        title: Text(S.of(context).postersDB),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -85,7 +86,9 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                             title: Text(
                               'id - ${posters[index].id} - ${posters[index].text}',
                             ),
-                            subtitle: Text('price - ${posters[index].price}'),
+                            subtitle: Text(
+                              S.of(context).getPrice('${posters[index].price}'),
+                            ),
                           ),
                         ),
                         FutureBuilder<List<Widget>>(

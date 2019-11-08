@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
+
 class FormFieldPassword extends StatelessWidget {
   final TextEditingController controller;
+  final String attribute;
   final String label;
   final List<FormFieldValidator> validatorsList;
   final ValueChanged<String> onFiledSubmitted;
@@ -12,7 +15,8 @@ class FormFieldPassword extends StatelessWidget {
   const FormFieldPassword({
     Key key,
     @required this.controller,
-    this.label = "Password",
+    @required this.label,
+    this.attribute = "Password",
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
@@ -26,7 +30,7 @@ class FormFieldPassword extends StatelessWidget {
       constraints: const BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
         controller: controller,
-        attribute: label,
+        attribute: attribute,
         autocorrect: false,
         obscureText: true,
         focusNode: focusNode,
@@ -38,10 +42,10 @@ class FormFieldPassword extends StatelessWidget {
           icon: Icon(Icons.lock_outline),
         ),
         validators: [
-          FormBuilderValidators.required(),
+          FormBuilderValidators.required(errorText: S.of(context).errorRequired),
           FormBuilderValidators.minLength(
             8,
-            errorText: "Min 8 characters",
+            errorText: S.of(context).errorMinPasswordLength,
           ),
           ...validatorsList,
         ],

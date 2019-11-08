@@ -1,3 +1,37 @@
 {
-  "loginEmail": "Sign in with email"
+  "loginGreetings": "Greetings!",
+  "loginEmail": "Sign in",
+  "loginWith": "Sign in with $provider",
+  "email": "Email",
+  "password": "password",
+  "registration": "Registration",
+  "userName": "User name",
+  "confirmPassword": "Confirm password",
+  "register": "Register",
+  "getPrice": "Price - $value",
+  "mainMenu": "Main menu",
+
+  "posters": "Posters",
+  "postersDB": "Poster`s database",
+
+  "cameraHelperText": "Tap for photo, hold for video",
+  "audio": "Audio",
+  "noCameraFound": "No Camera Found",
+
+  "northEast": "North-East",
+  "southWest": "South-West",
+  "mapNextPlace": "To next place",
+  "kozakPalace": "Kozak Palace",
+  "hydroelectricStation": "Hydroelectric Station",
+  "zaporozhianSich": "Zaporozhian Sich",
+  "advertisementPlaceholder": "Your advertisement could be here!",
+
+  "errorRequired": "This field cannot be empty.",
+  "errorEmail": "Incorrect email address.",
+  "errorMinPasswordLength": "Min 8 characters",
+  "errorPasswordsDoNotMatch": "Passwords don't match",
+  "errorCommon": "Something went wrong",
+  "errorBadInternetConnection": "Bad internet connection",
+  "errorRequestCanceled": "Request canceled"
+
 }

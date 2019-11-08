@@ -21,7 +21,36 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get loginEmail => "Sign in with email";
+  String get advertisementPlaceholder => "Your advertisement could be here!";
+  String get audio => "Audio";
+  String get cameraHelperText => "Tap for photo, hold for video";
+  String get confirmPassword => "Confirm password";
+  String get email => "Email";
+  String get errorBadInternetConnection => "Bad internet connection";
+  String get errorCommon => "Something went wrong";
+  String get errorEmail => "Incorrect email address.";
+  String get errorMinPasswordLength => "Min 8 characters";
+  String get errorPasswordsDoNotMatch => "Passwords don't match";
+  String get errorRequestCanceled => "Request canceled";
+  String get errorRequired => "This field cannot be empty.";
+  String get hydroelectricStation => "Hydroelectric Station";
+  String get kozakPalace => "Kozak Palace";
+  String get loginEmail => "Sign in";
+  String get loginGreetings => "Greetings!";
+  String get mainMenu => "Main menu";
+  String get mapNextPlace => "To next place";
+  String get noCameraFound => "No Camera Found";
+  String get northEast => "North-East";
+  String get password => "password";
+  String get posters => "Posters";
+  String get postersDB => "Poster`s database";
+  String get register => "Register";
+  String get registration => "Registration";
+  String get southWest => "South-West";
+  String get userName => "User name";
+  String get zaporozhianSich => "Zaporozhian Sich";
+  String getPrice(String value) => "Price - $value";
+  String loginWith(String provider) => "Sign in with $provider";
 }
 
 class $ru extends S {
@@ -31,7 +60,65 @@ class $ru extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get loginEmail => "Войдите с помощь электронной почты";
+  String get mainMenu => "Главное меню";
+  @override
+  String get loginGreetings => "Приветствую!";
+  @override
+  String get noCameraFound => "Камера не обнаружена";
+  @override
+  String get mapNextPlace => "К следующему месту";
+  @override
+  String get kozakPalace => "Казак Палац";
+  @override
+  String get loginEmail => "Войти";
+  @override
+  String get errorPasswordsDoNotMatch => "Пароли не совпадают";
+  @override
+  String get password => "Пароль";
+  @override
+  String get errorBadInternetConnection => "Плохое интернет соединение";
+  @override
+  String get cameraHelperText => "Нажмите для фото, удерживайте для видео";
+  @override
+  String get confirmPassword => "Подтвердите пароль";
+  @override
+  String get errorMinPasswordLength => "Минимум 8 символов";
+  @override
+  String get audio => "Аудио";
+  @override
+  String get advertisementPlaceholder => "Здесь могла быть Ваша реклама!";
+  @override
+  String get email => "Адрес эл.почты";
+  @override
+  String get errorEmail => "Некорректный адрес эл.почты";
+  @override
+  String get zaporozhianSich => "Запорожская Сечь";
+  @override
+  String get errorRequired => "Это поле необходимо заполнить.";
+  @override
+  String get errorCommon => "Что-то пошло не так";
+  @override
+  String get posters => "Постеры";
+  @override
+  String get hydroelectricStation => "Гидроэлектростанция";
+  @override
+  String get userName => "Имя пользователья";
+  @override
+  String get postersDB => "База данных постеров";
+  @override
+  String get southWest => "Юго-Запад";
+  @override
+  String get errorRequestCanceled => "Запрос отменен";
+  @override
+  String get registration => "Регистрация";
+  @override
+  String get register => "Зарегистрироваться";
+  @override
+  String get northEast => "Северо-Восток";
+  @override
+  String loginWith(String provider) => "Войти через $provider";
+  @override
+  String getPrice(String value) => "Цена - $value";
 }
 
 class $en extends S {
