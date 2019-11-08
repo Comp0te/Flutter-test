@@ -40,7 +40,8 @@ class FormFieldEmail extends StatelessWidget {
           icon: Icon(Icons.alternate_email),
         ),
         validators: [
-          FormBuilderValidators.required(errorText: S.of(context).errorRequired),
+          FormBuilderValidators.required(
+              errorText: S.of(context).errorRequired),
           FormBuilderValidators.email(errorText: S.of(context).errorEmail),
           ...validatorsList,
         ],

@@ -177,28 +177,29 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     _loadedBloc..add(const SetBoolValue(true));
   }
 
-  VoidCallback _makeToNextPlace(Set<GoogleMapPlace> googleMapPlaces) => () async {
-    final controller = await _mapController.future;
-    final index = _activeIndexBloc.state;
+  VoidCallback _makeToNextPlace(Set<GoogleMapPlace> googleMapPlaces) =>
+      () async {
+        final controller = await _mapController.future;
+        final index = _activeIndexBloc.state;
 
-    if (index < (googleMapPlaces.length - 1)) {
-      await controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          googleMapPlaces.elementAt(index + 1).cameraPosition,
-        ),
-      );
+        if (index < (googleMapPlaces.length - 1)) {
+          await controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              googleMapPlaces.elementAt(index + 1).cameraPosition,
+            ),
+          );
 
-      _activeIndexBloc..add(SetIntValue(index + 1));
-    } else {
-      await controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          googleMapPlaces.elementAt(0).cameraPosition,
-        ),
-      );
-      _activeIndexBloc..add(const SetIntValue(0));
-    }
+          _activeIndexBloc..add(SetIntValue(index + 1));
+        } else {
+          await controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              googleMapPlaces.elementAt(0).cameraPosition,
+            ),
+          );
+          _activeIndexBloc..add(const SetIntValue(0));
+        }
 
-    final region = await controller.getVisibleRegion();
-    _streamController.add(region);
-  };
+        final region = await controller.getVisibleRegion();
+        _streamController.add(region);
+      };
 }

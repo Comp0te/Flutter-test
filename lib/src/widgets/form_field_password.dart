@@ -42,7 +42,8 @@ class FormFieldPassword extends StatelessWidget {
           icon: Icon(Icons.lock_outline),
         ),
         validators: [
-          FormBuilderValidators.required(errorText: S.of(context).errorRequired),
+          FormBuilderValidators.required(
+              errorText: S.of(context).errorRequired),
           FormBuilderValidators.minLength(
             8,
             errorText: S.of(context).errorMinPasswordLength,

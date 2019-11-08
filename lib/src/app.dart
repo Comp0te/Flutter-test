@@ -89,7 +89,7 @@ class _AppState extends State<App> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback:
-      S.delegate.resolution(fallback: const Locale("en", "")),
+          S.delegate.resolution(fallback: const Locale("en", "")),
       initialRoute: AuthRouteNames.login,
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
