@@ -35,6 +35,7 @@ class SubmitButton extends StatelessWidget {
             minHeight: 45,
           ),
           width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 8),
           alignment: Alignment.center,
           child: isLoading
               ? Container(
@@ -47,6 +48,7 @@ class SubmitButton extends StatelessWidget {
                 )
               : Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
                   ),
