@@ -2,7 +2,7 @@
 # add ( "./scripts/pre_push" ) to `.git/hooks/pre-push`
 # Make executable with `chmod +x`
 
-flutter format --set-exit-if-changed .
+flutter format --set-exit-if-changed lib/src lib/main.dart
 
 if [[ $? -ne 0 ]]; then
         echo "--- format failed"
