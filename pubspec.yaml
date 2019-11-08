@@ -29,7 +29,7 @@ dependencies:
   meta: ^1.1.7
   equatable: ^0.6.1
   flutter_secure_storage: ^3.3.1+1
-  flutter_form_builder: ^3.5.5
+  flutter_form_builder: ^3.6.1
   json_annotation: ^3.0.0
   page_transition: ^1.1.5
   cached_network_image: ^1.1.2+1
