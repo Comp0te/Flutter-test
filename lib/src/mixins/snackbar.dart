@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_app/src/helpers/dio_helper.dart';
+
 mixin SnackBarMixin on StatelessWidget {
   ScaffoldState showSnackBarError({
     @required BuildContext context,
@@ -9,7 +11,7 @@ mixin SnackBarMixin on StatelessWidget {
   }) {
     String getErrorMessage(Exception error) {
       if (error is DioError) {
-        return error.response?.statusMessage ?? error.message;
+        return dioErrorHandler(error);
       } else if (error is PlatformException) {
         return error.message;
       }

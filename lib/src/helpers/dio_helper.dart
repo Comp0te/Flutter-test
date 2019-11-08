@@ -135,3 +135,18 @@ class DioInstance {
     };
   }
 }
+
+String dioErrorHandler(DioError error) {
+  switch (error.type) {
+    case DioErrorType.CONNECT_TIMEOUT:
+    case DioErrorType.RECEIVE_TIMEOUT:
+    case DioErrorType.SEND_TIMEOUT:
+      return 'Check your internet connection';
+    case DioErrorType.CANCEL:
+      return 'Request canceled';
+    case DioErrorType.RESPONSE:
+    case DioErrorType.DEFAULT:
+    default:
+      return error.response?.statusMessage ?? error.message;
+  }
+}
