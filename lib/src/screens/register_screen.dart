@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/helpers/validation_helper.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class RegisterScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -60,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registration'),
+        title: Text(S.of(context).registration),
         centerTitle: true,
       ),
       body: AuthBlocListener<RegisterBloc, RegisterState>(
@@ -139,7 +140,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         constraints:
                                             _getFormFieldConstraints(context),
                                         child: FormFieldPassword(
-                                          label: 'Password',
+                                          label: S.of(context).password,
+                                          attribute: 'Password',
                                           controller: _password1Controller,
                                           focusNode: _password1FocusNode,
                                           onFiledSubmitted:
@@ -152,13 +154,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         constraints:
                                             _getFormFieldConstraints(context),
                                         child: FormFieldPassword(
-                                          label: 'Confirm Password',
+                                          label: S.of(context).confirmPassword,
+                                          attribute: 'Confirm Password',
                                           controller: _password2Controller,
                                           validatorsList: [
                                             ValidationHelper
                                                 .makeConfirmPasswordValidator(
                                               passwordController:
                                                   _password1Controller,
+                                              context: context,
                                             )
                                           ],
                                           focusNode: _password2FocusNode,
@@ -176,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   builder: (context, registerState) {
                                     return SubmitButton(
                                       isLoading: registerState.isLoading,
-                                      title: 'Submit',
+                                      title: S.of(context).register,
                                       onPress: _makeOnPressSubmit(
                                         validationEnabled,
                                       ),

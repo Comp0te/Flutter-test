@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -40,6 +42,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final googleMapPlaces = getGoogleMapPlaces(context);
+
     return Scaffold(
       drawer: const MainDrawer(),
       body: Stack(
@@ -111,11 +115,11 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 _latLngBoundsText(
-                                  title: 'North-East',
+                                  title: S.of(context).northEast,
                                   data: snapshot.data.northeast,
                                 ),
                                 _latLngBoundsText(
-                                  title: 'South-West',
+                                  title: S.of(context).southWest,
                                   data: snapshot.data.southwest,
                                 ),
                               ],
@@ -131,8 +135,8 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _toNextPlace,
-        label: const Text('To next place'),
+        onPressed: _makeToNextPlace(googleMapPlaces),
+        label: Text(S.of(context).mapNextPlace),
         icon: Icon(Icons.place),
       ),
     );
@@ -173,28 +177,29 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
     _loadedBloc..add(const SetBoolValue(true));
   }
 
-  Future<void> _toNextPlace() async {
-    final controller = await _mapController.future;
-    final index = _activeIndexBloc.state;
+  VoidCallback _makeToNextPlace(Set<GoogleMapPlace> googleMapPlaces) =>
+      () async {
+        final controller = await _mapController.future;
+        final index = _activeIndexBloc.state;
 
-    if (index < (googleMapPlaces.length - 1)) {
-      await controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          googleMapPlaces.elementAt(index + 1).cameraPosition,
-        ),
-      );
+        if (index < (googleMapPlaces.length - 1)) {
+          await controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              googleMapPlaces.elementAt(index + 1).cameraPosition,
+            ),
+          );
 
-      _activeIndexBloc..add(SetIntValue(index + 1));
-    } else {
-      await controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          googleMapPlaces.elementAt(0).cameraPosition,
-        ),
-      );
-      _activeIndexBloc..add(const SetIntValue(0));
-    }
+          _activeIndexBloc..add(SetIntValue(index + 1));
+        } else {
+          await controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              googleMapPlaces.elementAt(0).cameraPosition,
+            ),
+          );
+          _activeIndexBloc..add(const SetIntValue(0));
+        }
 
-    final region = await controller.getVisibleRegion();
-    _streamController.add(region);
-  }
+        final region = await controller.getVisibleRegion();
+        _streamController.add(region);
+      };
 }

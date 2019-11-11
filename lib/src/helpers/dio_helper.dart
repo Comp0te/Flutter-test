@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/generated/i18n.dart';
 
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/models/model.dart';
@@ -136,14 +138,14 @@ class DioInstance {
   }
 }
 
-String dioErrorHandler(DioError error) {
+String dioErrorHandler(BuildContext context, DioError error) {
   switch (error.type) {
     case DioErrorType.CONNECT_TIMEOUT:
     case DioErrorType.RECEIVE_TIMEOUT:
     case DioErrorType.SEND_TIMEOUT:
-      return 'Check your internet connection';
+      return S.of(context).errorBadInternetConnection;
     case DioErrorType.CANCEL:
-      return 'Request canceled';
+      return S.of(context).errorRequestCanceled;
     case DioErrorType.RESPONSE:
     case DioErrorType.DEFAULT:
     default:

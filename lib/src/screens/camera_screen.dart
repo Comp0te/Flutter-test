@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
@@ -49,62 +50,64 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const MainDrawer(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: GestureDetector(
-        onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
-        onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
-        child: FloatingActionButton(
-          heroTag: HeroTag.cameraFAB,
-          child: const Icon(Icons.camera, size: 40),
-          onPressed: () => _cameraBloc.add(TakePicture()),
+    return SafeArea(
+      child: Scaffold(
+        drawer: const MainDrawer(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: GestureDetector(
+          onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
+          onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
+          child: FloatingActionButton(
+            heroTag: HeroTag.cameraFAB,
+            child: const Icon(Icons.camera, size: 40),
+            onPressed: () => _cameraBloc.add(TakePicture()),
+          ),
         ),
-      ),
-      body: CameraBlocListener(
-        child: Stack(
-          children: <Widget>[
-            Column(children: <Widget>[
-              _cameraPreviewWidget(),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.black),
-                      child: Text(
-                        'Tap for photo, hold for video',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
+        body: CameraBlocListener(
+          child: Stack(
+            children: <Widget>[
+              Column(children: <Widget>[
+                _cameraPreviewWidget(),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.black),
+                        child: Text(
+                          S.of(context).cameraHelperText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ]),
-            Positioned(
-              bottom: 30,
-              right: 30,
-              child: Hero(
-                tag: HeroTag.cameraIconButton,
-                child: Material(
-                  shadowColor: Colors.blue,
-                  color: Colors.transparent,
-                  child: IconButton(
-                    iconSize: 40,
-                    icon: Icon(
-                      Icons.settings_applications,
-                      color: Colors.blue,
-                      size: 40,
+                  ],
+                ),
+              ]),
+              Positioned(
+                bottom: 30,
+                right: 30,
+                child: Hero(
+                  tag: HeroTag.cameraIconButton,
+                  child: Material(
+                    shadowColor: Colors.blue,
+                    color: Colors.transparent,
+                    child: IconButton(
+                      iconSize: 40,
+                      icon: Icon(
+                        Icons.settings_applications,
+                        color: Colors.blue,
+                        size: 40,
+                      ),
+                      onPressed: _onPressSettingsButton,
                     ),
-                    onPressed: _onPressSettingsButton,
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -161,7 +164,7 @@ class _CameraScreenState extends State<CameraScreen>
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          'Audio:',
+          '${S.of(context).audio}:',
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -219,7 +222,7 @@ class _CameraScreenState extends State<CameraScreen>
         });
 
         return state.cameras.isEmpty
-            ? const Text('No camera found')
+            ? Text(S.of(context).noCameraFound)
             : Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [...toggles],

@@ -16,8 +16,11 @@ analyzer:
     todo: ignore
     # Ignore errors like
     included_file_warning: ignore
-#  exclude:
-#    - 'bin/cache/**'
+    # temporarily due to errors in lib/generated/ and broken exclude option
+    omit_local_variable_types: ignore
+
+  exclude:
+    - "lib/generated/**/*.dart"
 
 linter:
   rules:

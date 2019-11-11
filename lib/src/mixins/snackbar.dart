@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/helpers/dio_helper.dart';
 
 mixin SnackBarMixin on StatelessWidget {
@@ -11,12 +12,12 @@ mixin SnackBarMixin on StatelessWidget {
   }) {
     String getErrorMessage(Exception error) {
       if (error is DioError) {
-        return dioErrorHandler(error);
+        return dioErrorHandler(context, error);
       } else if (error is PlatformException) {
         return error.message;
       }
 
-      return 'Something went wrong';
+      return S.of(context).errorCommon;
     }
 
     return Scaffold.of(context)

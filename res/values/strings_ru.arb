@@ -1,0 +1,42 @@
+{
+  "loginGreetings": "Приветствую!",
+  "loginEmail": "Войти",
+  "loginWith": "Войти через $provider",
+  "email": "Адрес эл.почты",
+  "password": "Пароль",
+  "registration": "Регистрация",
+  "userName": "Имя пользователья",
+  "confirmPassword": "Подтвердите пароль",
+  "register": "Зарегистрироваться",
+  "getPrice": "Цена - $value",
+  "mainMenu": "Главное меню",
+
+  "posters": "Постеры",
+  "postersDB": "База данных постеров",
+
+  "cameraHelperText": "Нажмите для фото, удерживайте для видео",
+  "audio": "Аудио",
+  "noCameraFound": "Камера не обнаружена",
+
+  "northEast": "Северо-Восток",
+  "southWest": "Юго-Запад",
+  "mapNextPlace": "К следующему месту",
+  "kozakPalace": "Казак Палац",
+  "hydroelectricStation": "Гидроэлектростанция",
+  "zaporozhianSich": "Запорожская Сечь",
+  "advertisementPlaceholder": "Здесь могла быть Ваша реклама!",
+
+  "onlinePosters": "Онлайн постеры",
+  "databasePosters": "База данных постеров",
+  "gallery": "Галерея",
+  "googleMaps": "Google карты",
+
+  "errorRequired": "Это поле необходимо заполнить.",
+  "errorEmail": "Некорректный адрес эл.почты",
+  "errorMinPasswordLength": "Минимум 8 символов",
+  "errorPasswordsDoNotMatch": "Пароли не совпадают",
+  "errorCommon": "Что-то пошло не так",
+  "errorBadInternetConnection": "Плохое интернет соединение",
+  "errorRequestCanceled": "Запрос отменен"
+
+}

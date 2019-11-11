@@ -22,4 +22,4 @@ jobs:
       - name: Run lint
         run: flutter analyze
       - name: Format code
-        run: flutter format --set-exit-if-changed .
+        run: flutter format --set-exit-if-changed lib/src lib/main.dart

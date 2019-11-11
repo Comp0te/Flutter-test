@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/generated/i18n.dart';
+
 class FormFieldEmail extends StatelessWidget {
   final TextEditingController controller;
-  final String label;
+  final String attribute;
   final List<FormFieldValidator> validatorsList;
   final ValueChanged<String> onFiledSubmitted;
   final TextInputAction textInputAction;
@@ -12,7 +14,7 @@ class FormFieldEmail extends StatelessWidget {
   const FormFieldEmail({
     Key key,
     @required this.controller,
-    this.label = "Email",
+    this.attribute = "Email",
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
@@ -26,7 +28,7 @@ class FormFieldEmail extends StatelessWidget {
       constraints: const BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
         controller: controller,
-        attribute: label,
+        attribute: attribute,
         autocorrect: false,
         focusNode: focusNode,
         keyboardType: TextInputType.emailAddress,
@@ -34,12 +36,13 @@ class FormFieldEmail extends StatelessWidget {
         onFieldSubmitted: onFiledSubmitted,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(0),
-          labelText: label,
+          labelText: S.of(context).email,
           icon: Icon(Icons.alternate_email),
         ),
         validators: [
-          FormBuilderValidators.required(),
-          FormBuilderValidators.email(),
+          FormBuilderValidators.required(
+              errorText: S.of(context).errorRequired),
+          FormBuilderValidators.email(errorText: S.of(context).errorEmail),
           ...validatorsList,
         ],
       ),
