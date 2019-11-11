@@ -25,6 +25,7 @@ class S implements WidgetsLocalizations {
   String get audio => "Audio";
   String get cameraHelperText => "Tap for photo, hold for video";
   String get confirmPassword => "Confirm password";
+  String get databasePosters => "Poster`s database";
   String get email => "Email";
   String get errorBadInternetConnection => "Bad internet connection";
   String get errorCommon => "Something went wrong";
@@ -33,6 +34,8 @@ class S implements WidgetsLocalizations {
   String get errorPasswordsDoNotMatch => "Passwords don't match";
   String get errorRequestCanceled => "Request canceled";
   String get errorRequired => "This field cannot be empty.";
+  String get gallery => "Gallery";
+  String get googleMaps => "Google maps";
   String get hydroelectricStation => "Hydroelectric Station";
   String get kozakPalace => "Kozak Palace";
   String get loginEmail => "Sign in";
@@ -41,6 +44,7 @@ class S implements WidgetsLocalizations {
   String get mapNextPlace => "To next place";
   String get noCameraFound => "No Camera Found";
   String get northEast => "North-East";
+  String get onlinePosters => "Online posters";
   String get password => "password";
   String get posters => "Posters";
   String get postersDB => "Poster`s database";
@@ -60,6 +64,8 @@ class $ru extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get databasePosters => "База данных постеров";
+  @override
   String get mainMenu => "Главное меню";
   @override
   String get loginGreetings => "Приветствую!";
@@ -67,6 +73,8 @@ class $ru extends S {
   String get noCameraFound => "Камера не обнаружена";
   @override
   String get mapNextPlace => "К следующему месту";
+  @override
+  String get googleMaps => "Google карты";
   @override
   String get kozakPalace => "Казак Палац";
   @override
@@ -77,6 +85,8 @@ class $ru extends S {
   String get password => "Пароль";
   @override
   String get errorBadInternetConnection => "Плохое интернет соединение";
+  @override
+  String get onlinePosters => "Онлайн постеры";
   @override
   String get cameraHelperText => "Нажмите для фото, удерживайте для видео";
   @override
@@ -89,6 +99,8 @@ class $ru extends S {
   String get advertisementPlaceholder => "Здесь могла быть Ваша реклама!";
   @override
   String get email => "Адрес эл.почты";
+  @override
+  String get gallery => "Галерея";
   @override
   String get errorEmail => "Некорректный адрес эл.почты";
   @override

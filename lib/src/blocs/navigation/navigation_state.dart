@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 
 @immutable
 class NavigationState extends EquatableClass {
   final int activeDrawerIndex;
-  final List<DrawerItemOptions> drawerItemOptions;
+  final List<DrawerItemOptions> mainDrawerItemOptions;
 
   NavigationState({
     @required this.activeDrawerIndex,
-    this.drawerItemOptions = mainDrawerItemOptions,
+    this.mainDrawerItemOptions,
   });
 
-  factory NavigationState.init() => NavigationState(activeDrawerIndex: 0);
+  factory NavigationState.init() => NavigationState(
+        activeDrawerIndex: 0,
+        mainDrawerItemOptions: [],
+      );
 
   NavigationState copyWith({
-    @required int activeDrawerIndex,
-    List<DrawerItemOptions> drawerItemOptions,
+    int activeDrawerIndex,
+    List<DrawerItemOptions> mainDrawerItemOptions,
   }) {
     return NavigationState(
-      activeDrawerIndex: activeDrawerIndex,
-      drawerItemOptions: drawerItemOptions ?? this.drawerItemOptions,
+      activeDrawerIndex: activeDrawerIndex ?? this.activeDrawerIndex,
+      mainDrawerItemOptions:
+          mainDrawerItemOptions ?? this.mainDrawerItemOptions,
     );
   }
 
   @override
-  List<Object> get props => [activeDrawerIndex];
+  List<Object> get props => [activeDrawerIndex, mainDrawerItemOptions];
 }

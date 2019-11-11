@@ -26,6 +26,11 @@
   "zaporozhianSich": "Запорожская Сечь",
   "advertisementPlaceholder": "Здесь могла быть Ваша реклама!",
 
+  "onlinePosters": "Онлайн постеры",
+  "databasePosters": "База данных постеров",
+  "gallery": "Галерея",
+  "googleMaps": "Google карты",
+
   "errorRequired": "Это поле необходимо заполнить.",
   "errorEmail": "Некорректный адрес эл.почты",
   "errorMinPasswordLength": "Минимум 8 символов",

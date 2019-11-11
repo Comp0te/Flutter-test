@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_app/src/models/drawer_item.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -13,4 +14,13 @@ class SetMainDrawerRoute extends NavigationEvent {
 
   @override
   List<Object> get props => [routeName];
+}
+
+class SetMainDrawerItemOptions extends NavigationEvent {
+  final List<DrawerItemOptions> options;
+
+  SetMainDrawerItemOptions({this.options});
+
+  @override
+  List<Object> get props => [options];
 }

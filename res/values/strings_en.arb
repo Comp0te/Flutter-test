@@ -26,6 +26,11 @@
   "zaporozhianSich": "Zaporozhian Sich",
   "advertisementPlaceholder": "Your advertisement could be here!",
 
+  "onlinePosters": "Online posters",
+  "databasePosters": "Poster`s database",
+  "gallery": "Gallery",
+  "googleMaps": "Google maps",
+
   "errorRequired": "This field cannot be empty.",
   "errorEmail": "Incorrect email address.",
   "errorMinPasswordLength": "Min 8 characters",
