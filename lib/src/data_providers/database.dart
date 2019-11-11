@@ -1,8 +1,9 @@
-import 'package:flutter_app/src/models/model.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../database/tables.dart';
+import 'package:flutter_app/src/databases/sqflite/tables/tables.dart';
+import 'package:flutter_app/src/models/model.dart';
+
 
 class DBProvider {
   final Future<Database> db;

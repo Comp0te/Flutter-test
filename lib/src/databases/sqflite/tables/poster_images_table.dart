@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/database/tables/posters_table.dart';
+import 'package:flutter_app/src/databases/sqflite/tables/posters_table.dart';
 
 abstract class PosterImagesTable {
   static final name = 'poster_images';

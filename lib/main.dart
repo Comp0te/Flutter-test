@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/app.dart';
 import 'src/blocs/blocs.dart';
 import 'src/data_providers/data_providers.dart';
-import 'src/database/database.dart';
+import 'src/databases/databases.dart';
 import 'src/helpers/helpers.dart';
 import 'src/repositories/repositories.dart';
 
@@ -31,7 +31,7 @@ void main() {
     postersApiProvider: PostersApiProvider(dio: dio),
   );
   final _dbRepository = DBRepository(
-    dbProvider: DBProvider(db: DBHelper().db),
+    dbProvider: DBProvider(db: SQFLite().db),
   );
   final _imageStoreRepository = ImageStoreRepository(
     imageStoreProvider: ImageStoreProvider(),

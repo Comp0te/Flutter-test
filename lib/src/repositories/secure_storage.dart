@@ -1,10 +1,9 @@
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/databases/databases.dart';
 import 'package:flutter_app/src/data_providers/data_providers.dart';
 
 class SecureStorageRepository {
-  static const tokenKey = 'token';
-
   final SecureStorageProvider storage;
 
   SecureStorageRepository({
@@ -12,16 +11,16 @@ class SecureStorageRepository {
   }) : assert(storage != null);
 
   Future<bool> hasToken() async {
-    final token = await storage.read(SecureStorageRepository.tokenKey);
+    final token = await storage.read(SecureStorageKeys.token);
     return token != null;
   }
 
   Future<String> getToken() async {
-    return storage.read(SecureStorageRepository.tokenKey);
+    return storage.read(SecureStorageKeys.token);
   }
 
   Future<void> deleteToken() async {
-    await storage.delete(SecureStorageRepository.tokenKey);
+    await storage.delete(SecureStorageKeys.token);
   }
 
   Future<void> clear() async {
@@ -30,7 +29,7 @@ class SecureStorageRepository {
 
   Future<void> saveToken(String token) async {
     await storage.write(
-      key: SecureStorageRepository.tokenKey,
+      key: SecureStorageKeys.token,
       value: token,
     );
   }
