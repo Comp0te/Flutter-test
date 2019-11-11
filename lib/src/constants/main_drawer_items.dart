@@ -8,22 +8,22 @@ List<DrawerItemOptions> getMainDrawerItemOptions(BuildContext context) {
   return [
     DrawerItemOptions(
       title: S.of(context).onlinePosters,
-      icon: Icon(Icons.home),
+      icon: const Icon(Icons.home),
       routeName: MainRouteNames.home,
     ),
     DrawerItemOptions(
       title: S.of(context).databasePosters,
-      icon: Icon(Icons.storage),
+      icon: const Icon(Icons.storage),
       routeName: MainRouteNames.database,
     ),
     DrawerItemOptions(
       title: S.of(context).gallery,
-      icon: Icon(Icons.camera),
+      icon: const Icon(Icons.camera),
       routeName: MainRouteNames.camera,
     ),
     DrawerItemOptions(
       title: S.of(context).googleMaps,
-      icon: Icon(Icons.map),
+      icon: const Icon(Icons.map),
       routeName: MainRouteNames.googleMap,
     ),
   ];
