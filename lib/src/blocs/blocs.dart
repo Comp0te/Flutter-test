@@ -8,6 +8,7 @@ export 'camera/bloc.dart';
 export 'video_player/bloc.dart';
 export 'firebase_messaging/bloc.dart';
 export 'navigation/bloc.dart';
+export 'preferences/bloc.dart';
 
 export 'common/bool_value/bloc.dart';
 export 'common/int_value/bloc.dart';
