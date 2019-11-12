@@ -33,21 +33,26 @@ class SharedPreferencesProvider {
   }
 
   Future<bool> write<T>({@required String key, @required T value}) async {
+    assert(T != null);
     final instance = await sharedPreferencesInstance;
 
-    if (T is String) {
+    if (T == String) {
       return instance.setString(key, value as String);
-    } else if (T is int) {
+    } else if (T == int) {
       return instance.setInt(key, value as int);
-    } else if (T is double) {
+    } else if (T == double) {
       return instance.setDouble(key, value as double);
-    } else if (T is List<String>) {
-      return instance.setStringList(
-        key,
-        value as List<String>,
-      );
     }
 
     throw TypeError();
+  }
+
+  Future<bool> writeList({
+    @required String key,
+    @required List<String> values,
+  }) async {
+    final instance = await sharedPreferencesInstance;
+
+    return instance.setStringList(key, values);
   }
 }
