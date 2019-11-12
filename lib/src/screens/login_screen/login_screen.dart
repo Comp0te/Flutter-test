@@ -52,10 +52,9 @@ class _LoginScreenState extends State<LoginScreen>
       appBar: AppBar(
         title: Text(
           S.of(context).loginGreetings,
-          style: widget.getTextTheme(context).headline.copyWith(
-            color: widget.getContrastTextColor(context),
-          ),
+          style: widget.getPrimaryTextTheme(context).headline,
         ),
+        backgroundColor: widget.color,
         centerTitle: true,
 //        backgroundColor: widget.color,
       ),
