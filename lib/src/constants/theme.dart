@@ -16,9 +16,15 @@ const darkColorScheme = ColorScheme.dark();
 final lightTheme = ThemeData.from(
   colorScheme: lightColorScheme,
   textTheme: textLightTheme,
+).copyWith(
+  primaryTextTheme: textLightTheme,
+  accentTextTheme: textLightTheme,
 );
 
 final darkTheme = ThemeData.from(
   colorScheme: darkColorScheme,
   textTheme: textDarkTheme,
+).copyWith(
+  primaryTextTheme: textDarkTheme,
+  accentTextTheme: textDarkTheme,
 );
