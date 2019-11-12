@@ -11,7 +11,7 @@ import 'package:flutter_app/src/widgets/widgets.dart';
 
 enum RegisterFormData { username, email, password1, password2 }
 
-class RegisterScreen extends StatefulWidget with OrientationMixin {
+class RegisterScreen extends StatefulWidget with OrientationMixin, ThemeMixin {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -34,37 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _submitForm(bool validationEnabled) {
-      if (_fbKey.currentState.validate()) {
-        BlocProvider.of<RegisterBloc>(context).add(RegisterRequest(
-          username: _usernameController.text,
-          email: _emailController.text,
-          password1: _password1Controller.text,
-          password2: _password2Controller.text,
-        ));
-      } else if (!validationEnabled) {
-        _validationEnabledBloc.add(ToggleBoolValue());
-      }
-    }
-
-    VoidCallback _makeOnPressSubmit(bool validationEnabled) {
-      return () => _submitForm(validationEnabled);
-    }
-
-    ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
-      return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
-    }
-
-    ValueChanged<String> _makeOnDoneActionSubmitted(bool validationEnabled) {
-      return (_) {
-        _submitForm(validationEnabled);
-        FocusScope.of(context).unfocus();
-      };
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).registration),
+        title: Text(
+          S.of(context).registration,
+          style: widget.getPrimaryTextTheme(context).headline,
+        ),
         centerTitle: true,
       ),
       body: AuthBlocListener<RegisterBloc, RegisterState>(
@@ -92,110 +67,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             autovalidate: validationEnabled,
                             child: Column(
                               children: <Widget>[
-                                Flex(
-                                  direction: widget.isLandscape(context)
-                                      ? Axis.horizontal
-                                      : Axis.vertical,
-                                  mainAxisSize: widget.isLandscape(context)
-                                      ? MainAxisSize.max
-                                      : MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      constraints:
-                                          _getFormFieldConstraints(context),
-                                      child: FormFieldUserName(
-                                        attribute: describeEnum(
-                                            RegisterFormData.username),
-                                        controller: _usernameController,
-                                        onFiledSubmitted:
-                                            _makeOnNextActionSubmitted(
-                                          _emailFocusNode,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      constraints:
-                                          _getFormFieldConstraints(context),
-                                      child: FormFieldEmail(
-                                        controller: _emailController,
-                                        attribute: describeEnum(
-                                            RegisterFormData.email),
-                                        focusNode: _emailFocusNode,
-                                        onFiledSubmitted:
-                                            _makeOnNextActionSubmitted(
-                                          _password1FocusNode,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                _buildUserNameAndEmailInputs(context),
+                                _buildPasswordsInputs(
+                                  context,
+                                  validationEnabled,
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  child: Flex(
-                                    direction: widget.isLandscape(context)
-                                        ? Axis.horizontal
-                                        : Axis.vertical,
-                                    mainAxisSize: widget.isLandscape(context)
-                                        ? MainAxisSize.max
-                                        : MainAxisSize.min,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        constraints:
-                                            _getFormFieldConstraints(context),
-                                        child: FormFieldPassword(
-                                          label: S.of(context).password,
-                                          attribute: describeEnum(
-                                              RegisterFormData.email),
-                                          controller: _password1Controller,
-                                          focusNode: _password1FocusNode,
-                                          onFiledSubmitted:
-                                              _makeOnNextActionSubmitted(
-                                            _password2FocusNode,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        constraints:
-                                            _getFormFieldConstraints(context),
-                                        child: FormFieldPassword(
-                                          label: S.of(context).confirmPassword,
-                                          attribute: describeEnum(
-                                              RegisterFormData.password2),
-                                          controller: _password2Controller,
-                                          validatorsList: [
-                                            ValidationHelper
-                                                .makeConfirmPasswordValidator(
-                                              passwordController:
-                                                  _password1Controller,
-                                              context: context,
-                                            )
-                                          ],
-                                          focusNode: _password2FocusNode,
-                                          onFiledSubmitted:
-                                              _makeOnDoneActionSubmitted(
-                                            validationEnabled,
-                                          ),
-                                          textInputAction: TextInputAction.done,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                BlocBuilder<RegisterBloc, RegisterState>(
-                                  builder: (context, registerState) {
-                                    return SubmitButton(
-                                      isLoading: registerState.isLoading,
-                                      title: S.of(context).register,
-                                      onPress: _makeOnPressSubmit(
-                                        validationEnabled,
-                                      ),
-                                    );
-                                  },
-                                ),
+                                _buildSubmitButton(context, validationEnabled)
                               ],
                             ),
                           );
@@ -210,5 +87,138 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildUserNameAndEmailInputs(BuildContext context) {
+    return Flex(
+      direction: widget.isLandscape(context) ? Axis.horizontal : Axis.vertical,
+      mainAxisSize:
+          widget.isLandscape(context) ? MainAxisSize.max : MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          constraints: _getFormFieldConstraints(context),
+          child: FormFieldUserName(
+            attribute: describeEnum(RegisterFormData.username),
+            controller: _usernameController,
+            onFiledSubmitted: _makeOnNextActionSubmitted(
+              context,
+              _emailFocusNode,
+            ),
+          ),
+        ),
+        Container(
+          constraints: _getFormFieldConstraints(context),
+          child: FormFieldEmail(
+            controller: _emailController,
+            attribute: describeEnum(RegisterFormData.email),
+            focusNode: _emailFocusNode,
+            onFiledSubmitted: _makeOnNextActionSubmitted(
+              context,
+              _password1FocusNode,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordsInputs(BuildContext context, bool validationEnabled) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Flex(
+        direction:
+            widget.isLandscape(context) ? Axis.horizontal : Axis.vertical,
+        mainAxisSize:
+            widget.isLandscape(context) ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            constraints: _getFormFieldConstraints(context),
+            child: FormFieldPassword(
+              label: S.of(context).password,
+              attribute: describeEnum(RegisterFormData.email),
+              controller: _password1Controller,
+              focusNode: _password1FocusNode,
+              onFiledSubmitted: _makeOnNextActionSubmitted(
+                context,
+                _password2FocusNode,
+              ),
+            ),
+          ),
+          Container(
+            constraints: _getFormFieldConstraints(context),
+            child: FormFieldPassword(
+              label: S.of(context).confirmPassword,
+              attribute: describeEnum(RegisterFormData.password2),
+              controller: _password2Controller,
+              validatorsList: [
+                ValidationHelper.makeConfirmPasswordValidator(
+                  passwordController: _password1Controller,
+                  context: context,
+                )
+              ],
+              focusNode: _password2FocusNode,
+              onFiledSubmitted: _makeOnDoneActionSubmitted(
+                context,
+                validationEnabled,
+              ),
+              textInputAction: TextInputAction.done,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context, bool validationEnabled) {
+    print(widget.getTheme(context).textTheme.headline);
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      builder: (context, registerState) {
+        return SubmitButton(
+          isLoading: registerState.isLoading,
+          title: S.of(context).register,
+          color: widget.getTheme(context).primaryColor,
+          onPress: _makeOnPressSubmit(context, validationEnabled),
+        );
+      },
+    );
+  }
+
+  void _submitForm(BuildContext context, bool validationEnabled) {
+    if (_fbKey.currentState.validate()) {
+      BlocProvider.of<RegisterBloc>(context).add(RegisterRequest(
+        username: _usernameController.text,
+        email: _emailController.text,
+        password1: _password1Controller.text,
+        password2: _password2Controller.text,
+      ));
+    } else if (!validationEnabled) {
+      _validationEnabledBloc.add(ToggleBoolValue());
+    }
+  }
+
+  ValueChanged<String> _makeOnNextActionSubmitted(
+    BuildContext context,
+    FocusNode fieldFocusNode,
+  ) {
+    return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
+  }
+
+  ValueChanged<String> _makeOnDoneActionSubmitted(
+    BuildContext context,
+    bool validationEnabled,
+  ) {
+    return (_) {
+      _submitForm(context, validationEnabled);
+      FocusScope.of(context).unfocus();
+    };
+  }
+
+  VoidCallback _makeOnPressSubmit(
+    BuildContext context,
+    bool validationEnabled,
+  ) {
+    return () => _submitForm(context, validationEnabled);
   }
 }
