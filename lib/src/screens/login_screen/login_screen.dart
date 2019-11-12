@@ -44,13 +44,20 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).loginGreetings),
+        title: Text(
+          S.of(context).loginGreetings,
+          style: theme.textTheme.headline.copyWith(
+            color: theme.colorScheme.onPrimary,
+          )
+        ),
         centerTitle: true,
         backgroundColor: widget.color,
       ),
