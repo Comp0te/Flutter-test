@@ -18,10 +18,11 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: margin,
       child: RaisedButton(
-        textColor: Colors.white,
         onPressed: onPress,
         elevation: 5,
         color: color,
@@ -43,14 +44,14 @@ class SubmitButton extends StatelessWidget {
                   height: 25,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    backgroundColor: Colors.white,
+                    backgroundColor: theme.colorScheme.onPrimary,
                   ),
                 )
               : Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: theme.textTheme.button.copyWith(
+                    color: theme.colorScheme.onPrimary,
                   ),
                 ),
         ),
