@@ -13,12 +13,13 @@ class FormFieldUserName extends StatelessWidget {
   const FormFieldUserName({
     Key key,
     @required this.controller,
-    this.attribute = "User Name",
+    @required this.attribute,
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
-  }) : super(key: key);
+  })  : assert(attribute != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

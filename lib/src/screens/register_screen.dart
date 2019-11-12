@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/helpers/validation_helper.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
+
+enum RegisterFormData { username, email, password1, password2 }
 
 class RegisterScreen extends StatefulWidget with OrientationMixin {
   @override
@@ -103,6 +106,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       constraints:
                                           _getFormFieldConstraints(context),
                                       child: FormFieldUserName(
+                                        attribute: describeEnum(
+                                            RegisterFormData.username),
                                         controller: _usernameController,
                                         onFiledSubmitted:
                                             _makeOnNextActionSubmitted(
@@ -115,6 +120,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           _getFormFieldConstraints(context),
                                       child: FormFieldEmail(
                                         controller: _emailController,
+                                        attribute: describeEnum(
+                                            RegisterFormData.email),
                                         focusNode: _emailFocusNode,
                                         onFiledSubmitted:
                                             _makeOnNextActionSubmitted(
@@ -141,7 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             _getFormFieldConstraints(context),
                                         child: FormFieldPassword(
                                           label: S.of(context).password,
-                                          attribute: 'Password',
+                                          attribute: describeEnum(
+                                              RegisterFormData.email),
                                           controller: _password1Controller,
                                           focusNode: _password1FocusNode,
                                           onFiledSubmitted:
@@ -155,7 +163,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             _getFormFieldConstraints(context),
                                         child: FormFieldPassword(
                                           label: S.of(context).confirmPassword,
-                                          attribute: 'Confirm Password',
+                                          attribute: describeEnum(
+                                              RegisterFormData.password2),
                                           controller: _password2Controller,
                                           validatorsList: [
                                             ValidationHelper

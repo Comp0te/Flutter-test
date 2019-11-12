@@ -14,12 +14,14 @@ class FormFieldEmail extends StatelessWidget {
   const FormFieldEmail({
     Key key,
     @required this.controller,
-    this.attribute = "Email",
+    @required this.attribute,
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
-  }) : super(key: key);
+  })  : assert(controller != null),
+        assert(attribute != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

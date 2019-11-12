@@ -16,12 +16,15 @@ class FormFieldPassword extends StatelessWidget {
     Key key,
     @required this.controller,
     @required this.label,
-    this.attribute = "Password",
+    @required this.attribute,
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
-  }) : super(key: key);
+  })  : assert(controller != null),
+        assert(label != null),
+        assert(attribute != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

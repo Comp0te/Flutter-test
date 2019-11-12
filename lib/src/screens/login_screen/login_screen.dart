@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,9 @@ import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
+
+// TODO: think about https://pub.dev/packages/reflectable
+enum LoginFormData { email, password }
 
 class LoginScreen extends StatefulWidget with OrientationMixin {
   final double heroRegisterWidth;
@@ -116,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen>
             margin: widget.marginBottomInput,
             child: FormFieldEmail(
               controller: _emailController,
+              attribute: describeEnum(LoginFormData.email),
               onFiledSubmitted: _makeOnNextActionSubmitted(
                 _passwordFocusNode,
               ),
@@ -125,8 +130,9 @@ class _LoginScreenState extends State<LoginScreen>
             constraints: widget.getMaxWidthConstraints(context, 0.4),
             margin: widget.marginBottomInput,
             child: FormFieldPassword(
-              label: S.of(context).password,
               controller: _passwordController,
+              attribute: describeEnum(LoginFormData.password),
+              label: S.of(context).password,
               focusNode: _passwordFocusNode,
               onFiledSubmitted: _makeOnDoneActionSubmitted(
                 validationEnabled,
