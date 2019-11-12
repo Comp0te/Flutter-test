@@ -11,8 +11,8 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
   AnimationController _animationController;
   Animation<double> _width;
   Animation<double> _opacity;
-  Animation<EdgeInsets> _marginEmail;
-  Animation<EdgeInsets> _marginPassword;
+  Animation<EdgeInsets> _marginInput;
+  Animation<EdgeInsets> _marginInputWrapper;
   Animation<EdgeInsets> _paddingScreen;
   Animation<Color> _color;
 
@@ -50,7 +50,7 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
         ),
       ),
     );
-    _marginEmail = Tween<EdgeInsets>(
+    _marginInput = Tween<EdgeInsets>(
       begin: const EdgeInsets.only(bottom: 20),
       end: const EdgeInsets.only(bottom: 0),
     ).animate(
@@ -63,7 +63,7 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
         ),
       ),
     );
-    _marginPassword = Tween<EdgeInsets>(
+    _marginInputWrapper = Tween<EdgeInsets>(
       begin: const EdgeInsets.only(bottom: 40),
       end: const EdgeInsets.only(bottom: 20),
     ).animate(
@@ -89,9 +89,14 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
         ),
       ),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _color = ColorTween(
-      begin: Colors.red,
-      end: Colors.blue,
+      begin: Theme.of(context).accentColor,
+      end: Theme.of(context).primaryColor,
     ).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -118,8 +123,8 @@ class _AnimatedLoginScreenState extends State<AnimatedLoginScreen>
         return LoginScreen(
           color: _color.value,
           heroRegisterWidth: _width.value,
-          marginBottomEmail: _marginEmail.value,
-          marginBottomPassword: _marginPassword.value,
+          marginBottomInput: _marginInput.value,
+          marginBottomInputWrapper: _marginInputWrapper.value,
           paddingHorizontalScreen: _paddingScreen.value,
           submitOpacity: _opacity.value,
         );

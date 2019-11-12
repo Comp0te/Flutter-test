@@ -11,8 +11,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 class LoginScreen extends StatefulWidget with OrientationMixin {
   final double heroRegisterWidth;
   final double submitOpacity;
-  final EdgeInsets marginBottomEmail;
-  final EdgeInsets marginBottomPassword;
+  final EdgeInsets marginBottomInput;
+  final EdgeInsets marginBottomInputWrapper;
   final EdgeInsets paddingHorizontalScreen;
   final Color color;
 
@@ -20,8 +20,8 @@ class LoginScreen extends StatefulWidget with OrientationMixin {
     Key key,
     this.heroRegisterWidth = 150,
     this.submitOpacity = 1,
-    this.marginBottomEmail = const EdgeInsets.only(bottom: 0),
-    this.marginBottomPassword = const EdgeInsets.only(bottom: 20),
+    this.marginBottomInput = const EdgeInsets.only(bottom: 0),
+    this.marginBottomInputWrapper = const EdgeInsets.only(bottom: 20),
     this.paddingHorizontalScreen = const EdgeInsets.symmetric(horizontal: 30),
     this.color = Colors.blue,
   }) : super(key: key);
@@ -38,50 +38,10 @@ class _LoginScreenState extends State<LoginScreen>
   final _validationEnabledBloc = BoolValueBloc();
   final _passwordFocusNode = FocusNode();
 
-  BoxConstraints _getBoxConstraints(BuildContext context) =>
-      widget.isLandscape(context)
-          ? BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.40)
-          : const BoxConstraints();
-
   @override
   Widget build(BuildContext context) {
     void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
-    }
-
-    void _submitForm(bool validationEnabled) {
-      if (_fbKey.currentState.validate()) {
-        BlocProvider.of<LoginBloc>(context).add(LoginRequest(
-          email: _emailController.text,
-          password: _passwordController.text,
-        ));
-      } else if (!validationEnabled) {
-        _validationEnabledBloc.add(ToggleBoolValue());
-      }
-    }
-
-    VoidCallback _makeOnPressSubmit(bool validationEnabled) {
-      return () => _submitForm(validationEnabled);
-    }
-
-    void _onPressGoogleLogin() {
-      BlocProvider.of<GoogleLoginBloc>(context).add(const GoogleLoginRequest());
-    }
-
-    void _onPressFacebookLogin() {
-      BlocProvider.of<FacebookLoginBloc>(context)
-          .add(const FacebookLoginRequest());
-    }
-
-    ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
-      return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
-    }
-
-    ValueChanged<String> _makeOnDoneActionSubmitted(bool validationEnabled) {
-      return (_) {
-        _submitForm(validationEnabled);
-        FocusScope.of(context).unfocus();
-      };
     }
 
     return Scaffold(
@@ -109,111 +69,8 @@ class _LoginScreenState extends State<LoginScreen>
                           autovalidate: validationEnabled,
                           child: Column(
                             children: <Widget>[
-                              Flex(
-                                direction: widget.isLandscape(context)
-                                    ? Axis.horizontal
-                                    : Axis.vertical,
-                                mainAxisSize: widget.isLandscape(context)
-                                    ? MainAxisSize.max
-                                    : MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    constraints: _getBoxConstraints(context),
-                                    margin: widget.marginBottomEmail,
-                                    child: FormFieldEmail(
-                                      controller: _emailController,
-                                      onFiledSubmitted:
-                                          _makeOnNextActionSubmitted(
-                                        _passwordFocusNode,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    constraints: _getBoxConstraints(context),
-                                    margin: widget.marginBottomPassword,
-                                    child: FormFieldPassword(
-                                      label: S.of(context).password,
-                                      controller: _passwordController,
-                                      focusNode: _passwordFocusNode,
-                                      onFiledSubmitted:
-                                          _makeOnDoneActionSubmitted(
-                                        validationEnabled,
-                                      ),
-                                      textInputAction: TextInputAction.done,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Flex(
-                                direction: widget.isPortrait(context)
-                                    ? Axis.vertical
-                                    : Axis.horizontal,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    constraints: _getBoxConstraints(context),
-                                    child: BlocBuilder<LoginBloc, LoginState>(
-                                      builder: (context, loginState) {
-                                        return Opacity(
-                                          opacity: widget.submitOpacity,
-                                          child: SubmitButton(
-                                            isLoading: loginState.isLoading,
-                                            title: S.of(context).loginEmail,
-                                            color: widget.color,
-                                            onPress: _makeOnPressSubmit(
-                                              validationEnabled,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    constraints: _getBoxConstraints(context),
-                                    child: BlocBuilder<GoogleLoginBloc,
-                                        GoogleLoginState>(
-                                      builder: (context, googleLoginState) {
-                                        return Opacity(
-                                          opacity: widget.submitOpacity,
-                                          child: SubmitButton(
-                                            isLoading:
-                                                googleLoginState.isLoading,
-                                            title: S
-                                                .of(context)
-                                                .loginWith('Google'),
-                                            color: widget.color,
-                                            onPress: _onPressGoogleLogin,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Container(
-                                    constraints: _getBoxConstraints(context),
-                                    child: BlocBuilder<FacebookLoginBloc,
-                                        FacebookLoginState>(
-                                      builder: (context, facebookLoginState) {
-                                        return Opacity(
-                                          opacity: widget.submitOpacity,
-                                          child: SubmitButton(
-                                            isLoading:
-                                                facebookLoginState.isLoading,
-                                            title: S
-                                                .of(context)
-                                                .loginWith('Facebook'),
-                                            color: widget.color,
-                                            onPress: _onPressFacebookLogin,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              _buildFormInputs(context, validationEnabled),
+                              _buildSubmitButtons(context, validationEnabled),
                               HeroRegister(
                                 width: widget.heroRegisterWidth,
                                 onTap: _toRegistrationScreen,
@@ -231,5 +88,138 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
+  }
+
+  Widget _buildFormInputs(BuildContext context, bool validationEnabled) {
+    ValueChanged<String> _makeOnNextActionSubmitted(FocusNode fieldFocusNode) {
+      return (_) => FocusScope.of(context).requestFocus(fieldFocusNode);
+    }
+
+    ValueChanged<String> _makeOnDoneActionSubmitted(bool validationEnabled) {
+      return (_) {
+        _submitForm(context, validationEnabled);
+        FocusScope.of(context).unfocus();
+      };
+    }
+
+    return Container(
+      margin: widget.marginBottomInputWrapper,
+      child: Flex(
+        direction:
+            widget.isLandscape(context) ? Axis.horizontal : Axis.vertical,
+        mainAxisSize:
+            widget.isLandscape(context) ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            constraints: widget.getMaxWidthConstraints(context, 0.4),
+            margin: widget.marginBottomInput,
+            child: FormFieldEmail(
+              controller: _emailController,
+              onFiledSubmitted: _makeOnNextActionSubmitted(
+                _passwordFocusNode,
+              ),
+            ),
+          ),
+          Container(
+            constraints: widget.getMaxWidthConstraints(context, 0.4),
+            margin: widget.marginBottomInput,
+            child: FormFieldPassword(
+              label: S.of(context).password,
+              controller: _passwordController,
+              focusNode: _passwordFocusNode,
+              onFiledSubmitted: _makeOnDoneActionSubmitted(
+                validationEnabled,
+              ),
+              textInputAction: TextInputAction.done,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubmitButtons(BuildContext context, bool validationEnabled) {
+    VoidCallback _makeOnPressSubmit(bool validationEnabled) {
+      return () => _submitForm(context, validationEnabled);
+    }
+
+    void _onPressGoogleLogin() {
+      BlocProvider.of<GoogleLoginBloc>(context).add(const GoogleLoginRequest());
+    }
+
+    void _onPressFacebookLogin() {
+      BlocProvider.of<FacebookLoginBloc>(context)
+          .add(const FacebookLoginRequest());
+    }
+
+    return Flex(
+      direction: widget.isPortrait(context) ? Axis.vertical : Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          constraints: widget.getMaxWidthConstraints(context, 0.25),
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, loginState) {
+              return Opacity(
+                opacity: widget.submitOpacity,
+                child: SubmitButton(
+                  isLoading: loginState.isLoading,
+                  title: S.of(context).loginEmail,
+                  color: widget.color,
+                  onPress: _makeOnPressSubmit(
+                    validationEnabled,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Container(
+          constraints: widget.getMaxWidthConstraints(context, 0.25),
+          child: BlocBuilder<GoogleLoginBloc, GoogleLoginState>(
+            builder: (context, googleLoginState) {
+              return Opacity(
+                opacity: widget.submitOpacity,
+                child: SubmitButton(
+                  isLoading: googleLoginState.isLoading,
+                  title: S.of(context).loginWith('Google'),
+                  color: widget.color,
+                  onPress: _onPressGoogleLogin,
+                ),
+              );
+            },
+          ),
+        ),
+        Container(
+          constraints: widget.getMaxWidthConstraints(context, 0.25),
+          child: BlocBuilder<FacebookLoginBloc, FacebookLoginState>(
+            builder: (context, facebookLoginState) {
+              return Opacity(
+                opacity: widget.submitOpacity,
+                child: SubmitButton(
+                  isLoading: facebookLoginState.isLoading,
+                  title: S.of(context).loginWith('Facebook'),
+                  color: widget.color,
+                  onPress: _onPressFacebookLogin,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _submitForm(BuildContext context, bool validationEnabled) {
+    if (_fbKey.currentState.validate()) {
+      BlocProvider.of<LoginBloc>(context).add(LoginRequest(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ));
+    } else if (!validationEnabled) {
+      _validationEnabledBloc.add(ToggleBoolValue());
+    }
   }
 }
