@@ -63,7 +63,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
                     child: makePreview(state),

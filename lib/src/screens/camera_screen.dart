@@ -73,7 +73,7 @@ class _CameraScreenState extends State<CameraScreen>
                     Expanded(
                       flex: 1,
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.black),
+                        decoration: const BoxDecoration(color: Colors.black),
                         child: Text(
                           S.of(context).cameraHelperText,
                           textAlign: TextAlign.center,
