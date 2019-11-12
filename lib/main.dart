@@ -5,11 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/app.dart';
 import 'src/blocs/blocs.dart';
 import 'src/data_providers/data_providers.dart';
-import 'src/database/database.dart';
+import 'src/databases/databases.dart';
 import 'src/helpers/helpers.dart';
 import 'src/repositories/repositories.dart';
 
@@ -30,7 +31,7 @@ void main() {
     postersApiProvider: PostersApiProvider(dio: dio),
   );
   final _dbRepository = DBRepository(
-    dbProvider: DBProvider(db: DBHelper().db),
+    dbProvider: DBProvider(db: SQFLite().db),
   );
   final _imageStoreRepository = ImageStoreRepository(
     imageStoreProvider: ImageStoreProvider(),
@@ -41,6 +42,11 @@ void main() {
   final _firebaseMessagingRepository = FirebaseMessagingRepository(
     firebaseMessagingProvider: FirebaseMessagingProvider(
       firebaseMessaging: FirebaseMessaging(),
+    ),
+  );
+  final _sharedPreferencesRepository = SharedPreferencesRepository(
+    sharedPreferencesProvider: SharedPreferencesProvider(
+      sharedPreferencesInstance: SharedPreferences.getInstance(),
     ),
   );
 
@@ -65,6 +71,11 @@ void main() {
         BlocProvider<FirebaseMessagingBloc>(
           builder: (context) => FirebaseMessagingBloc(
             firebaseMessagingRepository: _firebaseMessagingRepository,
+          ),
+        ),
+        BlocProvider<PreferencesBloc>(
+          builder: (context) => PreferencesBloc(
+            sharedPreferencesRepository: _sharedPreferencesRepository,
           ),
         ),
       ],

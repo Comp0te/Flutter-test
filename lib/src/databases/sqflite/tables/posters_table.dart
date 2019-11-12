@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/database/tables/users_table.dart';
+import 'package:flutter_app/src/databases/sqflite/tables/tables.dart';
 
 abstract class PostersTable {
   static final name = 'posters';

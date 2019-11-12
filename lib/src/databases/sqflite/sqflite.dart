@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:flutter_app/src/database/tables.dart';
+import 'package:flutter_app/src/databases/sqflite/tables/tables.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 
-class DBHelper {
+class SQFLite {
   static Database _db;
 
   Future<Database> get db async {
