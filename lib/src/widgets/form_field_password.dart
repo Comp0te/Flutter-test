@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/generated/i18n.dart';
 
-class FormFieldPassword extends StatelessWidget {
+class FormFieldPassword extends StatelessWidget with ThemeMixin {
   final TextEditingController controller;
   final String attribute;
   final String label;
@@ -32,6 +33,7 @@ class FormFieldPassword extends StatelessWidget {
       height: 60,
       constraints: const BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
+        style: getTextTheme(context).body1,
         controller: controller,
         attribute: attribute,
         autocorrect: false,
