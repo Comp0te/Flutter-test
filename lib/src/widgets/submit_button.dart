@@ -44,15 +44,13 @@ class SubmitButton extends StatelessWidget with ThemeMixin {
                   height: 25,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    backgroundColor: getContrastTextColor(context),
+                    backgroundColor: getColorScheme(context).onPrimary,
                   ),
                 )
               : Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: getTextTheme(context).button.copyWith(
-                    color: getContrastTextColor(context),
-                  ),
+                  style: getPrimaryTextTheme(context).button,
                 ),
         ),
       ),
