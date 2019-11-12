@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/src/constants/assets.dart';
+import 'package:flutter_app/src/constants/constants.dart';
 
 class HeroRegister extends StatelessWidget {
   final double width;
@@ -19,7 +19,7 @@ class HeroRegister extends StatelessWidget {
       child: Hero(
         tag: ImageAssets.register,
         child: Material(
-          shadowColor: Colors.blue,
+          shadowColor: Theme.of(context).primaryColor,
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
