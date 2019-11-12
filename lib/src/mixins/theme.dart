@@ -13,9 +13,11 @@ mixin ThemeMixin on Widget {
     return Theme.of(context).textTheme;
   }
 
-  Color getContrastTextColor(BuildContext context) {
-    return getTheme(context).brightness == Brightness.dark
-        ? getColorScheme(context).onBackground
-        : getColorScheme(context).onPrimary;
+  TextTheme getPrimaryTextTheme(BuildContext context) {
+    return Theme.of(context).primaryTextTheme;
+  }
+
+  TextTheme getAccentTextTheme(BuildContext context) {
+    return Theme.of(context).accentTextTheme;
   }
 }
