@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
@@ -33,7 +34,7 @@ class ImageFromStore extends StatelessWidget {
           );
         } else if (state.image == null) {
           return Image.asset(
-            'assets/placeholder.png',
+            ImageAssets.posterPlaceholder,
             fit: BoxFit.cover,
           );
         } else {

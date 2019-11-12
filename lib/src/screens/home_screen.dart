@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
@@ -170,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return postersList[index].images == null ||
                                   postersList[index].images.isEmpty
                               ? Image.asset(
-                                  'assets/placeholder.png',
+                                  ImageAssets.posterPlaceholder,
                                   fit: BoxFit.cover,
                                 )
                               : CachedNetworkImage(

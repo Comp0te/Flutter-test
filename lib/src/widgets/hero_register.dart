@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_app/src/constants/assets.dart';
+
 class HeroRegister extends StatelessWidget {
-  final String photo = 'assets/register.jpg';
   final double width;
   final VoidCallback onTap;
 
@@ -16,14 +17,14 @@ class HeroRegister extends StatelessWidget {
     return SizedBox(
       width: width,
       child: Hero(
-        tag: photo,
+        tag: ImageAssets.register,
         child: Material(
           shadowColor: Colors.blue,
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
             child: Image.asset(
-              photo,
+              ImageAssets.register,
               fit: BoxFit.contain,
             ),
           ),

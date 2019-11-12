@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
@@ -51,7 +52,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
 
       return Future.value([
         Image.asset(
-          'assets/placeholder.png',
+          ImageAssets.posterPlaceholder,
           fit: BoxFit.cover,
           width: 50,
           height: 50,
