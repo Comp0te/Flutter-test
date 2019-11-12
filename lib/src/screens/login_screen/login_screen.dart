@@ -12,7 +12,7 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 // TODO: think about https://pub.dev/packages/reflectable
 enum LoginFormData { email, password }
 
-class LoginScreen extends StatefulWidget with OrientationMixin {
+class LoginScreen extends StatefulWidget with OrientationMixin, ThemeMixin {
   final double heroRegisterWidth;
   final double submitOpacity;
   final EdgeInsets marginBottomInput;
@@ -44,8 +44,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     void _toRegistrationScreen() {
       Navigator.of(context).pushNamed(AuthRouteNames.register);
     }
@@ -54,12 +52,12 @@ class _LoginScreenState extends State<LoginScreen>
       appBar: AppBar(
         title: Text(
           S.of(context).loginGreetings,
-          style: theme.textTheme.headline.copyWith(
-            color: theme.colorScheme.onPrimary,
-          )
+          style: widget.getTextTheme(context).headline.copyWith(
+            color: widget.getContrastTextColor(context),
+          ),
         ),
         centerTitle: true,
-        backgroundColor: widget.color,
+//        backgroundColor: widget.color,
       ),
       body: AuthMultiLoginBlocListener(
         child: GestureDetector(
