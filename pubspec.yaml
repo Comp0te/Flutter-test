@@ -77,18 +77,10 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
 
   fonts:
-    - family: Fira Sans
+    - family: 'FiraSans'
       fonts:
         - asset: assets/fonts/FiraSans-Regular.ttf
-        - asset: assets/fonts/FiraSans-Bold.ttf
-          weight: 700
         - asset: assets/fonts/FiraSans-Light.ttf
           weight: 300
-        - asset: assets/fonts/FiraSans-Italic.ttf
-          style: italic
-        - asset: assets/fonts/FiraSans-BoldItalic.ttf
-          style: italic
-          weight: 700
-        - asset: assets/fonts/FiraSans-LightItalic.ttf
-          style: italic
-          weight: 300
+        - asset: assets/fonts/FiraSans-Medium.ttf
+          weight: 500

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-const firaSansFontFamily = 'Fira Sans';
+const firaSansFontFamily = 'FiraSans';
 
-final textLightTheme = const TextTheme().apply(
+final textLightTheme = Typography.englishLike2018.apply(
   fontFamily: firaSansFontFamily,
-  bodyColor: Colors.black,
 );
 
-final textDarkTheme = const TextTheme().apply(
+final textDarkTheme = Typography.englishLike2018.apply(
   fontFamily: firaSansFontFamily,
-  bodyColor: Colors.white,
 );
 
 const lightColorScheme = ColorScheme.light();
