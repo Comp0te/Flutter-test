@@ -50,6 +50,8 @@ class _AppState extends State<App> {
           supportedLocales: S.delegate.supportedLocales,
           localeResolutionCallback:
               S.delegate.resolution(fallback: defaultLocale),
+          theme: lightTheme,
+          darkTheme: darkTheme,
           navigatorKey: mainNavigatorKey,
           initialRoute: MainRouteNames.home,
           onGenerateRoute: (RouteSettings settings) {
@@ -96,6 +98,8 @@ class _AppState extends State<App> {
           supportedLocales: S.delegate.supportedLocales,
           localeResolutionCallback:
               S.delegate.resolution(fallback: defaultLocale),
+          theme: lightTheme,
+          darkTheme: darkTheme,
           initialRoute: AuthRouteNames.login,
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
