@@ -15,12 +15,12 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final mainNavigatorKey = GlobalKey<NavigatorState>();
-  String _locale = 'ru';
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<AuthBloc>(context)..add(AppStarted());
+    BlocProvider.of<PreferencesBloc>(context)..add(RehydratePreferences());
   }
 
   @override
@@ -38,72 +38,80 @@ class _AppState extends State<App> {
   }
 
   Widget _main(BuildContext context) {
-    return MaterialApp(
-      locale: Locale(_locale, ""),
-      localizationsDelegates: [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        S.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      localeResolutionCallback:
-          S.delegate.resolution(fallback: const Locale("en", "")),
-      navigatorKey: mainNavigatorKey,
-      initialRoute: MainRouteNames.home,
-      onGenerateRoute: (RouteSettings settings) {
-        BlocProvider.of<NavigationBloc>(context).add(SetMainDrawerRoute(
-          routeName: settings.name,
-        ));
+    return BlocBuilder<PreferencesBloc, PreferencesState>(
+      builder: (context, state) {
+        return MaterialApp(
+          locale: state.locale,
+          localizationsDelegates: [
+            GlobalWidgetsLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            S.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          localeResolutionCallback:
+              S.delegate.resolution(fallback: defaultLocale),
+          navigatorKey: mainNavigatorKey,
+          initialRoute: MainRouteNames.home,
+          onGenerateRoute: (RouteSettings settings) {
+            BlocProvider.of<NavigationBloc>(context).add(SetMainDrawerRoute(
+              routeName: settings.name,
+            ));
 
-        switch (settings.name) {
-          case MainRouteNames.home:
-            return MainRoutes.homeScreenRoute(context);
-            break;
+            switch (settings.name) {
+              case MainRouteNames.home:
+                return MainRoutes.homeScreenRoute(context);
+                break;
 
-          case MainRouteNames.database:
-            return MainRoutes.databaseScreenRoute(context);
-            break;
+              case MainRouteNames.database:
+                return MainRoutes.databaseScreenRoute(context);
+                break;
 
-          case MainRouteNames.camera:
-            return MainRoutes.cameraScreenRoute(context);
-            break;
+              case MainRouteNames.camera:
+                return MainRoutes.cameraScreenRoute(context);
+                break;
 
-          case MainRouteNames.googleMap:
-            return MainRoutes.googleMapRoute(context);
-            break;
+              case MainRouteNames.googleMap:
+                return MainRoutes.googleMapRoute(context);
+                break;
 
-          default:
-            return null;
-        }
+              default:
+                return null;
+            }
+          },
+        );
       },
     );
   }
 
   Widget _auth(BuildContext context) {
-    return MaterialApp(
-      locale: Locale(_locale, ""),
-      localizationsDelegates: [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        S.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      localeResolutionCallback:
-          S.delegate.resolution(fallback: const Locale("en", "")),
-      initialRoute: AuthRouteNames.login,
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case AuthRouteNames.login:
-            return AuthRoutes.loginRoute(context);
-            break;
+    return BlocBuilder<PreferencesBloc, PreferencesState>(
+      builder: (context, state) {
+        return MaterialApp(
+          locale: state.locale,
+          localizationsDelegates: [
+            GlobalWidgetsLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            S.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          localeResolutionCallback:
+              S.delegate.resolution(fallback: defaultLocale),
+          initialRoute: AuthRouteNames.login,
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case AuthRouteNames.login:
+                return AuthRoutes.loginRoute(context);
+                break;
 
-          case AuthRouteNames.register:
-            return AuthRoutes.registerRoute(context);
-            break;
+              case AuthRouteNames.register:
+                return AuthRoutes.registerRoute(context);
+                break;
 
-          default:
-            return null;
-        }
+              default:
+                return null;
+            }
+          },
+        );
       },
     );
   }

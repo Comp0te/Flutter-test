@@ -73,6 +73,11 @@ void main() {
             firebaseMessagingRepository: _firebaseMessagingRepository,
           ),
         ),
+        BlocProvider<PreferencesBloc>(
+          builder: (context) => PreferencesBloc(
+            sharedPreferencesRepository: _sharedPreferencesRepository,
+          ),
+        ),
       ],
       child: MultiRepositoryProvider(
         providers: [
