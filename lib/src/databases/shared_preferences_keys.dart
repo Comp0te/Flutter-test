@@ -1,3 +1,3 @@
 abstract class SharedPreferencesKeys {
-  static const language = 'language';
+  static const languageIndex = 'languageIndex';
 }

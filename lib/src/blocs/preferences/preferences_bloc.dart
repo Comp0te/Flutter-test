@@ -30,20 +30,21 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
   Stream<PreferencesState> _mapRehydratePreferencesToState(
     RehydratePreferences event,
   ) async* {
-    final languageCode = await sharedPreferencesRepository
-        .read<String>(SharedPreferencesKeys.language);
-    final language = getLanguage(languageCode);
+    final languageIndex = await sharedPreferencesRepository
+        .read<int>(SharedPreferencesKeys.languageIndex);
 
-    yield state.copyWith(locale: mapLanguagesEnumToLocale[language]);
+    yield state.copyWith(locale: mapLanguagesEnumToLocale[languageIndex]);
   }
 
   Stream<PreferencesState> _mapChooseLanguageToState(
     ChooseLanguage event,
   ) async* {
-    yield state.copyWith(locale: mapLanguagesEnumToLocale[event.language]);
-    await sharedPreferencesRepository.write(
-      key: SharedPreferencesKeys.language,
-      value: getLanguageCode(event.language),
+    yield state.copyWith(
+      locale: mapLanguagesEnumToLocale[event.language.index],
+    );
+    await sharedPreferencesRepository.write<int>(
+      key: SharedPreferencesKeys.languageIndex,
+      value: event.language.index,
     );
   }
 }
