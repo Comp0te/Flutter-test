@@ -64,17 +64,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
           child: BlocBuilder<VideoPlayerBloc, VideoPlayerState>(
             bloc: _videoPlayerBloc,
             builder: (context, state) {
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: widget.getTheme(context).accentColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: widget.getColorScheme(context).onSecondary,
-                      blurRadius: 4,
-                    )
-                  ],
-                  shape: BoxShape.circle,
-                ),
+              return Material(
+                color: widget.getTheme(context).accentColor,
+                elevation: 6,
+                shape: CircleBorder(),
                 child: IconButton(
                   iconSize: 40,
                   icon: AnimatedIcon(

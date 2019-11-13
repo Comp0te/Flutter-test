@@ -78,17 +78,10 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                 tag: HeroTag.cameraIconButton,
                 child: Material(
                   color: Colors.transparent,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: widget.getTheme(context).accentColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: widget.getColorScheme(context).onSecondary,
-                          blurRadius: 4,
-                        )
-                      ],
-                      shape: BoxShape.circle,
-                    ),
+                  child: Material(
+                    color: widget.getTheme(context).accentColor,
+                    elevation: 6,
+                    shape: CircleBorder(),
                     child: IconButton(
                       iconSize: 40,
                       icon: Icon(
