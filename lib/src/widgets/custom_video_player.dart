@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class CustomVideoPlayer extends StatefulWidget {
+class CustomVideoPlayer extends StatefulWidget with ThemeMixin {
   final String videoPath;
 
   const CustomVideoPlayer({Key key, @required this.videoPath})
@@ -65,14 +66,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
             builder: (context, state) {
               return DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(
-                    width: 2,
-                    color: Colors.white,
-                  ),
+                  color: widget.getTheme(context).accentColor,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.blue,
+                      color: widget.getColorScheme(context).onSecondary,
                       blurRadius: 4,
                     )
                   ],
@@ -84,7 +81,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
                     icon: AnimatedIcons.play_pause,
                     progress: _animationController,
                     size: 40,
-                    color: Colors.white,
+                    color: widget.getTheme(context).accentIconTheme.color,
                   ),
                   onPressed: () {
                     if (state.isPlaying) {
