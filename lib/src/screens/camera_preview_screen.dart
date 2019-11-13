@@ -64,7 +64,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: widget.getTheme(context).backgroundColor,
+                      color: widget.getTheme(context).scaffoldBackgroundColor,
                     ),
                     child: makePreview(state),
                   ),
