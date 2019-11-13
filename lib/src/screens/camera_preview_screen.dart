@@ -9,7 +9,8 @@ import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 
-class CameraPreviewScreen extends StatefulWidget with OrientationMixin {
+class CameraPreviewScreen extends StatefulWidget
+    with OrientationMixin, ThemeMixin {
   @override
   _CameraPreviewScreenState createState() => _CameraPreviewScreenState();
 }
@@ -44,11 +45,10 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add_photo_alternate,
-          color: Colors.white,
+          color: widget.getTheme(context).accentIconTheme.color,
           size: 40,
         ),
         heroTag: HeroTag.cameraFAB,
-        backgroundColor: Colors.green,
         onPressed: () {
           _cameraBloc.add(ResetCameraFiles());
           Navigator.of(context).pop();
@@ -63,8 +63,8 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                   flex: 1,
                   child: Container(
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: widget.getTheme(context).backgroundColor,
                     ),
                     child: makePreview(state),
                   ),
@@ -77,30 +77,41 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
               child: Hero(
                 tag: HeroTag.cameraIconButton,
                 child: Material(
-                  shadowColor: Colors.blue,
                   color: Colors.transparent,
-                  child: IconButton(
-                    iconSize: 40,
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                      size: 40,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: widget.getTheme(context).accentColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: widget.getColorScheme(context).onSecondary,
+                          blurRadius: 4,
+                        )
+                      ],
+                      shape: BoxShape.circle,
                     ),
-                    onPressed: () {
-                      if (state.photoPath != null) {
-                        _cameraBloc.add(DeleteCameraFile(
-                          path: state.photoPath,
-                        ));
-                      }
+                    child: IconButton(
+                      iconSize: 40,
+                      icon: Icon(
+                        Icons.delete,
+                        color: widget.getTheme(context).errorColor,
+                        size: 40,
+                      ),
+                      onPressed: () {
+                        if (state.photoPath != null) {
+                          _cameraBloc.add(DeleteCameraFile(
+                            path: state.photoPath,
+                          ));
+                        }
 
-                      if (state.videoPath != null) {
-                        _cameraBloc.add(DeleteCameraFile(
-                          path: state.videoPath,
-                        ));
-                      }
+                        if (state.videoPath != null) {
+                          _cameraBloc.add(DeleteCameraFile(
+                            path: state.videoPath,
+                          ));
+                        }
 
-                      Navigator.of(context).pop();
-                    },
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                 ),
               ),
