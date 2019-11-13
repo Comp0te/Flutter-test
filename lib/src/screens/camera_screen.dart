@@ -131,7 +131,7 @@ class _CameraScreenState extends State<CameraScreen>
                             left: 15,
                             top: 15,
                             child: AnimatedOpacity(
-                              duration: Duration(seconds: 1),
+                              duration: const Duration(seconds: 1),
                               opacity: state.isVideoRecording ? 1 : 0,
                               curve: Curves.bounceInOut,
                               child: Icon(
