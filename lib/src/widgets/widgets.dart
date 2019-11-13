@@ -10,3 +10,4 @@ export './spinner.dart';
 export './image_from_store.dart';
 export './drawer_item.dart';
 export './custom_video_player.dart';
+export './poster_placeholder_image.dart';

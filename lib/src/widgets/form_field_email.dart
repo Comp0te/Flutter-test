@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/generated/i18n.dart';
 
-class FormFieldEmail extends StatelessWidget {
+class FormFieldEmail extends StatelessWidget with ThemeMixin {
   final TextEditingController controller;
   final String attribute;
   final List<FormFieldValidator> validatorsList;
@@ -14,12 +15,14 @@ class FormFieldEmail extends StatelessWidget {
   const FormFieldEmail({
     Key key,
     @required this.controller,
-    this.attribute = "Email",
+    @required this.attribute,
     this.validatorsList = const [],
     this.onFiledSubmitted,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
-  }) : super(key: key);
+  })  : assert(controller != null),
+        assert(attribute != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,7 @@ class FormFieldEmail extends StatelessWidget {
       height: 60,
       constraints: const BoxConstraints(maxHeight: 60),
       child: FormBuilderTextField(
+        style: getTextTheme(context).body1,
         controller: controller,
         attribute: attribute,
         autocorrect: false,
@@ -41,7 +45,8 @@ class FormFieldEmail extends StatelessWidget {
         ),
         validators: [
           FormBuilderValidators.required(
-              errorText: S.of(context).errorRequired),
+            errorText: S.of(context).errorRequired,
+          ),
           FormBuilderValidators.email(errorText: S.of(context).errorEmail),
           ...validatorsList,
         ],

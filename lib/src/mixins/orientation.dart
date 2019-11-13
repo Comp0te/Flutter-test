@@ -24,4 +24,17 @@ mixin OrientationMixin on Widget {
       DeviceOrientation.portraitUp,
     ]);
   }
+
+  BoxConstraints getMaxWidthConstraints(
+    BuildContext context,
+    num partOfMaxWidth,
+  ) {
+    assert(partOfMaxWidth >= 0 && partOfMaxWidth <= 1);
+
+    return isLandscape(context)
+        ? BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * partOfMaxWidth,
+          )
+        : const BoxConstraints();
+  }
 }

@@ -20,16 +20,21 @@ class DrawerItem extends StatelessWidget implements DrawerItemOptions {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      selected: selected,
-      leading: icon,
-      title: Text(title),
-      onTap: selected
-          ? null
-          : () {
-              Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, routeName);
-            },
+    return ListTileTheme(
+      style: ListTileStyle.drawer,
+      child: ListTile(
+        selected: selected,
+        leading: icon,
+        title: Text(
+          title,
+        ),
+        onTap: selected
+            ? null
+            : () {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, routeName);
+              },
+      ),
     );
   }
 }

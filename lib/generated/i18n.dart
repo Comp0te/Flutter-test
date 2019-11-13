@@ -45,7 +45,7 @@ class S implements WidgetsLocalizations {
   String get noCameraFound => "No Camera Found";
   String get northEast => "North-East";
   String get onlinePosters => "Online posters";
-  String get password => "password";
+  String get password => "Password";
   String get posters => "Posters";
   String get postersDB => "Poster`s database";
   String get register => "Register";

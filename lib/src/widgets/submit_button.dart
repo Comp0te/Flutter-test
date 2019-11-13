@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SubmitButton extends StatelessWidget {
+import 'package:flutter_app/src/mixins/mixins.dart';
+
+class SubmitButton extends StatelessWidget with ThemeMixin {
   final VoidCallback onPress;
   final String title;
   final bool isLoading;
@@ -21,7 +23,6 @@ class SubmitButton extends StatelessWidget {
     return Container(
       margin: margin,
       child: RaisedButton(
-        textColor: Colors.white,
         onPressed: onPress,
         elevation: 5,
         color: color,
@@ -43,15 +44,13 @@ class SubmitButton extends StatelessWidget {
                   height: 25,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    backgroundColor: Colors.white,
+                    backgroundColor: getColorScheme(context).onPrimary,
                   ),
                 )
               : Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                  style: getPrimaryTextTheme(context).button,
                 ),
         ),
       ),

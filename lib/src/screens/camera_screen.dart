@@ -9,7 +9,7 @@ import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class CameraScreen extends StatefulWidget with OrientationMixin {
+class CameraScreen extends StatefulWidget with OrientationMixin, ThemeMixin {
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -67,19 +67,20 @@ class _CameraScreenState extends State<CameraScreen>
           child: Stack(
             children: <Widget>[
               Column(children: <Widget>[
-                _cameraPreviewWidget(),
+                _cameraPreviewWidget(context),
                 Row(
                   children: <Widget>[
                     Expanded(
                       flex: 1,
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.black),
+                        decoration: BoxDecoration(
+                          color:
+                              widget.getTheme(context).scaffoldBackgroundColor,
+                        ),
                         child: Text(
                           S.of(context).cameraHelperText,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: widget.getTextTheme(context).caption,
                         ),
                       ),
                     ),
@@ -92,16 +93,16 @@ class _CameraScreenState extends State<CameraScreen>
                 child: Hero(
                   tag: HeroTag.cameraIconButton,
                   child: Material(
-                    shadowColor: Colors.blue,
-                    color: Colors.transparent,
+                    color: widget.getTheme(context).accentColor,
+                    elevation: 6,
+                    shape: CircleBorder(),
                     child: IconButton(
-                      iconSize: 40,
+                      color: widget.getTheme(context).accentIconTheme.color,
+                      iconSize: 30,
                       icon: Icon(
                         Icons.settings_applications,
-                        color: Colors.blue,
-                        size: 40,
                       ),
-                      onPressed: _onPressSettingsButton,
+                      onPressed: _makeOnPressSettingsButton(context),
                     ),
                   ),
                 ),
@@ -113,8 +114,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  /// Display the preview from the camera (or a message if the preview is not available).
-  Widget _cameraPreviewWidget() {
+  Widget _cameraPreviewWidget(BuildContext context) {
     return BlocBuilder<CameraBloc, CameraState>(
       builder: (context, state) {
         return Expanded(
@@ -123,18 +123,28 @@ class _CameraScreenState extends State<CameraScreen>
               child: state.isInitialized
                   ? AspectRatio(
                       aspectRatio: state.cameraController.value.aspectRatio,
-                      child: CameraPreview(state.cameraController),
+                      child: Stack(
+                        children: [
+                          CameraPreview(state.cameraController),
+                          Positioned(
+                            // TODO: add video recording counter
+                            left: 15,
+                            top: 15,
+                            child: AnimatedOpacity(
+                              duration: const Duration(seconds: 1),
+                              opacity: state.isVideoRecording ? 1 : 0,
+                              curve: Curves.bounceInOut,
+                              child: Icon(
+                                Icons.videocam,
+                                color: widget.getTheme(context).accentColor,
+                                size: 50,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : const Spinner(),
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: state.isVideoRecording
-                    ? Colors.redAccent
-                    : Colors.transparent,
-                width: 3.0,
-              ),
             ),
           ),
         );
@@ -142,42 +152,38 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  void _onPressSettingsButton() {
-    showModalBottomSheet<void>(
-      backgroundColor: Colors.blue.withOpacity(0.7),
-      context: context,
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            _toggleAudioWidget(),
-            _cameraTogglesRowWidget(),
-          ],
-        );
-      },
-    );
+  VoidCallback _makeOnPressSettingsButton(BuildContext context) {
+    return () {
+      showModalBottomSheet<void>(
+        backgroundColor:
+            widget.getTheme(context).bottomSheetTheme.backgroundColor,
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              _toggleAudioWidget(context),
+              _cameraTogglesRowWidget(context),
+            ],
+          );
+        },
+      );
+    };
   }
 
-  Widget _toggleAudioWidget() {
+  Widget _toggleAudioWidget(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
           '${S.of(context).audio}:',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-          ),
+          style: widget.getTheme(context).textTheme.body1,
         ),
         BlocBuilder<CameraBloc, CameraState>(
           bloc: _cameraBloc,
           builder: (context, state) {
-            return Switch(
-              activeColor: Colors.red,
-              inactiveThumbColor: Colors.white,
-              activeTrackColor: Colors.grey,
-              inactiveTrackColor: Colors.grey,
+            return Switch.adaptive(
               value: state.isAudioEnabled,
               onChanged: (bool value) {
                 _cameraBloc.add(ToggleCameraAudio());
@@ -189,7 +195,7 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  Widget _cameraTogglesRowWidget() {
+  Widget _cameraTogglesRowWidget(BuildContext context) {
     return BlocBuilder<CameraBloc, CameraState>(
       bloc: _cameraBloc,
       builder: (context, state) {
@@ -199,12 +205,11 @@ class _CameraScreenState extends State<CameraScreen>
             child: SizedBox(
               width: 90.0,
               child: RadioListTile<CameraDescription>(
-                activeColor: Colors.red,
                 title: Icon(
                   CameraHelper.getCameraLensIcon(
                     cameraDescription.lensDirection,
                   ),
-                  color: Colors.white,
+                  color: widget.getColorScheme(context).onSurface,
                   size: 30,
                 ),
                 groupValue: state.cameraController?.description,
@@ -222,7 +227,10 @@ class _CameraScreenState extends State<CameraScreen>
         });
 
         return state.cameras.isEmpty
-            ? Text(S.of(context).noCameraFound)
+            ? Text(
+                S.of(context).noCameraFound,
+                style: widget.getTextTheme(context).body1,
+              )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [...toggles],
