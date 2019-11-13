@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class MainDrawer extends StatefulWidget {
+class MainDrawer extends StatefulWidget with ThemeMixin {
   const MainDrawer();
 
   @override
@@ -31,14 +32,11 @@ class _MainDrawerState extends State<MainDrawer> {
             child: Center(
               child: Text(
                 S.of(context).mainMenu,
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
+                style: widget.getPrimaryTextTheme(context).display1,
               ),
             ),
-            decoration: const BoxDecoration(
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              color: widget.getTheme(context).primaryColor,
             ),
           ),
           Expanded(
