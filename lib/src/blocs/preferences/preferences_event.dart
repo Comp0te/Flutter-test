@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:meta/meta.dart';
 
@@ -15,8 +16,17 @@ class RehydratePreferences extends PreferencesEvent {
 class ChooseLanguage extends PreferencesEvent {
   final SupportedLanguages language;
 
-  ChooseLanguage(this.language);
+  const ChooseLanguage(this.language);
 
   @override
   List<Object> get props => [language];
+}
+
+class ChooseThemeMode extends PreferencesEvent {
+  final ThemeMode themeMode;
+
+  const ChooseThemeMode(this.themeMode);
+
+  @override
+  List<Object> get props => [themeMode];
 }

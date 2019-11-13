@@ -126,7 +126,8 @@ class _CameraScreenState extends State<CameraScreen>
                       child: Stack(
                         children: [
                           CameraPreview(state.cameraController),
-                          Positioned( // TODO: add video recording counter
+                          Positioned(
+                            // TODO: add video recording counter
                             left: 15,
                             top: 15,
                             child: AnimatedOpacity(

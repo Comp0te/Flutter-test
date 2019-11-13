@@ -42,6 +42,7 @@ class _AppState extends State<App> {
       builder: (context, state) {
         return MaterialApp(
           locale: state.locale,
+          themeMode: state.themeMode,
           localizationsDelegates: [
             GlobalWidgetsLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -85,11 +86,14 @@ class _AppState extends State<App> {
     );
   }
 
+// TODO: find a solution to the problem of the need for MaterialApp duplication
+  // in _auth and _main. without this, redirect logic does not work during authentication
   Widget _auth(BuildContext context) {
     return BlocBuilder<PreferencesBloc, PreferencesState>(
       builder: (context, state) {
         return MaterialApp(
           locale: state.locale,
+          themeMode: state.themeMode,
           localizationsDelegates: [
             GlobalWidgetsLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
