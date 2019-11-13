@@ -3,7 +3,7 @@
   "loginEmail": "Sign in",
   "loginWith": "Sign in with $provider",
   "email": "Email",
-  "password": "password",
+  "password": "Password",
   "registration": "Registration",
   "userName": "User name",
   "confirmPassword": "Confirm password",
