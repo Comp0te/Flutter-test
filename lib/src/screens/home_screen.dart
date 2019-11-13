@@ -11,7 +11,7 @@ import 'package:flutter_app/src/helpers/helpers.dart';
 import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget with OrientationMixin {
+class HomeScreen extends StatefulWidget with OrientationMixin, ThemeMixin {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -65,75 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       drawer: const MainDrawer(),
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5),
-          child: PosterFetchBlocListener(
-            child: BlocBuilder<AppStateBloc, AppState>(
-              builder: (context, state) {
-                return AnimatedBuilder(
-                  animation: _scrollController,
-                  builder: (BuildContext context, Widget widget) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          height: 5,
-                          width: ScrollHelper.calcGridViewScrolledWidth(
-                            context: context,
-                            state: state,
-                            gridViewKey: _gridViewKey,
-                            scrollOffset: scrollOffset,
-                            columnCount: gridViewColumnCount,
-                            paddingHorizontal: gridViewPaddingHorizontal,
-                            paddingVertical: gridViewPaddingVertical,
-                            crossAxisSpacing: gridViewCrossAxisSpacing,
-                            mainAxisSpacing: gridViewMainAxisSpacing,
-                          ),
-                          decoration: const BoxDecoration(
-                              color: Color.fromRGBO(0, 0, 255, 1)),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-        title: Text(S.of(context).posters),
-        centerTitle: true,
-        actions: <Widget>[
-          AnimatedBuilder(
-            animation: _scrollController,
-            builder: (BuildContext context, Widget widget) {
-              return IconButton(
-                icon: Transform.rotate(
-                  angle: (math.pi * scrollOffset / 1000),
-                  child: Icon(
-                    Icons.settings,
-                    size: 30,
-                  ),
-                ),
-                onPressed: () {
-                  _scrollController.jumpTo(0);
-                },
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
-              size: 30,
-            ),
-            onPressed: () {
-              BlocProvider.of<AuthBloc>(context).add(
-                LoggedOut(),
-              );
-            },
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(context, gridViewColumnCount),
       body: NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: BlocBuilder<AppStateBloc, AppState>(
@@ -168,29 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisSpacing: gridViewMainAxisSpacing,
                         ),
                         itemBuilder: (BuildContext context, int index) {
-                          return postersList[index].images == null ||
+                          final imageUrl = postersList[index]?.images == null ||
                                   postersList[index].images.isEmpty
-                              ? Image.asset(
-                                  ImageAssets.posterPlaceholder,
-                                  fit: BoxFit.cover,
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: postersList[index].images[0]?.file,
-                                  imageBuilder: (context, imageProvider) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  placeholder: (context, url) =>
-                                      const Spinner(),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                );
+                              ? null
+                              : postersList[index].images[0]?.file;
+
+                          return _buildPosterImage(imageUrl: imageUrl);
                         },
                       ),
                     ),
@@ -209,5 +124,120 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+    int gridViewColumnCount,
+  ) {
+    return AppBar(
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(5),
+        child: PosterFetchBlocListener(
+          child: BlocBuilder<AppStateBloc, AppState>(
+            builder: (context, state) {
+              return AnimatedBuilder(
+                animation: _scrollController,
+                builder: (BuildContext context, Widget animatedWidget) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 5,
+                        width: ScrollHelper.calcGridViewScrolledWidth(
+                          context: context,
+                          state: state,
+                          gridViewKey: _gridViewKey,
+                          scrollOffset: scrollOffset,
+                          columnCount: gridViewColumnCount,
+                          paddingHorizontal: gridViewPaddingHorizontal,
+                          paddingVertical: gridViewPaddingVertical,
+                          crossAxisSpacing: gridViewCrossAxisSpacing,
+                          mainAxisSpacing: gridViewMainAxisSpacing,
+                        ),
+                        decoration: BoxDecoration(
+                          color: widget.getTheme(context).accentColor,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ),
+      title: Text(
+        S.of(context).posters,
+        style: widget.getPrimaryTextTheme(context).headline,
+      ),
+      centerTitle: true,
+      actions: <Widget>[
+        AnimatedBuilder(
+          animation: _scrollController,
+          builder: (BuildContext context, Widget animatedWidget) {
+            return IconButton(
+              icon: Transform.rotate(
+                angle: (math.pi * scrollOffset / 1000),
+                child: Icon(
+                  Icons.settings,
+                  size: 30,
+                  color: widget.getTheme(context).primaryIconTheme.color,
+                ),
+              ),
+              onPressed: () {
+                _scrollController.jumpTo(0);
+              },
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.exit_to_app,
+            size: 30,
+            color: widget.getTheme(context).primaryIconTheme.color,
+          ),
+          onPressed: () {
+            BlocProvider.of<AuthBloc>(context).add(
+              LoggedOut(),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPosterImage({String imageUrl}) {
+    return imageUrl != null
+        ? CachedNetworkImage(
+            imageUrl: imageUrl,
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            },
+            placeholder: (context, url) => const Spinner(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          )
+        : _buildPlaceholderPosterImage(
+            image: Image.asset(
+              ImageAssets.posterPlaceholder,
+              fit: BoxFit.cover,
+            ),
+          );
+  }
+
+  Widget _buildPlaceholderPosterImage({Image image}) {
+    return widget.getTheme(context).brightness == Brightness.dark
+        ? ColorFiltered(
+            colorFilter: ColorFilter.matrix(invertFilterMatrix),
+            child: image,
+          )
+        : image;
   }
 }
