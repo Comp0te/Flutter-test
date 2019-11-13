@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/helpers/helpers.dart';
@@ -224,20 +223,6 @@ class _HomeScreenState extends State<HomeScreen> {
             placeholder: (context, url) => const Spinner(),
             errorWidget: (context, url, error) => Icon(Icons.error),
           )
-        : _buildPlaceholderPosterImage(
-            image: Image.asset(
-              ImageAssets.posterPlaceholder,
-              fit: BoxFit.cover,
-            ),
-          );
-  }
-
-  Widget _buildPlaceholderPosterImage({Image image}) {
-    return widget.getTheme(context).brightness == Brightness.dark
-        ? ColorFiltered(
-            colorFilter: ColorFilter.matrix(invertFilterMatrix),
-            child: image,
-          )
-        : image;
+        : const PosterPlaceholderImage();
   }
 }
