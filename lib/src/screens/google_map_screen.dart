@@ -2,16 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:flutter_app/src/models/model.dart';
+import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class GoogleMapScreen extends StatefulWidget {
+class GoogleMapScreen extends StatefulWidget with ThemeMixin {
   @override
   State<GoogleMapScreen> createState() => GoogleMapScreenState();
 }
@@ -51,7 +52,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
         children: <Widget>[
           GoogleMap(
             myLocationEnabled: true,
-            myLocationButtonEnabled: true,
+            myLocationButtonEnabled: false,
             markers: googleMapPlaces.map((place) => place.marker).toSet(),
             mapType: MapType.hybrid,
             initialCameraPosition: googleMapPlaces.elementAt(0).cameraPosition,
@@ -70,17 +71,18 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
                 builder: (_, loaded) {
                   return loaded
                       ? RaisedButton(
-                          elevation: 10,
+                          elevation: 6,
+                          color: widget.getTheme(context).accentColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
                           padding: const EdgeInsets.all(0),
                           child: Icon(
                             Icons.my_location,
-                            color: Colors.white,
                             size: 30,
+                            color:
+                                widget.getTheme(context).accentIconTheme.color,
                           ),
-                          color: Colors.blue,
                           onPressed: _toMe,
                         )
                       : const Spinner();
@@ -102,23 +104,26 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
                         ? Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: widget.getTheme(context).primaryColor,
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: [
                                 BoxShadow(
                                   blurRadius: 20,
-                                  color: Colors.grey,
+                                  color:
+                                      widget.getColorScheme(context).onSurface,
                                 )
                               ],
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                _latLngBoundsText(
+                                ..._latLngBoundsTextArray(
+                                  context: context,
                                   title: S.of(context).northEast,
                                   data: snapshot.data.northeast,
                                 ),
-                                _latLngBoundsText(
+                                ..._latLngBoundsTextArray(
+                                  context: context,
                                   title: S.of(context).southWest,
                                   data: snapshot.data.southwest,
                                 ),
@@ -136,20 +141,29 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _makeToNextPlace(googleMapPlaces),
-        label: Text(S.of(context).mapNextPlace),
+        label: Text(
+          S.of(context).mapNextPlace,
+        ),
         icon: Icon(Icons.place),
       ),
     );
   }
 
-  Widget _latLngBoundsText({@required LatLng data, String title}) {
-    return Text(
-      '$title: lat: ${data.latitude}, lng: ${data.longitude}',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 12,
+  List<Widget> _latLngBoundsTextArray({
+    @required BuildContext context,
+    @required LatLng data,
+    String title,
+  }) {
+    return [
+      Text(
+        '$title:',
+        style: widget.getPrimaryTextTheme(context).caption,
       ),
-    );
+      Text(
+        'lat: ${data.latitude}, lng: ${data.longitude}',
+        style: widget.getPrimaryTextTheme(context).overline,
+      )
+    ];
   }
 
   Future<void> _toMe() async {
