@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/widgets/widgets.dart';
 
-class ImageFromStore extends StatelessWidget {
+class ImageFromStore extends StatefulWidget {
   final ImageStoreBloc _imageStoreBloc;
   final String _url;
 
@@ -19,24 +18,25 @@ class ImageFromStore extends StatelessWidget {
         super(key: key);
 
   @override
+  _ImageFromStoreState createState() => _ImageFromStoreState();
+}
+
+class _ImageFromStoreState extends State<ImageFromStore> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget._imageStoreBloc..add(GetImage(url: widget._url));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ImageStoreBloc, ImageStoreState>(
-      bloc: _imageStoreBloc..add(GetImage(url: _url)),
+      bloc: widget._imageStoreBloc,
       builder: (context, state) {
         if (state.isLoading) {
-          return Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-              width: 1,
-              color: Colors.blue,
-            )),
-            child: const Spinner(),
-          );
+          return const Spinner();
         } else if (state.image == null) {
-          return Image.asset(
-            ImageAssets.posterPlaceholder,
-            fit: BoxFit.cover,
-          );
+          return const PosterPlaceholderImage();
         } else {
           return Container(
             decoration: BoxDecoration(
