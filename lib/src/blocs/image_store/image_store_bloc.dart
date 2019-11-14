@@ -13,21 +13,19 @@ class ImageStoreBloc extends Bloc<ImageStoreEvent, ImageStoreState> {
         _imageStoreRepository = imageStoreRepository;
 
   @override
-  ImageStoreState get initialState => ImageStoreState.init();
+  ImageStoreState get initialState => ImageStoreInitial();
 
   @override
   Stream<ImageStoreState> mapEventToState(ImageStoreEvent event) async* {
     if (event is GetImage && event.url != null) {
-      yield ImageStoreState.loading();
+      yield ImageStoreLoading();
 
       try {
         final imageFile = await _imageStoreRepository.getImage(event.url);
 
-        yield ImageStoreState.loaded(imageFile);
+        yield ImageStoreLoaded(image: imageFile);
       } catch (err) {
-        print('get image error: $err');
-
-        yield ImageStoreState.init();
+        yield ImageStoreInitial();
       }
     }
   }

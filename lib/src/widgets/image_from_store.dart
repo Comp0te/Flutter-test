@@ -33,11 +33,11 @@ class _ImageFromStoreState extends State<ImageFromStore> {
     return BlocBuilder<ImageStoreBloc, ImageStoreState>(
       bloc: widget._imageStoreBloc,
       builder: (context, state) {
-        if (state.isLoading) {
+        if (state is ImageStoreLoading) {
           return const Spinner();
-        } else if (state.image == null) {
-          return const PosterPlaceholderImage();
-        } else {
+        }
+
+        if (state is ImageStoreLoaded) {
           return Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -47,6 +47,8 @@ class _ImageFromStoreState extends State<ImageFromStore> {
             ),
           );
         }
+
+        return const PosterPlaceholderImage();
       },
     );
   }

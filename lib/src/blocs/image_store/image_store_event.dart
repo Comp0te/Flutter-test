@@ -4,17 +4,17 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class ImageStoreEvent extends Equatable {
   const ImageStoreEvent();
-}
 
-class ImageStoreInit extends ImageStoreEvent {
   @override
   List<Object> get props => [];
 }
 
+class ImageStoreInit extends ImageStoreEvent {}
+
 class GetImage extends ImageStoreEvent {
   final String url;
 
-  GetImage({this.url});
+  const GetImage({this.url});
 
   @override
   List<Object> get props => [url];
