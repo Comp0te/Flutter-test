@@ -69,7 +69,7 @@ class DioInstance {
         final statusCode = error.response?.statusCode;
 
         // Assume 401 stands for token expired
-        if (statusCode == 401 || statusCode == 400) {
+        if (statusCode == 401) {
           final token = await secureStorageRepository.getToken();
           final tokenHeader = getAuthorizationValue(token);
           final options = error.response.request;
