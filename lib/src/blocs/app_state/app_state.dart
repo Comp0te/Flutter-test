@@ -9,12 +9,12 @@ class AppState extends EquatableClass with StateUpdaterMixin {
   final Map<String, User> users;
   final Map<String, PosterNormalized> posters;
 
-  AppState({
+  const AppState({
     @required this.users,
     @required this.posters,
   });
 
-  factory AppState.init() => AppState(
+  factory AppState.init() => const AppState(
         users: {},
         posters: {},
       );
