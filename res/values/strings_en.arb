@@ -37,6 +37,7 @@
   "errorPasswordsDoNotMatch": "Passwords don't match",
   "errorCommon": "Something went wrong",
   "errorBadInternetConnection": "Bad internet connection",
-  "errorRequestCanceled": "Request canceled"
-
+  "errorRequestCanceled": "Request canceled",
+  "cameraUnavailable": "The camera on your device is unavailable",
+  "unexpectedError": "Sorry, an unexpected error occurred"
 }

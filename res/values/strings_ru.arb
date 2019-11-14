@@ -37,6 +37,7 @@
   "errorPasswordsDoNotMatch": "Пароли не совпадают",
   "errorCommon": "Что-то пошло не так",
   "errorBadInternetConnection": "Плохое интернет соединение",
-  "errorRequestCanceled": "Запрос отменен"
-
+  "errorRequestCanceled": "Запрос отменен",
+  "cameraUnavailable": "Камера на Вашем устройстве недоступна",
+  "unexpectedError": "Извините, возникла неожиданная ошибка"
 }
