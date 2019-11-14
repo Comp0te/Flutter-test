@@ -90,13 +90,13 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
                         size: 40,
                       ),
                       onPressed: () {
-                        if (state.photoPath != null) {
+                        if (state.hasPhotoPath) {
                           _cameraBloc.add(DeleteCameraFile(
                             path: state.photoPath,
                           ));
                         }
 
-                        if (state.videoPath != null) {
+                        if (state.hasVideoPath) {
                           _cameraBloc.add(DeleteCameraFile(
                             path: state.videoPath,
                           ));
@@ -116,14 +116,14 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
   }
 
   Widget makePreview(CameraState state) {
-    if (state.photoPath != null) {
+    if (state.hasPhotoPath) {
       return Image.file(
         File(state.photoPath),
         fit: BoxFit.contain,
       );
     }
 
-    if (state.videoPath != null) {
+    if (state.hasVideoPath) {
       return CustomVideoPlayer(
         videoPath: state.videoPath,
       );

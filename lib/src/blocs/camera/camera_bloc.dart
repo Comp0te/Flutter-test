@@ -41,24 +41,28 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
     try {
       final cameras = await availableCameras();
 
-      final backCameraList = cameras
-          .where((camera) => camera.lensDirection == CameraLensDirection.back)
-          .toList();
+      if (cameras.isNotEmpty) {
+        final backCameraList = cameras
+            .where((camera) => camera.lensDirection == CameraLensDirection.back)
+            .toList();
 
-      final controller = CameraController(
-        backCameraList.isNotEmpty ? backCameraList[0] : cameras[0],
-        ResolutionPreset.high,
-        enableAudio: state.isAudioEnabled,
-      );
+        final controller = CameraController(
+          backCameraList.isNotEmpty ? backCameraList[0] : cameras[0],
+          CameraState.defaultResolutionPreset,
+          enableAudio: CameraState.defaultEnableAudio,
+        );
 
-      await controller.initialize();
+        await controller.initialize();
 
-      yield state.copyWith(
-        cameraController: controller,
-        cameras: cameras,
-      );
+        yield state.copyWith(
+          cameraController: controller,
+          cameras: cameras,
+        );
+      } else {
+        yield state.copyWith(errorType: CameraErrorType.unavailable);
+      }
     } catch (err) {
-      print('--- availableCameras error --- $err');
+      yield state.copyWith(errorType: CameraErrorType.common);
     }
   }
 
@@ -82,7 +86,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
 
       final newController = CameraController(
         event.cameraDescription,
-        ResolutionPreset.high,
+        CameraState.defaultResolutionPreset,
         enableAudio: state.isAudioEnabled,
       );
       await newController.initialize();
@@ -91,7 +95,7 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
         cameraController: newController,
       );
     } catch (err) {
-      print('camera select error - $err');
+      yield state.copyWith(errorType: CameraErrorType.common);
     }
   }
 
