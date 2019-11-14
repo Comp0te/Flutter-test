@@ -40,7 +40,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
         videoPath: event.videoPath,
       );
     } catch (err) {
-      print('--- initialize Video Player error --- $err');
+      yield VideoPlayerState(errorType: VideoPlayerErrorsType.common);
     }
   }
 
@@ -50,7 +50,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
 
       yield state.copyWith(videoPlayerController: state.videoPlayerController);
     } catch (err) {
-      print('--- initialize Video Player error --- $err');
+      yield VideoPlayerState(errorType: VideoPlayerErrorsType.common);
     }
   }
 
@@ -60,7 +60,7 @@ class VideoPlayerBloc extends Bloc<VideoPlayerEvent, VideoPlayerState> {
 
       yield state.copyWith(videoPlayerController: state.videoPlayerController);
     } catch (err) {
-      print('--- initialize Video Player error --- $err');
+      yield VideoPlayerState(errorType: VideoPlayerErrorsType.common);
     }
   }
 }

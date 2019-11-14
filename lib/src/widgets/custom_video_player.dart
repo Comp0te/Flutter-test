@@ -40,6 +40,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer>
     super.dispose();
   }
 
+  // TODO: add error handling
   @override
   Widget build(BuildContext context) {
     return Stack(
