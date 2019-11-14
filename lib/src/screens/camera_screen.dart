@@ -106,7 +106,7 @@ class _CameraScreenState extends State<CameraScreen>
                         color: widget.getTheme(context).accentIconTheme.color,
                         iconSize: 30,
                         icon: Icon(
-                          Icons.settings_applications,
+                          Icons.settings,
                         ),
                         onPressed: _makeOnPressSettingsButton(context),
                       ),
