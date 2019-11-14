@@ -23,14 +23,14 @@ class AuthBlocListener<B extends Bloc<dynamic, S>, S extends RequestState>
 
     return BlocListener<B, S>(
       condition: (prev, cur) {
-        return prev.isLoading && !cur.isLoading;
+        return prev is RequestLoading;
       },
       listener: (context, state) {
-        if (state.isSuccess && state is RequestState<AuthResponse>) {
+        if (state is RequestSuccessful<AuthResponse>) {
           _authBloc.add(LoggedIn(authResponse: state.data));
         }
 
-        if (state.isFailure) {
+        if (state is RequestFailed) {
           showSnackBarError(
             context: context,
             error: state.error,

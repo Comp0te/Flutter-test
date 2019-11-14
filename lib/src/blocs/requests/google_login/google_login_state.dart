@@ -1,47 +1,38 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
 
 @immutable
-class GoogleLoginState extends EquatableClass
-    implements RequestState<AuthResponse> {
+abstract class GoogleLoginState extends Equatable implements RequestState {
+  const GoogleLoginState();
+
   @override
-  final bool isLoading;
+  List<Object> get props => [];
+}
+
+class GoogleLoginInitial extends GoogleLoginState implements RequestInitial {}
+
+class GoogleLoginLoading extends GoogleLoginState implements RequestLoading {}
+
+class GoogleLoginSuccessful extends GoogleLoginState
+    implements RequestSuccessful<AuthResponse> {
   @override
   final AuthResponse data;
+
+  const GoogleLoginSuccessful({this.data});
+
+  @override
+  List<Object> get props => [data];
+}
+
+class GoogleLoginFailed extends GoogleLoginState implements RequestFailed {
   @override
   final Exception error;
 
-  GoogleLoginState({
-    @required this.isLoading,
-    this.data,
-    this.error,
-  });
+  const GoogleLoginFailed({this.error});
 
   @override
-  bool get isRefreshing => isLoading;
-  @override
-  bool get isSuccess => data != null;
-  @override
-  bool get isFailure => error != null;
-
-  factory GoogleLoginState.init({bool isLoading = false}) =>
-      GoogleLoginState(isLoading: isLoading);
-
-  @override
-  GoogleLoginState copyWith({
-    @required bool isLoading,
-    AuthResponse data,
-    Exception error,
-  }) {
-    return GoogleLoginState(
-      isLoading: isLoading,
-      data: data ?? this.data,
-      error: error ?? this.error,
-    );
-  }
-
-  @override
-  List<Object> get props => [isLoading, data, error];
+  List<Object> get props => [error];
 }

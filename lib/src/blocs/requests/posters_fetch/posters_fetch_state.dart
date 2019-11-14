@@ -4,15 +4,10 @@ import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
 
 @immutable
-class PostersFetchState extends EquatableClass
-    implements RequestPaginatedState<PostersFetchResponse> {
-  @override
+class PostersFetchState extends EquatableClass {
   final bool isLoadingFirstPage;
-  @override
   final bool isLoadingNextPage;
-  @override
   final PostersFetchResponse data;
-  @override
   final Exception error;
 
   PostersFetchState({
@@ -29,21 +24,15 @@ class PostersFetchState extends EquatableClass
     );
   }
 
-  @override
   bool get isLoading => isLoadingFirstPage || isLoadingNextPage;
-
-  @override
   bool get isRefreshing => isLoadingFirstPage;
 
-  @override
   bool get isSuccess => data != null;
-  @override
   bool get isFailure => error != null;
 
   bool get hasNextPage =>
       data?.meta != null ? data.meta.page < data.meta.total : false;
 
-  @override
   PostersFetchState copyWith({
     bool isLoadingFirstPage,
     bool isLoadingNextPage,

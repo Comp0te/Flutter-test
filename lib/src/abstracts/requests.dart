@@ -12,34 +12,22 @@ abstract class RequestFailure {
   RequestFailure({this.error});
 }
 
-abstract class RequestState<T> {
-  final bool isLoading;
-  final T data;
-  final Exception error;
-
-  bool get isRefreshing;
-  bool get isSuccess => data != null;
-  bool get isFailure => error != null;
-
-  RequestState({this.isLoading, this.data, this.error});
-
-  RequestState<T> copyWith() {
-    return this;
-  }
+abstract class RequestState {
+  const RequestState();
 }
 
-abstract class RequestPaginatedState<T> extends RequestState<T> {
-  final bool isLoadingFirstPage;
-  final bool isLoadingNextPage;
+abstract class RequestInitial extends RequestState {}
 
-  RequestPaginatedState(
-    this.isLoadingFirstPage,
-    this.isLoadingNextPage,
-    T data,
-    Exception error,
-  ) : super(
-          data: data,
-          error: error,
-          isLoading: isLoadingFirstPage || isLoadingNextPage,
-        );
+abstract class RequestLoading extends RequestState {}
+
+abstract class RequestSuccessful<T> extends RequestState {
+  final T data;
+
+  const RequestSuccessful({this.data});
+}
+
+abstract class RequestFailed extends RequestState {
+  final Exception error;
+
+  const RequestFailed({this.error});
 }

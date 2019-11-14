@@ -155,12 +155,12 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     void _onPressGoogleLogin() {
-      BlocProvider.of<GoogleLoginBloc>(context).add(const GoogleLoginRequest());
+      BlocProvider.of<GoogleLoginBloc>(context).add(GoogleLoginRequest());
     }
 
     void _onPressFacebookLogin() {
       BlocProvider.of<FacebookLoginBloc>(context)
-          .add(const FacebookLoginRequest());
+          .add(FacebookLoginRequest());
     }
 
     return Flex(
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen>
               return Opacity(
                 opacity: widget.submitOpacity,
                 child: SubmitButton(
-                  isLoading: loginState.isLoading,
+                  isLoading: loginState is LoginLoading,
                   title: S.of(context).loginEmail,
                   color: widget.color,
                   onPress: _makeOnPressSubmit(
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen>
               return Opacity(
                 opacity: widget.submitOpacity,
                 child: SubmitButton(
-                  isLoading: googleLoginState.isLoading,
+                  isLoading: googleLoginState is GoogleLoginLoading,
                   title: S.of(context).loginWith('Google'),
                   color: widget.color,
                   onPress: _onPressGoogleLogin,
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen>
               return Opacity(
                 opacity: widget.submitOpacity,
                 child: SubmitButton(
-                  isLoading: facebookLoginState.isLoading,
+                  isLoading: facebookLoginState is FacebookLoginLoading,
                   title: S.of(context).loginWith('Facebook'),
                   color: widget.color,
                   onPress: _onPressFacebookLogin,

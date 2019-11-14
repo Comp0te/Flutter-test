@@ -1,15 +1,12 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_app/src/abstracts/abstracts.dart';
-
-class RefreshRequestBlocListener<B extends Bloc<dynamic, S>,
-    S extends RequestState> extends StatefulWidget {
+class RefreshRequestBlocListener extends StatefulWidget {
   final Widget child;
-  final VoidCallback onRefresh;
+  final VoidCallback onRefresh; // TODO: add general solution
 
   const RefreshRequestBlocListener({
     Key key,
@@ -21,11 +18,10 @@ class RefreshRequestBlocListener<B extends Bloc<dynamic, S>,
 
   @override
   _RefreshRequestBlocListenerState createState() =>
-      _RefreshRequestBlocListenerState<B, S>();
+      _RefreshRequestBlocListenerState();
 }
 
-class _RefreshRequestBlocListenerState<B extends Bloc<dynamic, S>,
-    S extends RequestState> extends State<RefreshRequestBlocListener> {
+class _RefreshRequestBlocListenerState extends State<RefreshRequestBlocListener> {
   Completer<void> _refreshCompleter;
 
   @override
@@ -36,7 +32,7 @@ class _RefreshRequestBlocListenerState<B extends Bloc<dynamic, S>,
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<B, S>(
+    return BlocListener<PostersFetchBloc, PostersFetchState>(
       condition: (prev, cur) {
         return prev.isRefreshing && !cur.isRefreshing;
       },

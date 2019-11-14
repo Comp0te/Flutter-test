@@ -78,8 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: RefreshRequestBlocListener<PostersFetchBloc,
-                        PostersFetchState>(
+                    child: RefreshRequestBlocListener(
                       onRefresh: () {
                         BlocProvider.of<PostersFetchBloc>(context).add(
                           PostersFetchFirstPageRequest(),
