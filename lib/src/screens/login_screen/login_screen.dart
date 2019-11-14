@@ -159,8 +159,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     void _onPressFacebookLogin() {
-      BlocProvider.of<FacebookLoginBloc>(context)
-          .add(FacebookLoginRequest());
+      BlocProvider.of<FacebookLoginBloc>(context).add(FacebookLoginRequest());
     }
 
     return Flex(

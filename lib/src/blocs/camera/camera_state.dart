@@ -39,15 +39,14 @@ class CameraState extends EquatableClass {
         isVideoRecording: false,
       );
 
-  CameraState copyWith({
-    List<CameraDescription> cameras,
-    CameraController cameraController,
-    bool isAudioEnabled,
-    bool isVideoRecording,
-    String photoPath,
-    String videoPath,
-    CameraErrorType errorType
-  }) {
+  CameraState copyWith(
+      {List<CameraDescription> cameras,
+      CameraController cameraController,
+      bool isAudioEnabled,
+      bool isVideoRecording,
+      String photoPath,
+      String videoPath,
+      CameraErrorType errorType}) {
     return CameraState(
       cameras: cameras ?? this.cameras,
       cameraController: cameraController ?? this.cameraController,

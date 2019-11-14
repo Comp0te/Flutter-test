@@ -21,7 +21,8 @@ class RefreshRequestBlocListener extends StatefulWidget {
       _RefreshRequestBlocListenerState();
 }
 
-class _RefreshRequestBlocListenerState extends State<RefreshRequestBlocListener> {
+class _RefreshRequestBlocListenerState
+    extends State<RefreshRequestBlocListener> {
   Completer<void> _refreshCompleter;
 
   @override
