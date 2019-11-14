@@ -29,9 +29,10 @@ class _AppState extends State<App> {
       mainNavigatorKey: mainNavigatorKey,
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state.processing) return const Spinner();
+          if (state is AuthLoading) return const Spinner();
+          if (state is AuthAuthenticated) return _main(context);
 
-          return state.isAuthenticated ? _main(context) : _auth(context);
+          return _auth(context);
         },
       ),
     );

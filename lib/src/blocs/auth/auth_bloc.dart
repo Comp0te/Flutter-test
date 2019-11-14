@@ -18,7 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         assert(authRepository != null);
 
   @override
-  AuthState get initialState => AuthState.init();
+  AuthState get initialState => AuthInit();
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
@@ -32,7 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapAppStartedToState(AppStarted event) async* {
-    yield state.copyWith(processing: true);
+    yield AuthLoading();
 
     authRepository.addTokenInterceptor(
         secureStorageRepository: secureStorageRepository,
@@ -46,25 +46,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await authRepository.verifyToken(Token(token));
 
-        yield state.copyWith(isAuthenticated: true, processing: false);
+        yield AuthAuthenticated();
       } on Exception catch (_) {
         add(LoggedOut());
       }
     } else {
-      yield AuthState.init();
+      yield AuthUnauthenticated();
     }
   }
 
   Stream<AuthState> _mapLoggedInToState(LoggedIn event) async* {
     await secureStorageRepository.saveToken(event.authResponse.token);
 
-    yield state.copyWith(isAuthenticated: true);
+    yield AuthAuthenticated();
   }
 
   Stream<AuthState> _mapLoggedOutToState(LoggedOut event) async* {
+    yield AuthLoading();
+
     await secureStorageRepository.deleteToken();
     await authRepository.logout();
 
-    yield AuthState.init();
+    yield AuthUnauthenticated();
   }
 }

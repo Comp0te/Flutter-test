@@ -6,23 +6,20 @@ import 'package:flutter_app/src/models/model.dart';
 @immutable
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
-}
 
-class AppStarted extends AuthEvent {
   @override
   List<Object> get props => [];
 }
 
+class AppStarted extends AuthEvent {}
+
 class LoggedIn extends AuthEvent {
   final AuthResponse authResponse;
 
-  LoggedIn({@required this.authResponse});
+  const LoggedIn({@required this.authResponse});
 
   @override
   List<Object> get props => [authResponse];
 }
 
-class LoggedOut extends AuthEvent {
-  @override
-  List<Object> get props => [];
-}
+class LoggedOut extends AuthEvent {}
