@@ -16,29 +16,29 @@ class DBBloc extends Bloc<DBEvent, DBState> {
         assert(appStateBloc != null);
 
   @override
-  DBState get initialState => DBState.init();
+  DBState get initialState => DBInitial();
 
   @override
   Stream<DBState> mapEventToState(DBEvent event) async* {
     if (event is DBInsertUsers) {
-      yield DBState.loading();
+      yield DBLoading();
       await dbRepository.insertUsers(event.users);
-      yield DBState.loaded();
+      yield DBLoaded();
     } else if (event is DBInsertPosters) {
-      yield DBState.loading();
+      yield DBLoading();
       await dbRepository.insertPosters(event.posters);
-      yield DBState.loaded();
+      yield DBLoaded();
     } else if (event is DBInsertPosterImages) {
-      yield DBState.loading();
+      yield DBLoading();
       await dbRepository.insertPosterImages(event.posters);
-      yield DBState.loaded();
+      yield DBLoaded();
     } else if (event is DBGetNormalizedPosters) {
-      yield DBState.loading();
+      yield DBLoading();
 
       final posters = await dbRepository.getNormalizedPosters();
       appStateBloc.add(AppStateUpdatePosters(posters: posters));
 
-      yield DBState.loaded();
+      yield DBLoaded();
     }
   }
 }
