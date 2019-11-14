@@ -4,6 +4,9 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class IntValueEvent extends Equatable {
   const IntValueEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class SetIntValue extends IntValueEvent {
