@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
+
 @immutable
-abstract class GoogleLoginEvent extends Equatable {
+abstract class GoogleLoginEvent extends Equatable implements RequestEvent {
   const GoogleLoginEvent();
 
   @override

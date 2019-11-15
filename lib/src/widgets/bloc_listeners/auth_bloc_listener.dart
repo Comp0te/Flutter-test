@@ -7,7 +7,7 @@ import 'package:flutter_app/src/mixins/mixins.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 
-class AuthBlocListener<B extends Bloc<dynamic, S>, S extends RequestState>
+class AuthBlocListener<B extends Bloc<RequestEvent, S>, S extends RequestState>
     extends StatelessWidget with SnackBarMixin {
   final Widget child;
 
