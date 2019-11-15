@@ -1,21 +1,23 @@
 import 'dart:io' as io;
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/data_providers/data_providers.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 
-class ImageStoreRepository {
-  final ImageStoreProvider _imageStoreProvider;
+class ImageStoreRepository implements ImageDatabaseRepository {
+  @override
+  final ImageDatabaseProvider imageDatabaseProvider;
 
   ImageStoreRepository({
-    @required ImageStoreProvider imageStoreProvider,
-  })  : assert(imageStoreProvider != null),
-        _imageStoreProvider = imageStoreProvider;
+    @required this.imageDatabaseProvider,
+  }) : assert(imageDatabaseProvider != null);
 
+  @override
   Future<io.File> getImage(String url) async {
-    return _imageStoreProvider.getImage(url);
+    return imageDatabaseProvider.getImage(url);
   }
 
+  @override
   Future<void> saveImage(String url) async {
-    return _imageStoreProvider.computeSaveImage(url);
+    return imageDatabaseProvider.computeSaveImage(url);
   }
 }

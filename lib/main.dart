@@ -34,7 +34,7 @@ void main() {
     dbProvider: DBProvider(db: SQFLite().db),
   );
   final _imageStoreRepository = ImageStoreRepository(
-    imageStoreProvider: ImageStoreProvider(),
+    imageDatabaseProvider: ImageStoreProvider(),
   );
   final _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
@@ -62,7 +62,7 @@ void main() {
         BlocProvider<AppStateBloc>(
           builder: (context) => AppStateBloc(
             dbRepository: _dbRepository,
-            imageStoreRepository: _imageStoreRepository,
+            imageDatabaseRepository: _imageStoreRepository,
           ),
         ),
         BlocProvider<NavigationBloc>(

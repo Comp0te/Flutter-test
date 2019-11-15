@@ -2,21 +2,22 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppState> {
   final DBRepository _dbRepository;
-  final ImageStoreRepository _imageStoreRepository;
+  final ImageDatabaseRepository _imageDatabaseRepository;
 
   AppStateBloc({
     @required DBRepository dbRepository,
-    @required ImageStoreRepository imageStoreRepository,
+    @required ImageStoreRepository imageDatabaseRepository,
   })  : assert(dbRepository != null),
-        assert(imageStoreRepository != null),
+        assert(imageDatabaseRepository != null),
         _dbRepository = dbRepository,
-        _imageStoreRepository = imageStoreRepository;
+        _imageDatabaseRepository = imageDatabaseRepository;
 
   @override
   AppState get initialState => AppState.init();
@@ -75,7 +76,7 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
     Stream.fromIterable(posters).listen((poster) {
       if (poster.images != null && poster.images.isNotEmpty) {
         Stream.fromIterable(poster.images)
-            .forEach((image) => _imageStoreRepository.saveImage(image.file));
+            .forEach((image) => _imageDatabaseRepository.saveImage(image.file));
       }
     });
 

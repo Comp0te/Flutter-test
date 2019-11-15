@@ -1,3 +1,5 @@
+import 'dart:io' as io;
+
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/abstracts/abstracts.dart';
@@ -28,5 +30,19 @@ abstract class KeyValueDatabaseRepository {
     @required String value,
   }) async {
     await keyValueDatabaseProvider.write(key: key, value: value);
+  }
+}
+
+abstract class ImageDatabaseRepository {
+  final ImageDatabaseProvider imageDatabaseProvider;
+
+  const ImageDatabaseRepository({this.imageDatabaseProvider});
+
+  Future<io.File> getImage(String url) async {
+    return imageDatabaseProvider.getImage(url);
+  }
+
+  Future<void> saveImage(String url) async {
+    return imageDatabaseProvider.computeSaveImage(url);
   }
 }
