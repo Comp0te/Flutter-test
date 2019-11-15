@@ -172,7 +172,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildSubmitButton(BuildContext context, bool validationEnabled) {
-    print(widget.getTheme(context).textTheme.headline);
     return BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, registerState) {
         return SubmitButton(
