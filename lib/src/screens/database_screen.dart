@@ -115,7 +115,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                   width: 50,
                   child: ImageFromStore(
                     imageStoreBloc: ImageStoreBloc(
-                      imageStoreRepository: _imageStoreRepository,
+                      imageDatabaseRepository: _imageStoreRepository,
                     ),
                     url: image.file,
                   ),

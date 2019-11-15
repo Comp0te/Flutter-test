@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -21,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final double gridViewPaddingHorizontal = 10;
   final double gridViewPaddingVertical = 20;
   final _gridViewKey = GlobalKey();
+  final _loadMorePostersSubject = PublishSubject<PostersFetchNextPageRequest>();
+  StreamSubscription loadMorePostersSubscription;
 
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
@@ -36,21 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController = ScrollController();
     _postersFetchBloc = BlocProvider.of<PostersFetchBloc>(context)
       ..add(PostersFetchFirstPageRequest());
+
+    loadMorePostersSubscription = _loadMorePostersSubject.stream
+        .debounceTime(const Duration(milliseconds: 100))
+        .listen((event) => _postersFetchBloc.add(event));
+  }
+
+  @override
+  void dispose() {
+    loadMorePostersSubscription?.cancel();
+    super.dispose();
   }
 
   void loadMorePosters() {
     final state = _postersFetchBloc.state;
 
-    if (state.hasNextPage && !state.isLoadingNextPage) {
-      _postersFetchBloc.add(
-        PostersFetchNextPageRequest(page: state.data.meta.page + 1),
-      );
+    if (state is PostersFetchSuccessful && state.hasNextPage) {
+      _loadMorePostersSubject.sink
+          .add(PostersFetchNextPageRequest(page: state.data.meta.page + 1));
     }
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
-      if (_scrollController.position.extentAfter <= 300) {
+      if (_scrollController.position.extentAfter <= 500) {
         loadMorePosters();
       }
     }
@@ -62,66 +75,79 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final gridViewColumnCount = widget.isPortrait(context) ? 2 : 3;
 
-    return Scaffold(
-      drawer: const MainDrawer(),
-      appBar: _buildAppBar(context, gridViewColumnCount),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: _handleScrollNotification,
-        child: BlocBuilder<AppStateBloc, AppState>(
-          builder: (context, appState) {
-            final postersList = appState.posters.values.toList();
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        Scaffold(
+          drawer: const MainDrawer(),
+          appBar: _buildAppBar(context, gridViewColumnCount),
+          body: NotificationListener<ScrollNotification>(
+            onNotification: _handleScrollNotification,
+            child: BlocBuilder<AppStateBloc, AppState>(
+              builder: (context, appState) {
+                final postersList = appState.posters.values.toList();
 
-            if (postersList.isEmpty) return const Spinner();
+                if (postersList.isEmpty) return const Spinner();
 
-            return SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: RefreshRequestBlocListener<PostersFetchBloc,
-                        PostersFetchState>(
-                      onRefresh: () {
-                        BlocProvider.of<PostersFetchBloc>(context).add(
-                          PostersFetchFirstPageRequest(),
-                        );
-                      },
-                      child: GridView.builder(
-                        key: _gridViewKey,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: gridViewPaddingHorizontal,
-                          vertical: gridViewPaddingVertical,
-                        ),
-                        controller: _scrollController,
-                        itemCount: postersList.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: gridViewColumnCount,
-                          crossAxisSpacing: gridViewCrossAxisSpacing,
-                          mainAxisSpacing: gridViewMainAxisSpacing,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          final imageUrl = postersList[index]?.images == null ||
-                                  postersList[index].images.isEmpty
-                              ? null
-                              : postersList[index].images[0]?.file;
-
-                          return _buildPosterImage(imageUrl: imageUrl);
-                        },
-                      ),
+                return RefreshRequestBlocListener<PostersFetchBloc,
+                    PostersFetchState>(
+                  onRefresh: () {
+                    BlocProvider.of<PostersFetchBloc>(context).add(
+                      PostersFetchFirstPageRequest(),
+                    );
+                  },
+                  child: GridView.builder(
+                    key: _gridViewKey,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: gridViewPaddingHorizontal,
+                      vertical: gridViewPaddingVertical,
                     ),
-                  ),
-                  BlocBuilder<PostersFetchBloc, PostersFetchState>(
-                    builder: (context, state) {
-                      return state.isLoadingNextPage
-                          ? const Spinner()
-                          : Container();
+                    controller: _scrollController,
+                    itemCount: postersList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: gridViewColumnCount,
+                      crossAxisSpacing: gridViewCrossAxisSpacing,
+                      mainAxisSpacing: gridViewMainAxisSpacing,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      final imageUrl = postersList[index]?.images == null ||
+                              postersList[index].images.isEmpty
+                          ? null
+                          : postersList[index].images[0]?.file;
+
+                      if (index == postersList.length) {
+                        return Column(
+                          children: <Widget>[
+                            _buildPosterImage(imageUrl: imageUrl),
+                          ],
+                        );
+                      }
+
+                      return _buildPosterImage(imageUrl: imageUrl);
                     },
-                  )
-                ],
-              ),
-            );
-          },
+                  ),
+                );
+              },
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          bottom: 50,
+          left: MediaQuery.of(context).size.width / 2 - 25,
+          child: BlocBuilder<PostersFetchBloc, PostersFetchState>(
+            builder: (context, state) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: state is PostersFetchNextRequestLoading
+                    ? const Spinner()
+                    : Container(),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 

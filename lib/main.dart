@@ -18,7 +18,7 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final dio = DioInstance().dio;
   final _secureStorageRepository = SecureStorageRepository(
-    storage: SecureStorageProvider(secureStorage: const FlutterSecureStorage()),
+    storage: const SecureStorageProvider(secureStorage: FlutterSecureStorage()),
   );
   final _authRepository = AuthRepository(
     authApiProvider: AuthApiProvider(
@@ -30,11 +30,11 @@ void main() {
   final _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
   );
-  final _dbRepository = DBRepository(
-    dbProvider: DBProvider(db: SQFLite().db),
+  final _sqfLiteRepository = SQFLiteRepository(
+    databaseProvider: SQFLiteProvider(db: SQFLite().db),
   );
   final _imageStoreRepository = ImageStoreRepository(
-    imageStoreProvider: ImageStoreProvider(),
+    imageDatabaseProvider: ImageStoreProvider(),
   );
   final _cameraRepository = CameraRepository(
     cameraProvider: CameraProvider(),
@@ -45,7 +45,7 @@ void main() {
     ),
   );
   final _sharedPreferencesRepository = SharedPreferencesRepository(
-    sharedPreferencesProvider: SharedPreferencesProvider(
+    keyValueDatabaseProvider: SharedPreferencesProvider(
       sharedPreferencesInstance: SharedPreferences.getInstance(),
     ),
   );
@@ -61,8 +61,8 @@ void main() {
         ),
         BlocProvider<AppStateBloc>(
           builder: (context) => AppStateBloc(
-            dbRepository: _dbRepository,
-            imageStoreRepository: _imageStoreRepository,
+            databaseRepository: _sqfLiteRepository,
+            imageDatabaseRepository: _imageStoreRepository,
           ),
         ),
         BlocProvider<NavigationBloc>(
@@ -75,7 +75,7 @@ void main() {
         ),
         BlocProvider<PreferencesBloc>(
           builder: (context) => PreferencesBloc(
-            sharedPreferencesRepository: _sharedPreferencesRepository,
+            keyValueDatabaseRepository: _sharedPreferencesRepository,
           ),
         ),
       ],
@@ -90,8 +90,8 @@ void main() {
           RepositoryProvider<PostersRepository>(builder: (context) {
             return _postersRepository;
           }),
-          RepositoryProvider<DBRepository>(builder: (context) {
-            return _dbRepository;
+          RepositoryProvider<SQFLiteRepository>(builder: (context) {
+            return _sqfLiteRepository;
           }),
           RepositoryProvider<ImageStoreRepository>(builder: (context) {
             return _imageStoreRepository;

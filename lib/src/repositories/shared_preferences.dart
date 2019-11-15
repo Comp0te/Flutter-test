@@ -1,31 +1,37 @@
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/data_providers/data_providers.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 
-class SharedPreferencesRepository {
-  final SharedPreferencesProvider sharedPreferencesProvider;
+class SharedPreferencesRepository implements KeyValueDatabaseRepository {
+  @override
+  final KeyValueDatabaseProvider keyValueDatabaseProvider;
 
   SharedPreferencesRepository({
-    @required this.sharedPreferencesProvider,
-  }) : assert(sharedPreferencesProvider != null);
+    @required this.keyValueDatabaseProvider,
+  }) : assert(keyValueDatabaseProvider != null);
 
-  Future<T> read<T>(String key) async {
-    return sharedPreferencesProvider.read<T>(key);
+  @override
+  Future<String> read(String key) async {
+    return keyValueDatabaseProvider.read(key);
   }
 
+  @override
   Future<bool> contains(String key) async {
-    return sharedPreferencesProvider.contains(key);
+    return keyValueDatabaseProvider.contains(key);
   }
 
-  Future<bool> delete(String key) async {
-    return sharedPreferencesProvider.delete(key);
+  @override
+  Future<void> delete(String key) async {
+    return keyValueDatabaseProvider.delete(key);
   }
 
-  Future<bool> clear() async {
-    return sharedPreferencesProvider.clear();
+  @override
+  Future<void> clear() async {
+    return keyValueDatabaseProvider.clear();
   }
 
-  Future<bool> write<T>({@required String key, @required T value}) async {
-    return sharedPreferencesProvider.write<T>(key: key, value: value);
+  @override
+  Future<void> write({@required String key, @required String value}) async {
+    return keyValueDatabaseProvider.write(key: key, value: value);
   }
 }

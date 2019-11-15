@@ -14,15 +14,15 @@ class CameraBlocListener extends StatelessWidget with SnackBarMixin {
   })  : assert(child != null),
         super(key: key);
 
-  @override
+  @override // TODO: add error handling
   Widget build(BuildContext context) {
     return BlocListener<CameraBloc, CameraState>(
       condition: (prevState, curState) {
-        return curState.photoPath != null ||
+        return curState.hasPhotoPath ||
             (prevState.isVideoRecording && !curState.isVideoRecording);
       },
       listener: (context, state) {
-        if (state.photoPath != null || state.videoPath != null) {
+        if (state.hasPhotoPath || state.hasVideoPath) {
           Navigator.of(context).push(
             MainRoutes.cameraPreviewScreenRoute(
               context,

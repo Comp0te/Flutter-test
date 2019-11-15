@@ -1,27 +1,16 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/abstracts/abstracts.dart';
-
 @immutable
-class DBState extends EquatableClass {
-  final bool isDbLoading;
-
-  DBState({
-    @required this.isDbLoading,
-  });
-
-  factory DBState.init() => DBState(
-        isDbLoading: false,
-      );
-
-  factory DBState.loading() => DBState(
-        isDbLoading: true,
-      );
-
-  factory DBState.loaded() => DBState(
-        isDbLoading: false,
-      );
+abstract class DBState extends Equatable {
+  const DBState();
 
   @override
-  List<Object> get props => [isDbLoading];
+  List<Object> get props => [];
 }
+
+class DBInitial extends DBState {}
+
+class DBLoading extends DBState {}
+
+class DBLoaded extends DBState {}

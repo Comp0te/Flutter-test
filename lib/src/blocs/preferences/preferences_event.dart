@@ -1,17 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/constants/constants.dart';
 import 'package:meta/meta.dart';
+
+import 'package:flutter_app/src/constants/constants.dart';
 
 @immutable
 abstract class PreferencesEvent extends Equatable {
   const PreferencesEvent();
-}
 
-class RehydratePreferences extends PreferencesEvent {
   @override
   List<Object> get props => [];
 }
+
+class RehydratePreferences extends PreferencesEvent {}
 
 class ChooseLanguage extends PreferencesEvent {
   final SupportedLanguages language;

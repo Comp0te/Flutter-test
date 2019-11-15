@@ -15,21 +15,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) : assert(authRepository != null);
 
   @override
-  LoginState get initialState => LoginState.init();
+  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginRequest) {
       yield* _mapLoginRequestToState(event);
-    } else if (event is LoginRequestSuccess) {
-      yield* _mapLoginRequestSuccessToState(event);
-    } else if (event is LoginRequestFailure) {
-      yield* _mapLoginRequestFailureToState(event);
     }
   }
 
   Stream<LoginState> _mapLoginRequestToState(LoginRequest event) async* {
-    yield LoginState.init(isLoading: true);
+    yield LoginLoading();
 
     try {
       final response = await authRepository.login(LoginInput(
@@ -37,27 +33,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       ));
 
-      add(LoginRequestSuccess(response: response));
-    } on Exception catch (err) {
-      add(LoginRequestFailure(error: err));
+      yield LoginSuccessful(data: response);
+    } on Exception catch (error) {
+      yield LoginFailed(error: error);
     }
-  }
-
-  Stream<LoginState> _mapLoginRequestSuccessToState(
-    LoginRequestSuccess event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      data: event.response,
-    );
-  }
-
-  Stream<LoginState> _mapLoginRequestFailureToState(
-    LoginRequestFailure event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      error: event.error,
-    );
   }
 }

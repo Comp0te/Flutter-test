@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 
-class RefreshRequestBlocListener<B extends Bloc<dynamic, S>,
+class RefreshRequestBlocListener<B extends Bloc<RequestEvent, S>,
     S extends RequestState> extends StatefulWidget {
   final Widget child;
   final VoidCallback onRefresh;
@@ -24,7 +24,7 @@ class RefreshRequestBlocListener<B extends Bloc<dynamic, S>,
       _RefreshRequestBlocListenerState<B, S>();
 }
 
-class _RefreshRequestBlocListenerState<B extends Bloc<dynamic, S>,
+class _RefreshRequestBlocListenerState<B extends Bloc<RequestEvent, S>,
     S extends RequestState> extends State<RefreshRequestBlocListener> {
   Completer<void> _refreshCompleter;
 
@@ -37,12 +37,11 @@ class _RefreshRequestBlocListenerState<B extends Bloc<dynamic, S>,
   @override
   Widget build(BuildContext context) {
     return BlocListener<B, S>(
-      condition: (prev, cur) {
-        return prev.isRefreshing && !cur.isRefreshing;
-      },
       listener: (context, state) {
-        _refreshCompleter?.complete();
-        _refreshCompleter = Completer();
+        if (state is RequestSuccessful) {
+          _refreshCompleter?.complete();
+          _refreshCompleter = Completer();
+        }
       },
       child: RefreshIndicator(
         onRefresh: () {

@@ -2,17 +2,26 @@ import 'package:camera/camera.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_app/src/abstracts/abstracts.dart';
 
+enum CameraErrorType { unavailable, common }
+
 @immutable
 class CameraState extends EquatableClass {
+  static final defaultResolutionPreset = ResolutionPreset.high;
+  static final defaultEnableAudio = true;
+
   final List<CameraDescription> cameras;
   final CameraController cameraController;
   final bool isAudioEnabled;
   final bool isVideoRecording;
   final String photoPath;
   final String videoPath;
+  final CameraErrorType errorType;
 
   bool get isInitialized =>
       cameraController != null && cameraController.value.isInitialized;
+  bool get hasError => errorType != null;
+  bool get hasPhotoPath => photoPath != null;
+  bool get hasVideoPath => videoPath != null;
 
   CameraState({
     @required this.cameras,
@@ -21,6 +30,7 @@ class CameraState extends EquatableClass {
     this.isVideoRecording,
     this.photoPath,
     this.videoPath,
+    this.errorType,
   });
 
   factory CameraState.init() => CameraState(
@@ -29,14 +39,14 @@ class CameraState extends EquatableClass {
         isVideoRecording: false,
       );
 
-  CameraState copyWith({
-    List<CameraDescription> cameras,
-    CameraController cameraController,
-    bool isAudioEnabled,
-    bool isVideoRecording,
-    String photoPath,
-    String videoPath,
-  }) {
+  CameraState copyWith(
+      {List<CameraDescription> cameras,
+      CameraController cameraController,
+      bool isAudioEnabled,
+      bool isVideoRecording,
+      String photoPath,
+      String videoPath,
+      CameraErrorType errorType}) {
     return CameraState(
       cameras: cameras ?? this.cameras,
       cameraController: cameraController ?? this.cameraController,
@@ -44,6 +54,7 @@ class CameraState extends EquatableClass {
       isVideoRecording: isVideoRecording ?? this.isVideoRecording,
       photoPath: photoPath ?? this.photoPath,
       videoPath: videoPath ?? this.videoPath,
+      errorType: errorType ?? this.errorType,
     );
   }
 
@@ -55,6 +66,7 @@ class CameraState extends EquatableClass {
       isVideoRecording: isVideoRecording,
       photoPath: null,
       videoPath: null,
+      errorType: null,
     );
   }
 
@@ -66,5 +78,6 @@ class CameraState extends EquatableClass {
         isVideoRecording,
         photoPath,
         videoPath,
+        errorType,
       ];
 }

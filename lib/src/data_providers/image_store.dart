@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -9,7 +10,7 @@ import 'package:image/image.dart';
 
 import 'package:flutter_app/src/models/model.dart';
 
-class ImageStoreProvider {
+class ImageStoreProvider implements ImageDatabaseProvider {
   Future<String> get _directoryPath async {
     final directory = await getApplicationDocumentsDirectory();
 
@@ -22,12 +23,13 @@ class ImageStoreProvider {
     return urlArray[urlArray.length - 1];
   }
 
-  Future<io.File> getImageFile(String url) async {
+  Future<io.File> _getImageFile(String url) async {
     return io.File(join(await _directoryPath, _getFileName(url)));
   }
 
+  @override
   Future<io.File> getImage(String url) async {
-    final imageFile = await getImageFile(url);
+    final imageFile = await _getImageFile(url);
 
     if (imageFile.existsSync()) {
       return imageFile;
@@ -36,13 +38,14 @@ class ImageStoreProvider {
     return null;
   }
 
-  Future<io.File> fetchImageFromNetwork(String url) async {
+  Future<io.File> _fetchImageFromNetwork(String url) async {
     return DefaultCacheManager().getSingleFile(url);
   }
 
+  @override
   Future<void> computeSaveImage(String url) async {
-    final imageFile = await getImageFile(url);
-    final imageFromNetwork = await fetchImageFromNetwork(url);
+    final imageFile = await _getImageFile(url);
+    final imageFromNetwork = await _fetchImageFromNetwork(url);
 
     final message = SaveImageIsolateMessage(
       fileForSaving: imageFile,

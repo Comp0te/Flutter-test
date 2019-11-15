@@ -6,17 +6,17 @@ import 'package:flutter_app/src/models/model.dart';
 @immutable
 abstract class AppStateEvent extends Equatable {
   const AppStateEvent();
-}
 
-class AppStateInit extends AppStateEvent {
   @override
   List<Object> get props => [];
 }
 
+class AppStateInit extends AppStateEvent {}
+
 class AppStateUpdateUsers extends AppStateEvent {
   final List<User> users;
 
-  AppStateUpdateUsers({this.users});
+  const AppStateUpdateUsers({this.users});
 
   @override
   List<Object> get props => [users];
@@ -25,7 +25,7 @@ class AppStateUpdateUsers extends AppStateEvent {
 class AppStateDeleteUsers extends AppStateEvent {
   final List<String> usersIds;
 
-  AppStateDeleteUsers({this.usersIds});
+  const AppStateDeleteUsers({this.usersIds});
 
   @override
   List<Object> get props => [usersIds];
@@ -34,7 +34,7 @@ class AppStateDeleteUsers extends AppStateEvent {
 class AppStateUpdatePosters extends AppStateEvent {
   final List<PosterNormalized> posters;
 
-  AppStateUpdatePosters({this.posters});
+  const AppStateUpdatePosters({this.posters});
 
   @override
   List<Object> get props => [posters];
@@ -43,7 +43,7 @@ class AppStateUpdatePosters extends AppStateEvent {
 class AppStateDeletePosters extends AppStateEvent {
   final List<String> postersIds;
 
-  AppStateDeletePosters({this.postersIds});
+  const AppStateDeletePosters({this.postersIds});
 
   @override
   List<Object> get props => [postersIds];
@@ -52,7 +52,7 @@ class AppStateDeletePosters extends AppStateEvent {
 class AppStateSavePostersResponse extends AppStateEvent {
   final PostersFetchResponse postersResponse;
 
-  AppStateSavePostersResponse({this.postersResponse});
+  const AppStateSavePostersResponse({this.postersResponse});
 
   @override
   List<Object> get props => [postersResponse];

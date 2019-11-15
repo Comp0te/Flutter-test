@@ -1,32 +1,18 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutter_app/src/abstracts/abstracts.dart';
-
 @immutable
-class AuthState extends EquatableClass {
-  final bool isAuthenticated;
-  final bool processing;
-
-  AuthState({
-    @required this.isAuthenticated,
-    @required this.processing,
-  });
-
-  factory AuthState.init() => AuthState(
-        isAuthenticated: false,
-        processing: false,
-      );
-
-  AuthState copyWith({
-    bool isAuthenticated,
-    bool processing,
-  }) {
-    return AuthState(
-      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-      processing: processing ?? this.processing,
-    );
-  }
+abstract class AuthState extends Equatable {
+  const AuthState();
 
   @override
-  List<Object> get props => [isAuthenticated, processing];
+  List<Object> get props => [];
 }
+
+class AuthInit extends AuthState {}
+
+class AuthAuthenticated extends AuthState {}
+
+class AuthUnauthenticated extends AuthState {}
+
+class AuthLoading extends AuthState {}

@@ -24,6 +24,7 @@ class S implements WidgetsLocalizations {
   String get advertisementPlaceholder => "Your advertisement could be here!";
   String get audio => "Audio";
   String get cameraHelperText => "Tap for photo, hold for video";
+  String get cameraUnavailable => "The camera on your device is unavailable";
   String get confirmPassword => "Confirm password";
   String get databasePosters => "Poster`s database";
   String get email => "Email";
@@ -51,6 +52,7 @@ class S implements WidgetsLocalizations {
   String get register => "Register";
   String get registration => "Registration";
   String get southWest => "South-West";
+  String get unexpectedError => "Sorry, an unexpected error occurred";
   String get userName => "User name";
   String get zaporozhianSich => "Zaporozhian Sich";
   String getPrice(String value) => "Price - $value";
@@ -104,6 +106,8 @@ class $ru extends S {
   @override
   String get errorEmail => "Некорректный адрес эл.почты";
   @override
+  String get cameraUnavailable => "Камера на Вашем устройстве недоступна";
+  @override
   String get zaporozhianSich => "Запорожская Сечь";
   @override
   String get errorRequired => "Это поле необходимо заполнить.";
@@ -121,6 +125,8 @@ class $ru extends S {
   String get southWest => "Юго-Запад";
   @override
   String get errorRequestCanceled => "Запрос отменен";
+  @override
+  String get unexpectedError => "Извините, возникла неожиданная ошибка";
   @override
   String get registration => "Регистрация";
   @override

@@ -18,9 +18,9 @@ class AppBlocListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      condition: (prev, cur) => prev.isAuthenticated != cur.isAuthenticated,
+      condition: (prev, cur) => prev.runtimeType != cur.runtimeType,
       listener: (context, state) {
-        if (state.isAuthenticated) {
+        if (state is AuthAuthenticated) {
           BlocProvider.of<FirebaseMessagingBloc>(context)
             ..add(RequestNotificationPermissions())
             ..add(ConfigureFirebaseMessaging(navigatorKey: mainNavigatorKey));

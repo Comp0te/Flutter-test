@@ -172,11 +172,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildSubmitButton(BuildContext context, bool validationEnabled) {
-    print(widget.getTheme(context).textTheme.headline);
     return BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, registerState) {
         return SubmitButton(
-          isLoading: registerState.isLoading,
+          isLoading: registerState is RegisterLoading,
           title: S.of(context).register,
           color: widget.getTheme(context).primaryColor,
           onPress: _makeOnPressSubmit(context, validationEnabled),

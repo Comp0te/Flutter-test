@@ -5,6 +5,9 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class NavigationEvent extends Equatable {
   const NavigationEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class SetMainDrawerRoute extends NavigationEvent {

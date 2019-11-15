@@ -11,8 +11,7 @@ class SecureStorageRepository {
   }) : assert(storage != null);
 
   Future<bool> hasToken() async {
-    final token = await storage.read(SecureStorageKeys.token);
-    return token != null;
+    return storage.contains(SecureStorageKeys.token);
   }
 
   Future<String> getToken() async {

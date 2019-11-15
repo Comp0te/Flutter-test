@@ -14,51 +14,29 @@ class FacebookLoginBloc extends Bloc<FacebookLoginEvent, FacebookLoginState> {
   }) : assert(authRepository != null);
 
   @override
-  FacebookLoginState get initialState => FacebookLoginState.init();
+  FacebookLoginState get initialState => FacebookLoginInitial();
 
   @override
   Stream<FacebookLoginState> mapEventToState(FacebookLoginEvent event) async* {
     if (event is FacebookLoginRequest) {
       yield* _mapFacebookLoginRequestToState(event);
-    } else if (event is FacebookLoginRequestSuccess) {
-      yield* _mapFacebookLoginRequestSuccessToState(event);
-    } else if (event is FacebookLoginRequestFailure) {
-      yield* _mapFacebookLoginRequestFailureToState(event);
     }
   }
 
   Stream<FacebookLoginState> _mapFacebookLoginRequestToState(
       FacebookLoginRequest event) async* {
-    yield FacebookLoginState.init(isLoading: true);
+    yield FacebookLoginLoading();
 
     try {
       final response = await authRepository.facebookLogin();
 
       if (response != null) {
-        add(FacebookLoginRequestSuccess(response: response));
+        yield FacebookLoginSuccessful(data: response);
       } else {
-        yield FacebookLoginState.init();
+        yield FacebookLoginInitial();
       }
-    } on Exception catch (err) {
-      add(FacebookLoginRequestFailure(error: err));
+    } on Exception catch (error) {
+      yield FacebookLoginFailed(error: error);
     }
-  }
-
-  Stream<FacebookLoginState> _mapFacebookLoginRequestSuccessToState(
-    FacebookLoginRequestSuccess event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      data: event.response,
-    );
-  }
-
-  Stream<FacebookLoginState> _mapFacebookLoginRequestFailureToState(
-    FacebookLoginRequestFailure event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      error: event.error,
-    );
   }
 }

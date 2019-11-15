@@ -2,11 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_app/src/abstracts/abstracts.dart';
-import 'package:flutter_app/src/models/model.dart';
 
 @immutable
-abstract class LoginEvent extends Equatable {
+abstract class LoginEvent extends Equatable implements RequestEvent {
   const LoginEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class LoginRequest extends LoginEvent {
@@ -17,25 +19,4 @@ class LoginRequest extends LoginEvent {
 
   @override
   List<Object> get props => [email, password];
-}
-
-class LoginRequestSuccess extends LoginEvent
-    implements RequestSuccess<AuthResponse> {
-  @override
-  final AuthResponse response;
-
-  LoginRequestSuccess({@required this.response});
-
-  @override
-  List<Object> get props => [response];
-}
-
-class LoginRequestFailure extends LoginEvent implements RequestFailure {
-  @override
-  final Exception error;
-
-  LoginRequestFailure({@required this.error});
-
-  @override
-  List<Object> get props => [error];
 }

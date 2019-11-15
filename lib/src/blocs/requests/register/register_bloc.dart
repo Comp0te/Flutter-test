@@ -15,22 +15,18 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }) : assert(authRepository != null);
 
   @override
-  RegisterState get initialState => RegisterState.init();
+  RegisterState get initialState => RegisterInitial();
 
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
     if (event is RegisterRequest) {
       yield* _mapRegisterRequestToState(event);
-    } else if (event is RegisterRequestSuccess) {
-      yield* _mapRegisterRequestSuccessToState(event);
-    } else if (event is RegisterRequestFailure) {
-      yield* _mapRegisterRequestFailureToState(event);
     }
   }
 
   Stream<RegisterState> _mapRegisterRequestToState(
       RegisterRequest event) async* {
-    yield RegisterState.init(isLoading: true);
+    yield RegisterLoading();
 
     try {
       final registerResponse = await authRepository.register(RegisterInput(
@@ -40,27 +36,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password2: event.password2,
       ));
 
-      add(RegisterRequestSuccess(response: registerResponse));
-    } on Exception catch (err) {
-      add(RegisterRequestFailure(error: err));
+      yield RegisterSuccessful(data: registerResponse);
+    } on Exception catch (error) {
+      yield RegisterFailed(error: error);
     }
-  }
-
-  Stream<RegisterState> _mapRegisterRequestSuccessToState(
-    RegisterRequestSuccess event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      data: event.response,
-    );
-  }
-
-  Stream<RegisterState> _mapRegisterRequestFailureToState(
-    RegisterRequestFailure event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      error: event.error,
-    );
   }
 }

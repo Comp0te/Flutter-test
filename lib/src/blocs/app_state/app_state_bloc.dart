@@ -1,22 +1,23 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
-import 'package:meta/meta.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppState> {
-  final DBRepository _dbRepository;
-  final ImageStoreRepository _imageStoreRepository;
+  final DatabaseRepository _databaseRepository;
+  final ImageDatabaseRepository _imageDatabaseRepository;
 
   AppStateBloc({
-    @required DBRepository dbRepository,
-    @required ImageStoreRepository imageStoreRepository,
-  })  : assert(dbRepository != null),
-        assert(imageStoreRepository != null),
-        _dbRepository = dbRepository,
-        _imageStoreRepository = imageStoreRepository;
+    @required DatabaseRepository databaseRepository,
+    @required ImageStoreRepository imageDatabaseRepository,
+  })  : assert(databaseRepository != null),
+        assert(imageDatabaseRepository != null),
+        _databaseRepository = databaseRepository,
+        _imageDatabaseRepository = imageDatabaseRepository;
 
   @override
   AppState get initialState => AppState.init();
@@ -68,14 +69,14 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
             ))
         .toList();
 
-    await _dbRepository.insertUsers(users);
-    await _dbRepository.insertPosters(posters);
-    await _dbRepository.insertPosterImages(posters);
+    await _databaseRepository.insertUsers(users);
+    await _databaseRepository.insertPosters(posters);
+    await _databaseRepository.insertPosterImages(posters);
 
     Stream.fromIterable(posters).listen((poster) {
       if (poster.images != null && poster.images.isNotEmpty) {
         Stream.fromIterable(poster.images)
-            .forEach((image) => _imageStoreRepository.saveImage(image.file));
+            .forEach((image) => _imageDatabaseRepository.saveImage(image.file));
       }
     });
 

@@ -2,43 +2,43 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
-import 'package:flutter_app/src/repositories/repositories.dart';
 
 class DBBloc extends Bloc<DBEvent, DBState> {
-  final DBRepository dbRepository;
+  final DatabaseRepository databaseRepository;
   final AppStateBloc appStateBloc;
 
   DBBloc({
-    @required this.dbRepository,
+    @required this.databaseRepository,
     @required this.appStateBloc,
-  })  : assert(dbRepository != null),
+  })  : assert(databaseRepository != null),
         assert(appStateBloc != null);
 
   @override
-  DBState get initialState => DBState.init();
+  DBState get initialState => DBInitial();
 
   @override
   Stream<DBState> mapEventToState(DBEvent event) async* {
     if (event is DBInsertUsers) {
-      yield DBState.loading();
-      await dbRepository.insertUsers(event.users);
-      yield DBState.loaded();
+      yield DBLoading();
+      await databaseRepository.insertUsers(event.users);
+      yield DBLoaded();
     } else if (event is DBInsertPosters) {
-      yield DBState.loading();
-      await dbRepository.insertPosters(event.posters);
-      yield DBState.loaded();
+      yield DBLoading();
+      await databaseRepository.insertPosters(event.posters);
+      yield DBLoaded();
     } else if (event is DBInsertPosterImages) {
-      yield DBState.loading();
-      await dbRepository.insertPosterImages(event.posters);
-      yield DBState.loaded();
+      yield DBLoading();
+      await databaseRepository.insertPosterImages(event.posters);
+      yield DBLoaded();
     } else if (event is DBGetNormalizedPosters) {
-      yield DBState.loading();
+      yield DBLoading();
 
-      final posters = await dbRepository.getNormalizedPosters();
+      final posters = await databaseRepository.getNormalizedPosters();
       appStateBloc.add(AppStateUpdatePosters(posters: posters));
 
-      yield DBState.loaded();
+      yield DBLoaded();
     }
   }
 }

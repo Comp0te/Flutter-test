@@ -6,12 +6,12 @@ import 'package:flutter_app/src/models/model.dart';
 @immutable
 abstract class DBEvent extends Equatable {
   const DBEvent();
-}
 
-class DBInit extends DBEvent {
   @override
   List<Object> get props => [];
 }
+
+class DBInit extends DBEvent {}
 
 class DBInsertUsers extends DBEvent {
   final List<User> users;
@@ -40,7 +40,4 @@ class DBInsertPosterImages extends DBEvent {
   List<Object> get props => [posters];
 }
 
-class DBGetNormalizedPosters extends DBEvent {
-  @override
-  List<Object> get props => [];
-}
+class DBGetNormalizedPosters extends DBEvent {}

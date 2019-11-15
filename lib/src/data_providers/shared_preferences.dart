@@ -1,58 +1,50 @@
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesProvider {
+import 'package:flutter_app/src/abstracts/abstracts.dart';
+
+class SharedPreferencesProvider implements KeyValueDatabaseProvider {
   final Future<SharedPreferences> sharedPreferencesInstance;
 
-  SharedPreferencesProvider({
+  const SharedPreferencesProvider({
     @required this.sharedPreferencesInstance,
   }) : assert(sharedPreferencesInstance != null);
 
-  Future<T> read<T>(String key) async {
+  @override
+  Future<String> read(String key) async {
     final instance = await sharedPreferencesInstance;
 
-    return instance.get(key) as T;
+    return instance.getString(key);
   }
 
+  @override
   Future<bool> contains(String key) async {
     final instance = await sharedPreferencesInstance;
 
     return instance.containsKey(key);
   }
 
-  Future<bool> delete(String key) async {
+  @override
+  Future<void> delete(String key) async {
     final instance = await sharedPreferencesInstance;
 
-    return instance.remove(key);
+    await instance.remove(key);
   }
 
-  Future<bool> clear() async {
+  @override
+  Future<void> clear() async {
     final instance = await sharedPreferencesInstance;
 
-    return instance.clear();
+    await instance.clear();
   }
 
-  Future<bool> write<T>({@required String key, @required T value}) async {
-    assert(T != null);
-    final instance = await sharedPreferencesInstance;
-
-    if (T == String) {
-      return instance.setString(key, value as String);
-    } else if (T == int) {
-      return instance.setInt(key, value as int);
-    } else if (T == double) {
-      return instance.setDouble(key, value as double);
-    }
-
-    throw TypeError();
-  }
-
-  Future<bool> writeList({
+  @override
+  Future<void> write({
     @required String key,
-    @required List<String> values,
+    @required String value,
   }) async {
     final instance = await sharedPreferencesInstance;
 
-    return instance.setStringList(key, values);
+    await instance.setString(key, value);
   }
 }

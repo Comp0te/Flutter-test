@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/screens/screens.dart';
@@ -9,13 +10,40 @@ import 'package:flutter_app/src/screens/screens.dart';
 abstract class MainRoutes {
   static PostersRepository _postersRepository(BuildContext context) =>
       RepositoryProvider.of<PostersRepository>(context);
-  static DBRepository _dbRepository(BuildContext context) =>
-      RepositoryProvider.of<DBRepository>(context);
+  static SQFLiteRepository _sqfLiteRepository(BuildContext context) =>
+      RepositoryProvider.of<SQFLiteRepository>(context);
   static CameraRepository _cameraRepository(BuildContext context) =>
       RepositoryProvider.of<CameraRepository>(context);
 
   static AppStateBloc _appStateBloc(BuildContext context) =>
       BlocProvider.of<AppStateBloc>(context);
+
+  static String initialRoute = MainRouteNames.home;
+
+  static RouteFactory makeOnGenerateRoute(BuildContext context) {
+    return (RouteSettings settings) {
+      BlocProvider.of<NavigationBloc>(context).add(SetMainDrawerRoute(
+        routeName: settings.name,
+      ));
+
+      switch (settings.name) {
+        case MainRouteNames.home:
+          return homeScreenRoute(context);
+
+        case MainRouteNames.database:
+          return databaseScreenRoute(context);
+
+        case MainRouteNames.camera:
+          return cameraScreenRoute(context);
+
+        case MainRouteNames.googleMap:
+          return googleMapRoute(context);
+
+        default:
+          return null;
+      }
+    };
+  }
 
   static Route<HomeScreen> homeScreenRoute(BuildContext context) {
     return PageTransition(
@@ -40,7 +68,7 @@ abstract class MainRoutes {
         builder: (context) {
           return DBBloc(
             appStateBloc: _appStateBloc(context),
-            dbRepository: _dbRepository(context),
+            databaseRepository: _sqfLiteRepository(context),
           );
         },
         child: DatabaseScreen(),

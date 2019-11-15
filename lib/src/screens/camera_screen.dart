@@ -50,64 +50,71 @@ class _CameraScreenState extends State<CameraScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        drawer: const MainDrawer(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: GestureDetector(
-          onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
-          onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
-          child: FloatingActionButton(
-            heroTag: HeroTag.cameraFAB,
-            child: const Icon(Icons.camera, size: 40),
-            onPressed: () => _cameraBloc.add(TakePicture()),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: widget.getTheme(context).scaffoldBackgroundColor,
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          drawer: const MainDrawer(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: GestureDetector(
+            onLongPressStart: (_) => _cameraBloc.add(StartVideoRecording()),
+            onLongPressUp: () => _cameraBloc.add(StopVideoRecording()),
+            child: FloatingActionButton(
+              heroTag: HeroTag.cameraFAB,
+              child: const Icon(Icons.camera, size: 40),
+              onPressed: () => _cameraBloc.add(TakePicture()),
+            ),
           ),
-        ),
-        body: CameraBlocListener(
-          child: Stack(
-            children: <Widget>[
-              Column(children: <Widget>[
-                _cameraPreviewWidget(context),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              widget.getTheme(context).scaffoldBackgroundColor,
-                        ),
-                        child: Text(
-                          S.of(context).cameraHelperText,
-                          textAlign: TextAlign.center,
-                          style: widget.getTextTheme(context).caption,
+          body: CameraBlocListener(
+            child: Stack(
+              children: <Widget>[
+                Column(children: <Widget>[
+                  _cameraPreviewWidget(context),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: widget
+                                .getTheme(context)
+                                .scaffoldBackgroundColor,
+                          ),
+                          child: Text(
+                            S.of(context).cameraHelperText,
+                            textAlign: TextAlign.center,
+                            style: widget.getTextTheme(context).caption,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ]),
-              Positioned(
-                bottom: 30,
-                right: 30,
-                child: Hero(
-                  tag: HeroTag.cameraIconButton,
-                  child: Material(
-                    color: widget.getTheme(context).accentColor,
-                    elevation: 6,
-                    shape: CircleBorder(),
-                    child: IconButton(
-                      color: widget.getTheme(context).accentIconTheme.color,
-                      iconSize: 30,
-                      icon: Icon(
-                        Icons.settings_applications,
+                    ],
+                  ),
+                ]),
+                Positioned(
+                  bottom: 30,
+                  right: 30,
+                  child: Hero(
+                    tag: HeroTag.cameraIconButton,
+                    child: Material(
+                      color: widget.getTheme(context).accentColor,
+                      elevation: 6,
+                      shape: CircleBorder(),
+                      child: IconButton(
+                        color: widget.getTheme(context).accentIconTheme.color,
+                        iconSize: 30,
+                        icon: Icon(
+                          Icons.settings,
+                        ),
+                        onPressed: _makeOnPressSettingsButton(context),
                       ),
-                      onPressed: _makeOnPressSettingsButton(context),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

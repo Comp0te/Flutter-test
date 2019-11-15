@@ -14,47 +14,25 @@ class GoogleLoginBloc extends Bloc<GoogleLoginEvent, GoogleLoginState> {
   }) : assert(authRepository != null);
 
   @override
-  GoogleLoginState get initialState => GoogleLoginState.init();
+  GoogleLoginState get initialState => GoogleLoginInitial();
 
   @override
   Stream<GoogleLoginState> mapEventToState(GoogleLoginEvent event) async* {
     if (event is GoogleLoginRequest) {
       yield* _mapGoogleLoginRequestToState(event);
-    } else if (event is GoogleLoginRequestSuccess) {
-      yield* _mapGoogleLoginRequestSuccessToState(event);
-    } else if (event is GoogleLoginRequestFailure) {
-      yield* _mapGoogleLoginRequestFailureToState(event);
     }
   }
 
   Stream<GoogleLoginState> _mapGoogleLoginRequestToState(
       GoogleLoginRequest event) async* {
-    yield GoogleLoginState.init(isLoading: true);
+    yield GoogleLoginLoading();
 
     try {
       final response = await authRepository.googleLogin();
 
-      add(GoogleLoginRequestSuccess(response: response));
-    } on Exception catch (err) {
-      add(GoogleLoginRequestFailure(error: err));
+      yield GoogleLoginSuccessful(data: response);
+    } on Exception catch (error) {
+      yield GoogleLoginFailed(error: error);
     }
-  }
-
-  Stream<GoogleLoginState> _mapGoogleLoginRequestSuccessToState(
-    GoogleLoginRequestSuccess event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      data: event.response,
-    );
-  }
-
-  Stream<GoogleLoginState> _mapGoogleLoginRequestFailureToState(
-    GoogleLoginRequestFailure event,
-  ) async* {
-    yield state.copyWith(
-      isLoading: false,
-      error: event.error,
-    );
   }
 }

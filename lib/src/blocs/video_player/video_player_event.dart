@@ -4,6 +4,9 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class VideoPlayerEvent extends Equatable {
   const VideoPlayerEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class InitVideoPlayerWithFile extends VideoPlayerEvent {
@@ -15,12 +18,6 @@ class InitVideoPlayerWithFile extends VideoPlayerEvent {
   List<Object> get props => [videoPath];
 }
 
-class PlayVideo extends VideoPlayerEvent {
-  @override
-  List<Object> get props => [];
-}
+class PlayVideo extends VideoPlayerEvent {}
 
-class PauseVideo extends VideoPlayerEvent {
-  @override
-  List<Object> get props => [];
-}
+class PauseVideo extends VideoPlayerEvent {}
