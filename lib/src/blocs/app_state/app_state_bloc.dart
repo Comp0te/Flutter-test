@@ -8,15 +8,15 @@ import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppState> {
-  final DBRepository _dbRepository;
+  final DatabaseRepository _databaseRepository;
   final ImageDatabaseRepository _imageDatabaseRepository;
 
   AppStateBloc({
-    @required DBRepository dbRepository,
+    @required DatabaseRepository databaseRepository,
     @required ImageStoreRepository imageDatabaseRepository,
-  })  : assert(dbRepository != null),
+  })  : assert(databaseRepository != null),
         assert(imageDatabaseRepository != null),
-        _dbRepository = dbRepository,
+        _databaseRepository = databaseRepository,
         _imageDatabaseRepository = imageDatabaseRepository;
 
   @override
@@ -69,9 +69,9 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
             ))
         .toList();
 
-    await _dbRepository.insertUsers(users);
-    await _dbRepository.insertPosters(posters);
-    await _dbRepository.insertPosterImages(posters);
+    await _databaseRepository.insertUsers(users);
+    await _databaseRepository.insertPosters(posters);
+    await _databaseRepository.insertPosterImages(posters);
 
     Stream.fromIterable(posters).listen((poster) {
       if (poster.images != null && poster.images.isNotEmpty) {

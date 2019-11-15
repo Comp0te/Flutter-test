@@ -2,7 +2,32 @@ import 'dart:io' as io;
 
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/models/model.dart';
 import 'package:flutter_app/src/abstracts/abstracts.dart';
+
+abstract class DatabaseRepository {
+  final DatabaseProvider databaseProvider;
+
+  DatabaseRepository({
+    @required this.databaseProvider,
+  }) : assert(databaseProvider != null);
+
+  Future insertPosters(List<PosterNormalized> posters) async {
+    await databaseProvider.insertPosters(posters);
+  }
+
+  Future insertUsers(List<User> users) async {
+    await databaseProvider.insertUsers(users);
+  }
+
+  Future insertPosterImages(List<PosterNormalized> posters) async {
+    await databaseProvider.insertPosterImages(posters);
+  }
+
+  Future<List<PosterNormalized>> getNormalizedPosters() async {
+    return <PosterNormalized>[];
+  }
+}
 
 abstract class KeyValueDatabaseRepository {
   final KeyValueDatabaseProvider keyValueDatabaseProvider;

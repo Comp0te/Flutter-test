@@ -9,8 +9,8 @@ import 'package:flutter_app/src/screens/screens.dart';
 abstract class MainRoutes {
   static PostersRepository _postersRepository(BuildContext context) =>
       RepositoryProvider.of<PostersRepository>(context);
-  static DBRepository _dbRepository(BuildContext context) =>
-      RepositoryProvider.of<DBRepository>(context);
+  static SQFLiteRepository _sqfLiteRepository(BuildContext context) =>
+      RepositoryProvider.of<SQFLiteRepository>(context);
   static CameraRepository _cameraRepository(BuildContext context) =>
       RepositoryProvider.of<CameraRepository>(context);
 
@@ -40,7 +40,7 @@ abstract class MainRoutes {
         builder: (context) {
           return DBBloc(
             appStateBloc: _appStateBloc(context),
-            dbRepository: _dbRepository(context),
+            databaseRepository: _sqfLiteRepository(context),
           );
         },
         child: DatabaseScreen(),

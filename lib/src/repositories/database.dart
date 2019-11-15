@@ -1,35 +1,40 @@
 import 'package:meta/meta.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/models/model.dart';
-import 'package:flutter_app/src/data_providers/data_providers.dart';
 
-class DBRepository {
-  final DBProvider dbProvider;
+class SQFLiteRepository implements DatabaseRepository {
+  @override
+  DatabaseProvider databaseProvider;
 
-  DBRepository({
-    @required this.dbProvider,
-  }) : assert(dbProvider != null);
+  SQFLiteRepository({
+    @required this.databaseProvider,
+  }) : assert(databaseProvider != null);
 
+  @override
   Future insertPosters(List<PosterNormalized> posters) async {
-    await dbProvider.insertPosters(posters);
+    await databaseProvider.insertPosters(posters);
   }
 
+  @override
   Future insertUsers(List<User> users) async {
-    await dbProvider.insertUsers(users);
+    await databaseProvider.insertUsers(users);
   }
 
+  @override
   Future insertPosterImages(List<PosterNormalized> posters) async {
-    await dbProvider.insertPosterImages(posters);
+    await databaseProvider.insertPosterImages(posters);
   }
 
+  @override
   Future<List<PosterNormalized>> getNormalizedPosters() async {
-    final postersTable = await dbProvider.getPosters();
+    final postersTable = await databaseProvider.getPosters();
 
     final posters = postersTable.map<PosterNormalizedDB>((posterMap) {
       return PosterNormalizedDB.fromJson(posterMap);
     }).toList();
 
-    final posterImagesTable = await dbProvider.getPosterImages();
+    final posterImagesTable = await databaseProvider.getPosterImages();
 
     final posterImages = posterImagesTable.map<PosterImageDB>((posterImageMap) {
       return PosterImageDB.fromJson(posterImageMap);

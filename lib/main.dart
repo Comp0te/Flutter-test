@@ -30,8 +30,8 @@ void main() {
   final _postersRepository = PostersRepository(
     postersApiProvider: PostersApiProvider(dio: dio),
   );
-  final _dbRepository = DBRepository(
-    dbProvider: DBProvider(db: SQFLite().db),
+  final _sqfLiteRepository = SQFLiteRepository(
+    databaseProvider: SQFLiteProvider(db: SQFLite().db),
   );
   final _imageStoreRepository = ImageStoreRepository(
     imageDatabaseProvider: ImageStoreProvider(),
@@ -61,7 +61,7 @@ void main() {
         ),
         BlocProvider<AppStateBloc>(
           builder: (context) => AppStateBloc(
-            dbRepository: _dbRepository,
+            databaseRepository: _sqfLiteRepository,
             imageDatabaseRepository: _imageStoreRepository,
           ),
         ),
@@ -90,8 +90,8 @@ void main() {
           RepositoryProvider<PostersRepository>(builder: (context) {
             return _postersRepository;
           }),
-          RepositoryProvider<DBRepository>(builder: (context) {
-            return _dbRepository;
+          RepositoryProvider<SQFLiteRepository>(builder: (context) {
+            return _sqfLiteRepository;
           }),
           RepositoryProvider<ImageStoreRepository>(builder: (context) {
             return _imageStoreRepository;

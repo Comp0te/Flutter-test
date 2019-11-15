@@ -1,16 +1,18 @@
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/databases/sqflite/tables/tables.dart';
 import 'package:flutter_app/src/models/model.dart';
 
-class DBProvider {
+class SQFLiteProvider implements DatabaseProvider {
   final Future<Database> db;
 
-  DBProvider({
+  SQFLiteProvider({
     @required this.db,
   }) : assert(db != null);
 
+  @override
   Future<void> insertPosters(List<PosterNormalized> posters) async {
     final _db = await db;
     final batch = _db.batch();
@@ -30,6 +32,7 @@ class DBProvider {
     }
   }
 
+  @override
   Future<void> insertUsers(List<User> users) async {
     final _db = await db;
     final batch = _db.batch();
@@ -47,6 +50,7 @@ class DBProvider {
     }
   }
 
+  @override
   Future<void> insertPosterImages(List<PosterNormalized> posters) async {
     final _db = await db;
     final batch = _db.batch();
@@ -83,6 +87,7 @@ class DBProvider {
     }
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getPosters() async {
     final _db = await db;
 
@@ -94,6 +99,7 @@ class DBProvider {
     }
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getUsers() async {
     final _db = await db;
 
@@ -105,6 +111,7 @@ class DBProvider {
     }
   }
 
+  @override
   Future<List<Map<String, dynamic>>> getPosterImages() async {
     final _db = await db;
 
