@@ -1,20 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/abstracts/abstracts.dart';
 import 'package:flutter_app/src/constants/constants.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:flutter_app/src/databases/databases.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
-import 'package:flutter_app/src/repositories/repositories.dart';
 
 class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
-  final SharedPreferencesRepository sharedPreferencesRepository;
+  final KeyValueDatabaseRepository keyValueDatabaseRepository;
 
   PreferencesBloc({
-    @required this.sharedPreferencesRepository,
-  }) : assert(sharedPreferencesRepository != null);
+    @required this.keyValueDatabaseRepository,
+  }) : assert(keyValueDatabaseRepository != null);
 
   @override
   PreferencesState get initialState => PreferencesState.init();
@@ -33,15 +33,16 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
   Stream<PreferencesState> _mapRehydratePreferencesToState(
     RehydratePreferences event,
   ) async* {
-    final languageIndex = await sharedPreferencesRepository
-        .read<int>(SharedPreferencesKeys.languageIndex);
-    final themeModeIndex = await sharedPreferencesRepository
-            .read<int>(SharedPreferencesKeys.themeModeIndex) ??
-        ThemeMode.system.index;
+    final languageIndex = await keyValueDatabaseRepository
+            .read(SharedPreferencesKeys.languageIndex) ??
+        SupportedLanguages.en.index.toString();
+    final themeModeIndex = await keyValueDatabaseRepository
+            .read(SharedPreferencesKeys.themeModeIndex) ??
+        ThemeMode.system.index.toString();
 
     yield state.copyWith(
       locale: mapLanguagesEnumToLocale[languageIndex],
-      themeMode: ThemeMode.values[themeModeIndex],
+      themeMode: ThemeMode.values[int.parse(themeModeIndex)],
     );
   }
 
@@ -51,9 +52,9 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     yield state.copyWith(
       locale: mapLanguagesEnumToLocale[event.language.index],
     );
-    await sharedPreferencesRepository.write<int>(
+    await keyValueDatabaseRepository.write(
       key: SharedPreferencesKeys.languageIndex,
-      value: event.language.index,
+      value: event.language.index.toString(),
     );
   }
 
@@ -63,9 +64,9 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     yield state.copyWith(
       themeMode: event.themeMode,
     );
-    await sharedPreferencesRepository.write<int>(
+    await keyValueDatabaseRepository.write(
       key: SharedPreferencesKeys.themeModeIndex,
-      value: event.themeMode.index,
+      value: event.themeMode.index.toString(),
     );
   }
 }

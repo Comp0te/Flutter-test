@@ -18,7 +18,7 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final dio = DioInstance().dio;
   final _secureStorageRepository = SecureStorageRepository(
-    storage: SecureStorageProvider(secureStorage: const FlutterSecureStorage()),
+    storage: const SecureStorageProvider(secureStorage: FlutterSecureStorage()),
   );
   final _authRepository = AuthRepository(
     authApiProvider: AuthApiProvider(
@@ -45,7 +45,7 @@ void main() {
     ),
   );
   final _sharedPreferencesRepository = SharedPreferencesRepository(
-    sharedPreferencesProvider: SharedPreferencesProvider(
+    keyValueDatabaseProvider: SharedPreferencesProvider(
       sharedPreferencesInstance: SharedPreferences.getInstance(),
     ),
   );
@@ -75,7 +75,7 @@ void main() {
         ),
         BlocProvider<PreferencesBloc>(
           builder: (context) => PreferencesBloc(
-            sharedPreferencesRepository: _sharedPreferencesRepository,
+            keyValueDatabaseRepository: _sharedPreferencesRepository,
           ),
         ),
       ],
