@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'package:flutter_app/src/constants/constants.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_app/src/repositories/repositories.dart';
 import 'package:flutter_app/src/screens/screens.dart';
@@ -16,6 +17,33 @@ abstract class MainRoutes {
 
   static AppStateBloc _appStateBloc(BuildContext context) =>
       BlocProvider.of<AppStateBloc>(context);
+
+  static String initialRoute = MainRouteNames.home;
+
+  static RouteFactory makeOnGenerateRoute(BuildContext context) {
+    return (RouteSettings settings) {
+      BlocProvider.of<NavigationBloc>(context).add(SetMainDrawerRoute(
+        routeName: settings.name,
+      ));
+
+      switch (settings.name) {
+        case MainRouteNames.home:
+          return homeScreenRoute(context);
+
+        case MainRouteNames.database:
+          return databaseScreenRoute(context);
+
+        case MainRouteNames.camera:
+          return cameraScreenRoute(context);
+
+        case MainRouteNames.googleMap:
+          return googleMapRoute(context);
+
+        default:
+          return null;
+      }
+    };
+  }
 
   static Route<HomeScreen> homeScreenRoute(BuildContext context) {
     return PageTransition(
