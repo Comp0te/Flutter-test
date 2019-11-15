@@ -1,20 +1,62 @@
-# flutter_app
-
+# Test application on Flutter
 
 ![](https://github.com/Comp0te/Flutter-test/workflows/Code%20check/badge.svg?branch=dev)
 
+## Table of contents:
 
-A new Flutter application.
+- [Getting Started](#getting-started)
+- [Used technologies:](#used-technologies)
 
-## Getting Started
+### Getting Started
 
-This project is a starting point for a Flutter application.
+TODO
 
-A few resources to get you started if this is your first Flutter project:
+### Used technologies:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+- **Platforms:**
+    - Android
+    - IOS
+    - Web - TODO
+- **Networking**
+    - REST
+    - `dio`
+    - processing JSON: `json_annotation`, `json_serializable`, `build_runner`
+    - `cached_network_image`
+- **Authentication:**
+	- Back-end API with usage of JWT token
+	- Google login using Back-end API - `google_sign_in`
+	- Facebook login - `flutter_facebook_login` (currently only flutter_facebook_login usage, backend API not working)
+	- TouchId/FaceId - `local_auth` - TODO
+- **Architecture:**
+	- Bloc: `bloc`, `flutter_bloc`, `equatable`
+	- Bloc`s code generation - TODO
+- **Camera:**
+    - Photo and video shooting - `camera`
+    - Playing video - `video_player`
+- **Push Notifications**
+    - `firebase_messaging`
+- **Maps**
+    - `google_maps_flutter`
+    - `geolocator`
+- **Forms**
+    - `flutter_form_builder`
+- **Database:**
+    - `sqflite`,
+    - `shared_preferences`,
+    - `flutter_secure_storage`
+    - Decoding and saving images to disk: `path`, `path_provider`, `flutter_cache_manager`, `image`
+- **Animations**
+    - `page_transition`
+    - Flutter built-in animations
+- **Theming**
+    - Light and Dark mode.
+- **Localization**
+    - En, Ru - `flutter_localizations`, `intl` + [Flutter i18n plugin for Android studio](https://plugins.jetbrains.com/plugin/10128-flutter-i18n/)
+- **Other features**
+    - List with infinite scroll
+- **Code quality tools**
+    - `pedantic` + custom rules in the `analysis_options.yaml`
+    - pre-commit, pre-push git-hooks
+    - CI - Github actions
+    - unit tests - TODO
+---
