@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/blocs/blocs.dart';
@@ -21,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final double gridViewPaddingHorizontal = 10;
   final double gridViewPaddingVertical = 20;
   final _gridViewKey = GlobalKey();
+  final _loadMorePostersSubject = PublishSubject<PostersFetchNextPageRequest>();
+  StreamSubscription loadMorePostersSubscription;
 
   ScrollController _scrollController;
   PostersFetchBloc _postersFetchBloc;
@@ -36,21 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController = ScrollController();
     _postersFetchBloc = BlocProvider.of<PostersFetchBloc>(context)
       ..add(PostersFetchFirstPageRequest());
+
+    loadMorePostersSubscription = _loadMorePostersSubject.stream
+        .debounceTime(Duration(milliseconds: 100))
+        .listen((event) => _postersFetchBloc.add(event));
+  }
+
+  @override
+  void dispose() {
+    loadMorePostersSubscription?.cancel();
+    super.dispose();
   }
 
   void loadMorePosters() {
     final state = _postersFetchBloc.state;
 
-    if (state.hasNextPage && !state.isLoadingNextPage) {
-      _postersFetchBloc.add(
-        PostersFetchNextPageRequest(page: state.data.meta.page + 1),
-      );
+    if (state is PostersFetchSuccessful && state.hasNextPage) {
+      _loadMorePostersSubject.sink
+          .add(PostersFetchNextPageRequest(page: state.data.meta.page + 1));
     }
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
-      if (_scrollController.position.extentAfter <= 300) {
+      if (_scrollController.position.extentAfter <= 500) {
         loadMorePosters();
       }
     }
@@ -78,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: RefreshRequestBlocListener(
+                    child: RefreshRequestBlocListener<PostersFetchBloc,
+                        PostersFetchState>(
                       onRefresh: () {
                         BlocProvider.of<PostersFetchBloc>(context).add(
                           PostersFetchFirstPageRequest(),
@@ -110,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   BlocBuilder<PostersFetchBloc, PostersFetchState>(
                     builder: (context, state) {
-                      return state.isLoadingNextPage
+                      return state is PostersFetchNextRequestLoading
                           ? const Spinner()
                           : Container();
                     },

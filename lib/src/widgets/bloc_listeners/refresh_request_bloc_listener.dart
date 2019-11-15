@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/blocs/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RefreshRequestBlocListener extends StatefulWidget {
+import 'package:flutter_app/src/abstracts/abstracts.dart';
+
+class RefreshRequestBlocListener<B extends Bloc<RequestEvent, S>,
+    S extends RequestState> extends StatefulWidget {
   final Widget child;
-  final VoidCallback onRefresh; // TODO: add general solution
+  final VoidCallback onRefresh;
 
   const RefreshRequestBlocListener({
     Key key,
@@ -18,11 +21,11 @@ class RefreshRequestBlocListener extends StatefulWidget {
 
   @override
   _RefreshRequestBlocListenerState createState() =>
-      _RefreshRequestBlocListenerState();
+      _RefreshRequestBlocListenerState<B, S>();
 }
 
-class _RefreshRequestBlocListenerState
-    extends State<RefreshRequestBlocListener> {
+class _RefreshRequestBlocListenerState<B extends Bloc<RequestEvent, S>,
+    S extends RequestState> extends State<RefreshRequestBlocListener> {
   Completer<void> _refreshCompleter;
 
   @override
@@ -33,13 +36,12 @@ class _RefreshRequestBlocListenerState
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PostersFetchBloc, PostersFetchState>(
-      condition: (prev, cur) {
-        return prev.isRefreshing && !cur.isRefreshing;
-      },
+    return BlocListener<B, S>(
       listener: (context, state) {
-        _refreshCompleter?.complete();
-        _refreshCompleter = Completer();
+        if (state is RequestSuccessful) {
+          _refreshCompleter?.complete();
+          _refreshCompleter = Completer();
+        }
       },
       child: RefreshIndicator(
         onRefresh: () {

@@ -1,15 +1,5 @@
-abstract class RequestInit {}
-
-abstract class RequestSuccess<T> {
-  final T response;
-
-  RequestSuccess({this.response});
-}
-
-abstract class RequestFailure {
-  final Exception error;
-
-  RequestFailure({this.error});
+abstract class RequestEvent {
+  const RequestEvent();
 }
 
 abstract class RequestState {
