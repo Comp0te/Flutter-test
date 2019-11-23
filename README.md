@@ -9,7 +9,13 @@
 
 ### Getting Started
 
-TODO
+ 1. Clone repository
+ 2. `flutter pub get`
+ 4. Add `google-services.json` to `android/app/` folder
+ 5. Rename `android/app/src/main/res/values/secrets_example.xml` to `secrets.xml` and add your google_maps_api_key
+ 6. Add `GoogleService-Info.plist` to ios folder
+ 7. Rename `ios/Runner/secrets-example.swift` to `secrets.swift` and add your google_maps_api_key
+ 8. Look in the `scripts/` folder to add git hooks
 
 ### Used technologies:
 
