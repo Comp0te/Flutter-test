@@ -39,6 +39,7 @@ class S implements WidgetsLocalizations {
   String get googleMaps => "Google maps";
   String get hydroelectricStation => "Hydroelectric Station";
   String get kozakPalace => "Kozak Palace";
+  String get language => "Language";
   String get loginEmail => "Sign in";
   String get loginGreetings => "Greetings!";
   String get mainMenu => "Main menu";
@@ -52,6 +53,7 @@ class S implements WidgetsLocalizations {
   String get register => "Register";
   String get registration => "Registration";
   String get southWest => "South-West";
+  String get theme => "Theme";
   String get unexpectedError => "Sorry, an unexpected error occurred";
   String get userName => "User name";
   String get zaporozhianSich => "Zaporozhian Sich";
@@ -71,6 +73,8 @@ class $ru extends S {
   String get mainMenu => "Главное меню";
   @override
   String get loginGreetings => "Приветствую!";
+  @override
+  String get language => "Язык";
   @override
   String get noCameraFound => "Камера не обнаружена";
   @override
@@ -93,6 +97,8 @@ class $ru extends S {
   String get cameraHelperText => "Нажмите для фото, удерживайте для видео";
   @override
   String get confirmPassword => "Подтвердите пароль";
+  @override
+  String get theme => "Тема";
   @override
   String get errorMinPasswordLength => "Минимум 8 символов";
   @override

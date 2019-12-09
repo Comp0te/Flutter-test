@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,6 +39,72 @@ class _MainDrawerState extends State<MainDrawer> {
             decoration: BoxDecoration(
               color: widget.getTheme(context).primaryColor,
             ),
+          ),
+          Row(
+            // TODO refactor
+            children: <Widget>[
+              BlocBuilder<PreferencesBloc, PreferencesState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: DropdownButton<ThemeMode>(
+                      value: state.themeMode,
+                      style: widget.getTextTheme(context).body1,
+                      onChanged: (ThemeMode themeMode) {
+                        BlocProvider.of<PreferencesBloc>(context)
+                            .add(ChooseThemeMode(themeMode));
+                      },
+                      items: ThemeMode.values.map<DropdownMenuItem<ThemeMode>>(
+                          (ThemeMode themeMode) {
+                        return DropdownMenuItem<ThemeMode>(
+                          value: themeMode,
+                          child: Text(
+                              '${S.of(context).theme} - ${describeEnum(themeMode)}'),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              BlocBuilder<PreferencesBloc, PreferencesState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: DropdownButton<Locale>(
+                      value: state.locale,
+                      style: widget.getTextTheme(context).body1,
+                      onChanged: (Locale locale) {
+                        if (locale.languageCode ==
+                            describeEnum(SupportedLanguages.en)) {
+                          BlocProvider.of<PreferencesBloc>(context)
+                              .add(const ChooseLanguage(SupportedLanguages.en));
+                        }
+
+                        if (locale.languageCode ==
+                            describeEnum(SupportedLanguages.ru)) {
+                          BlocProvider.of<PreferencesBloc>(context)
+                              .add(const ChooseLanguage(SupportedLanguages.ru));
+                        }
+                      },
+                      items: SupportedLanguages.values
+                          .map<DropdownMenuItem<Locale>>(
+                              (SupportedLanguages supportedLanguage) {
+                        return DropdownMenuItem<Locale>(
+                          value:
+                              mapLanguagesEnumToLocale[supportedLanguage.index],
+                          child: Text(
+                              '${S.of(context).language} - ${describeEnum(supportedLanguage)}'),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                },
+              )
+            ],
           ),
           Expanded(
             flex: 1,

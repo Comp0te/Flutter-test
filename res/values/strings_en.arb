@@ -31,6 +31,9 @@
   "gallery": "Gallery",
   "googleMaps": "Google maps",
 
+  "language": "Language",
+  "theme": "Theme",
+
   "errorRequired": "This field cannot be empty.",
   "errorEmail": "Incorrect email address.",
   "errorMinPasswordLength": "Min 8 characters",
