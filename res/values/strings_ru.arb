@@ -31,6 +31,9 @@
   "gallery": "Галерея",
   "googleMaps": "Google карты",
 
+  "language": "Язык",
+  "theme": "Тема",
+
   "errorRequired": "Это поле необходимо заполнить.",
   "errorEmail": "Некорректный адрес эл.почты",
   "errorMinPasswordLength": "Минимум 8 символов",
